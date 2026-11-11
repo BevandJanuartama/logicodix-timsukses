@@ -6,6 +6,7 @@ param(
     [switch]$Caveman,
     [switch]$Graphify,
     [switch]$Headroom,
+    [switch]$UpstreamSkills,
     [switch]$All
 )
 
@@ -17,13 +18,13 @@ function Test-Cmd([string]$name) { [bool](Get-Command $name -ErrorAction Silentl
 function Step([string]$text) { Write-Host "`n==> $text" -ForegroundColor Cyan }
 function Skip([string]$text) { Write-Host "    skip: $text" -ForegroundColor Yellow }
 
-if (-not ($Junction -or $Rtk -or $ClaudeMem -or $Caveman -or $Graphify -or $Headroom -or $All)) {
+if (-not ($Junction -or $Rtk -or $ClaudeMem -or $Caveman -or $Graphify -or $Headroom -or $UpstreamSkills -or $All)) {
     Write-Host "Pemakaian: .\setup-token-stack.ps1 -Junction -Rtk -ClaudeMem -Caveman -Graphify -Headroom  (atau -All)"
     Write-Host "Disarankan mulai dari: -Junction -Rtk -ClaudeMem -Caveman"
     return
 }
 
-if ($All) { $Junction = $Rtk = $ClaudeMem = $Caveman = $Graphify = $Headroom = $true }
+if ($All) { $Junction = $Rtk = $ClaudeMem = $Caveman = $Graphify = $Headroom = $UpstreamSkills = $true }
 
 if ($Junction) {
     Step "Menghubungkan .claude\skills -> .agents\skills"
@@ -87,6 +88,15 @@ if ($Headroom) {
     if (Test-Cmd headroom) {
         headroom mcp install
         Write-Host "    Jalankan Claude lewat:  headroom wrap claude"
+    }
+}
+
+if ($UpstreamSkills) {
+    Step "Skill lengkap caveman & graphify dari repo asli (masuk ke .agents\skills)"
+    if (-not (Test-Cmd npx)) { Skip "Node.js belum terpasang" }
+    else {
+        npx -y skills add JuliusBrussee/caveman
+        npx -y skills add Graphify-Labs/graphify --skill graphify
     }
 }
 

@@ -1,11 +1,11 @@
 ---
 name: skills-router
-description: "Master quick-lookup index, router, and summary for all 21 skills in .agents/skills. Use on EVERY incoming user prompt to instantly determine which specialized skill to activate without reading full skill files, minimizing token usage and optimizing agent decisions."
+description: "Master quick-lookup index, router, and summary for all 26 skills in .agents/skills. Use on EVERY incoming user prompt to instantly determine which specialized skill to activate without reading full skill files, minimizing token usage and optimizing agent decisions."
 ---
 
 # Skills Router & Meta-Index (Zero-Token-Waste Directory)
 
-A centralized, token-efficient routing hub for all 21 specialized skills installed in `.agents/skills/`.
+A centralized, token-efficient routing hub for all 26 specialized skills installed in `.agents/skills/`.
 
 Instead of loading thousands of lines of documentation across multiple `SKILL.md` files into the context window, **always consult this router first**. It maps user intent directly to the exact skill, script command, or file reference needed.
 
@@ -34,6 +34,11 @@ Instead of loading thousands of lines of documentation across multiple `SKILL.md
 | **Gesture, Spring, Sheet, Glass ala Apple** | `apple-design` | Gerak fluid & interruptible | `apple-design/SKILL.md` |
 | **Polish Rasa Komponen (Emil Kowalski)** | `emil-design-eng` | Detail tak kasatmata, keputusan animasi | `emil-design-eng/SKILL.md` |
 | **Review UI/Aksesibilitas vs Guidelines** | `web-design-guidelines` | Audit kode UI | `web-design-guidelines/SKILL.md` |
+| **Hemat Token Output Shell** | `rtk` | Hook pemampat output perintah | `rtk/SKILL.md` |
+| **Memori Lintas Sesi** | `claude-mem` | Pasang/periksa memori persisten | `claude-mem/SKILL.md` |
+| **Kompresi Konteks (Proxy/MCP)** | `headroom` | `headroom wrap claude` | `headroom/SKILL.md` |
+| **Jawaban Ultra-Ringkas** | `caveman` | Mode output minimal | `caveman/SKILL.md` |
+| **Peta Codebase (Knowledge Graph)** | `graphify` | `/graphify .` lalu query graph | `graphify/SKILL.md` |
 | **Slide Presentasi Web (Chart.js)** | `slides` | HTML responsive pitch deck & presentasi | `slides/SKILL.md` |
 | **Membuat / Mengedit / Mengevaluasi Skill** | `skill-creator` | Buat skill baru, eval loop & packaging | `skill-creator/SKILL.md` |
 
@@ -58,7 +63,7 @@ python .agents/skills/skills-router/scripts/route.py --skill taste-skill
 
 ---
 
-## 3. The 21 Skills Catalog Reference
+## 3. The 26 Skills Catalog Reference
 
 ### 1. `brainstorming`
 - **Tujuan:** Wajib sebelum pekerjaan kreatif, pembuatan fitur baru, atau modifikasi arsitektur besar.
@@ -157,6 +162,9 @@ python .agents/skills/skills-router/scripts/route.py --skill taste-skill
 - **Tujuan:** Polish UI dan keputusan animasi berdasarkan filosofi Emil Kowalski.
 ### 21. `web-design-guidelines`
 - **Tujuan:** Review kode UI terhadap Web Interface Guidelines (aksesibilitas, UX).
+
+### 22-26. Token Saving: `rtk`, `claude-mem`, `headroom`, `caveman`, `graphify`
+- **Tujuan:** Menekan konsumsi token (output shell, memori sesi, konteks, gaya jawaban, navigasi codebase). Detail pasang & pakai ada di SKILL.md masing-masing.
 
 ---
 

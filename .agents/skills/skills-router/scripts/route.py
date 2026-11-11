@@ -144,6 +144,41 @@ SKILLS_CATALOG = {
         "command": "Susun layout slide HTML mandiri dengan Chart.js dan keyboard navigation.",
         "path": ".agents/skills/slides/SKILL.md"
     },
+    "rtk": {
+        "category": "Token Saving",
+        "keywords": ["rtk", "token killer", "output terlalu panjang", "hemat token shell", "rtk gain"],
+        "summary": "Proxy CLI yang memampatkan output shell sebelum masuk konteks agen (hook Claude Code/Antigravity).",
+        "command": "rtk gain && rtk init -g && rtk init --agent antigravity",
+        "path": ".agents/skills/rtk/SKILL.md"
+    },
+    "claude-mem": {
+        "category": "Token Saving",
+        "keywords": ["claude-mem", "memori sesi", "memory persisten", "lanjut sesi", "ingat sesi lalu"],
+        "summary": "Memori persisten lintas sesi yang dimampatkan dan disuntikkan otomatis ke sesi berikutnya.",
+        "command": "npx claude-mem install --provider claude && npx claude-mem doctor",
+        "path": ".agents/skills/claude-mem/SKILL.md"
+    },
+    "headroom": {
+        "category": "Token Saving",
+        "keywords": ["headroom", "kompresi konteks", "compress context", "proxy llm", "wrap claude"],
+        "summary": "Kompresi konteks lokal (tool output, log, file) via proxy/MCP, reversibel.",
+        "command": "headroom wrap claude | headroom mcp install",
+        "path": ".agents/skills/headroom/SKILL.md"
+    },
+    "caveman": {
+        "category": "Token Saving",
+        "keywords": ["caveman", "mode ringkas", "jawab singkat", "irit output", "terse"],
+        "summary": "Mode jawaban ultra-ringkas untuk memangkas token output tanpa kehilangan akurasi teknis.",
+        "command": "Aktifkan dengan kata 'caveman'; versi penuh: npx -y skills add JuliusBrussee/caveman",
+        "path": ".agents/skills/caveman/SKILL.md"
+    },
+    "graphify": {
+        "category": "Token Saving",
+        "keywords": ["graphify", "knowledge graph", "peta codebase", "struktur proyek", "graph.json"],
+        "summary": "Mengubah codebase/dokumen menjadi knowledge graph yang di-query agen alih-alih membaca ulang file.",
+        "command": "graphify install --project lalu /graphify .",
+        "path": ".agents/skills/graphify/SKILL.md"
+    },
     "skill-creator": {
         "category": "Meta & Tooling",
         "keywords": ["buat skill", "bikin skill", "edit skill", "optimasi skill", "skill baru", "eval skill", "benchmark skill", "package skill"],
@@ -191,7 +226,7 @@ def print_table():
 def main():
     parser = argparse.ArgumentParser(description="Skills Router: Fast Skill Matcher & Token Saver")
     parser.add_argument("query", nargs="?", default="", help="User prompt or intent to route")
-    parser.add_argument("--list", action="store_true", help="List all 21 available skills")
+    parser.add_argument("--list", action="store_true", help="List all 26 available skills")
     parser.add_argument("--skill", type=str, help="Show compact detail for a specific skill")
     
     args = parser.parse_args()
