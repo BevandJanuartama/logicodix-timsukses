@@ -85,7 +85,7 @@ Gunakan perintah `/model <nama>` di Claude Code untuk beralih model sebelum meng
   - Pulpa (`AN-003`), Saluran Akar (`AN-004`) & Apeks (`AN-009`): Pendaran vaskular halus (*subtle living pulse*).
   - Gingiva (`AN-010`): Specular *wetness* biologis dan variasi rona sehat vs meradang.
 - [x] **7.4** [🔵 Sonnet] **Studio Lighting Rig & Layer Peel / Cross-Section:** Sempurnakan `components/three/DentalScene.tsx`, `CameraRig.tsx`, dan `SceneInspector.tsx` dengan pencahayaan studio 3-titik (*key, cool clinical rim, warm fill*), transisi fokus kamera halus, dan bidang *cutaway / layer peel* yang mulus.
-- [ ] **7.5** [🟢 Haiku] **Verifikasi & Commit Fase 7:** Pastikan 0 komentar kode, jalankan `npm run typecheck`, verifikasi 60 FPS di browser, sinkronkan `rangkuman.md`, lalu buat commit:
+- [x] **7.5** [🟢 Haiku] **Verifikasi & Commit Fase 7:** Pastikan 0 komentar kode, jalankan `npm run typecheck`, verifikasi 60 FPS di browser, sinkronkan `rangkuman.md`, lalu buat commit (tanpa push):
   ```bash
   git commit -m "feat: redesign procedural 3d tooth anatomy shaders and studio lighting"
   ```
