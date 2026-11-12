@@ -40,6 +40,9 @@ export function ToolCursor() {
 
   useEffect(() => {
     canvas.style.cursor = cleaning ? 'crosshair' : ''
+    return () => {
+      canvas.style.cursor = ''
+    }
   }, [cleaning, canvas])
 
   useFrame((state) => {

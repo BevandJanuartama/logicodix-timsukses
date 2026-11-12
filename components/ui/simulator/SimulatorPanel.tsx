@@ -12,7 +12,7 @@ export function SimulatorPanel() {
   const track = useSimulatorStore((state) => state.track)
   const setTrack = useSimulatorStore((state) => state.setTrack)
   const title = !track
-    ? 'Apa yang terjadi jika dibiarkan?'
+    ? 'Jika dibiarkan'
     : isClinicalTrack(track)
       ? (findDisease(track)?.displayName ?? track)
       : (findHabitScenario(track)?.title ?? track)
@@ -23,27 +23,20 @@ export function SimulatorPanel() {
         <button
           type="button"
           onClick={() => setTrack(null)}
-          className="mb-2 flex items-center gap-1 rounded-lg px-1.5 py-1 text-xs font-bold text-ink/60 hover:bg-ink/5"
+          className="mb-1 flex min-h-10 cursor-pointer items-center gap-1 rounded-[var(--radius-control)] px-1.5 text-[13px] font-semibold text-fg-secondary hover:text-fg"
         >
-          <ArrowLeft className="size-3.5" aria-hidden />
+          <ArrowLeft className="size-4" aria-hidden />
           Semua simulasi
         </button>
       )}
-      <h2 className="text-xl font-extrabold tracking-tight">{title}</h2>
-      {!track && (
-        <p className="mt-1 text-[13.5px] leading-relaxed text-ink/65">
-          Ikuti tahapan karies dan periodontal dari basis pengetahuan, atau putar skenario kebiasaan untuk melihat kerusakan
-          bertahap.
-        </p>
-      )}
+      <h2 className="font-display text-xl font-semibold tracking-tight text-fg">{title}</h2>
+      {!track && <p className="mt-1 text-[13px] leading-snug text-fg-secondary">Pilih tahap penyakit atau kebiasaan.</p>}
 
       {!track && <TrackPicker />}
       {track && isClinicalTrack(track) && <ClinicalStages track={track} />}
       {track && !isClinicalTrack(track) && <HabitTimeline habitId={track} />}
 
-      <p className="mt-5 text-[11.5px] leading-snug text-ink/50">
-        Simulasi edukatif yang disederhanakan; skala waktu ilustratif dan bukan pengganti pemeriksaan dokter gigi.
-      </p>
+      <p className="mt-4 text-[11px] leading-snug text-fg-muted">Simulasi edukatif; bukan pengganti pemeriksaan dokter gigi.</p>
     </div>
   )
 }

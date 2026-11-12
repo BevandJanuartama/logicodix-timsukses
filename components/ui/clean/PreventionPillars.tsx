@@ -1,6 +1,14 @@
+import { Candy, CigaretteOff, ChevronDown, Sparkles, Stethoscope, Waypoints, type LucideIcon } from 'lucide-react'
 import { preventionTopics } from '@/lib/knowledgeBase'
 import { SectionTitle } from '@/components/ui/shell/PanelParts'
-import { StatusBadge } from '@/components/ui/shell/StatusBadge'
+
+const PILLAR_ICONS: Record<string, LucideIcon> = {
+  'PRE-001': Sparkles,
+  'PRE-002': Waypoints,
+  'PRE-003': Candy,
+  'PRE-004': Stethoscope,
+  'PRE-005': CigaretteOff,
+}
 
 export function PreventionPillars() {
   return (
@@ -8,26 +16,24 @@ export function PreventionPillars() {
       <SectionTitle>
         <span id="prevention-title">5 pilar pencegahan</span>
       </SectionTitle>
-      <ol className="relative space-y-3 border-l-2 border-mint/30 pl-4">
-        {preventionTopics.map((topic, index) => (
-          <li key={topic.id} className="relative">
-            <span
-              aria-hidden
-              className="absolute top-0.5 -left-[25px] grid size-4 place-items-center rounded-full bg-mint text-[9px] font-extrabold text-white tabular-nums"
-            >
-              {index + 1}
-            </span>
-            <p className="flex items-center gap-2 text-[13.5px] font-extrabold">
-              {topic.topic}
-              <StatusBadge contentId={topic.id} baseStatus={topic.status} />
-            </p>
-            <p className="mt-0.5 text-[13px] leading-snug text-ink/75">{topic.message}</p>
-            <p className="mt-1 text-[11.5px] text-ink/50">
-              {topic.implementationNote} · <span className="font-semibold">{topic.sourceLabel}</span>
-            </p>
-          </li>
-        ))}
-      </ol>
+      {preventionTopics.map((topic) => {
+        const Icon = PILLAR_ICONS[topic.id] ?? Sparkles
+        return (
+          <details key={topic.id} className="group border-t border-line first:border-t-0">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2.5 text-[13.5px] font-semibold text-fg hover:text-accent [&::-webkit-details-marker]:hidden">
+              <Icon className="size-4 shrink-0 text-accent" aria-hidden />
+              <span className="flex-1">{topic.topic}</span>
+              <ChevronDown className="size-4 text-fg-muted transition-transform duration-[var(--duration-state)] ease-[var(--ease-out)] group-open:rotate-180" aria-hidden />
+            </summary>
+            <div className="pb-3 pl-6.5">
+              <p className="text-[13px] text-fg-secondary">{topic.message}</p>
+              <p className="telemetry mt-1.5 text-[11px] text-fg-muted">
+                {topic.id} · {topic.sourceLabel}
+              </p>
+            </div>
+          </details>
+        )
+      })}
     </section>
   )
 }

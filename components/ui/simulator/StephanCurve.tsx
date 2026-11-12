@@ -1,99 +1,90 @@
 'use client'
 
+import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
+import {
+  minutesBelowCriticalPh,
+  plaquePhAt,
+  STEPHAN_CRITICAL_PH,
+  STEPHAN_DURATION_MINUTES,
+  stephanMinutes,
+  stephanScenarios,
+} from '@/lib/data/stephanScenarios'
+import { ExploreChip } from '@/components/ui/explore/ExploreChip'
 
 const WIDTH = 320
 const HEIGHT = 150
 const PADDING = { left: 28, right: 8, top: 10, bottom: 22 }
-const DURATION_MINUTES = 120
-const CRITICAL_PH = 5.5
-const SINGLE_DRINK = [0]
-const SIPPED_HOUR = Array.from({ length: 11 }, (_, i) => i * 6)
+const MIN_PH = 4.3
+const MAX_PH = 7.2
+const PLOT_WIDTH = WIDTH - PADDING.left - PADDING.right
+const AXIS_MINUTES = [0, 30, 60, 90, 120]
+const AXIS_PH = [7, 6, 5]
 
-function plaquePh(minute: number, sips: number[]) {
-  const drop = sips.reduce((sum, sip) => {
-    const since = minute - sip
-    if (since < 0) return sum
-    return sum + 2.3 * (since < 3 ? since / 3 : Math.exp(-(since - 3) / 20))
-  }, 0)
-  return 7 - Math.min(drop, 2.5)
-}
+const xAt = (minute: number) => PADDING.left + (minute / STEPHAN_DURATION_MINUTES) * PLOT_WIDTH
+const yAt = (ph: number) => PADDING.top + ((MAX_PH - ph) / (MAX_PH - MIN_PH)) * (HEIGHT - PADDING.top - PADDING.bottom)
+const criticalY = yAt(STEPHAN_CRITICAL_PH)
 
-const xAt = (minute: number) => PADDING.left + (minute / DURATION_MINUTES) * (WIDTH - PADDING.left - PADDING.right)
-const yAt = (ph: number) => PADDING.top + ((7.2 - ph) / (7.2 - 4.3)) * (HEIGHT - PADDING.top - PADDING.bottom)
-
-const minutes = Array.from({ length: DURATION_MINUTES + 1 }, (_, i) => i)
-const curvePath = (sips: number[]) =>
-  minutes.map((minute) => `${minute ? 'L' : 'M'}${xAt(minute).toFixed(1)},${yAt(plaquePh(minute, sips)).toFixed(1)}`).join(' ')
-const minutesBelowCritical = (sips: number[]) => minutes.filter((minute) => plaquePh(minute, sips) < CRITICAL_PH).length
-
-const CURVES = [
-  { label: 'Diminum sekali habis', sips: SINGLE_DRINK, stroke: 'var(--color-brand)' },
-  { label: 'Diseruput selama 1 jam', sips: SIPPED_HOUR, stroke: 'var(--color-coral)' },
-]
+const curvePath = (exposures: number[]) =>
+  stephanMinutes
+    .map((minute) => `${minute ? 'L' : 'M'}${xAt(minute).toFixed(1)},${yAt(plaquePhAt(minute, exposures)).toFixed(1)}`)
+    .join(' ')
 
 export function StephanCurve() {
   const reduceMotion = useReducedMotion()
+  const [scenarioId, setScenarioId] = useState(stephanScenarios[0].id)
+  const scenario = stephanScenarios.find((item) => item.id === scenarioId) ?? stephanScenarios[0]
+  const criticalMinutes = minutesBelowCriticalPh(scenario.exposures)
+
   return (
-    <figure className="rounded-2xl bg-white/60 p-3 ring-1 ring-ink/8">
-      <figcaption className="text-[13px] font-bold">Kurva pH plak (kurva Stephan)</figcaption>
-      <p className="mb-2 text-[12px] leading-snug text-ink/60">
-        Setiap paparan gula memicu penurunan pH plak. Di bawah ±5,5 mineral email mulai larut.
-      </p>
-      <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="w-full" role="img" aria-label="Grafik pH plak terhadap waktu">
-        <rect
-          x={PADDING.left}
-          y={yAt(CRITICAL_PH)}
-          width={WIDTH - PADDING.left - PADDING.right}
-          height={yAt(4.3) - yAt(CRITICAL_PH)}
-          fill="var(--color-coral)"
-          fillOpacity={0.1}
-        />
-        <line
-          x1={PADDING.left}
-          x2={WIDTH - PADDING.right}
-          y1={yAt(CRITICAL_PH)}
-          y2={yAt(CRITICAL_PH)}
-          stroke="var(--color-coral)"
-          strokeDasharray="4 3"
-        />
-        <text x={WIDTH - PADDING.right - 2} y={yAt(CRITICAL_PH) - 4} textAnchor="end" fontSize={9} fill="var(--color-coral)" fontWeight={700}>
-          zona kritis 5,5
+    <figure className="rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] p-3">
+      <figcaption className="font-display text-[14px] font-semibold text-fg">Kurva pH plak</figcaption>
+      <div role="group" aria-label="Pola minum" className="mt-2 flex flex-wrap gap-1.5">
+        {stephanScenarios.map((item) => (
+          <ExploreChip key={item.id} pressed={item.id === scenario.id} onClick={() => setScenarioId(item.id)}>
+            {item.label}
+          </ExploreChip>
+        ))}
+      </div>
+      <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="mt-2 w-full" role="img" aria-label={`Grafik pH plak: ${scenario.caption}`}>
+        <rect x={PADDING.left} y={PADDING.top} width={PLOT_WIDTH} height={criticalY - PADDING.top} fill="var(--color-success)" fillOpacity={0.08} />
+        <rect x={PADDING.left} y={criticalY} width={PLOT_WIDTH} height={yAt(MIN_PH) - criticalY} fill="var(--color-danger)" fillOpacity={0.14} />
+        <line x1={PADDING.left} x2={WIDTH - PADDING.right} y1={criticalY} y2={criticalY} stroke="var(--color-danger)" strokeDasharray="4 3" />
+        <text x={WIDTH - PADDING.right - 2} y={criticalY + 11} textAnchor="end" fontSize={9} fill="var(--color-danger)" fontWeight={700}>
+          pH &lt; 5,5 · mineral larut
         </text>
-        {[7, 6, 5].map((ph) => (
-          <text key={ph} x={PADDING.left - 6} y={yAt(ph) + 3} textAnchor="end" fontSize={9} fill="currentColor" opacity={0.45}>
+        <text x={WIDTH - PADDING.right - 2} y={criticalY - 4} textAnchor="end" fontSize={9} fill="var(--color-success)" fontWeight={700}>
+          pulih (remineralisasi)
+        </text>
+        {AXIS_PH.map((ph) => (
+          <text key={ph} x={PADDING.left - 6} y={yAt(ph) + 3} textAnchor="end" fontSize={9} fill="currentColor" opacity={0.5}>
             {ph}
           </text>
         ))}
-        {[0, 30, 60, 90, 120].map((minute) => (
-          <text key={minute} x={xAt(minute)} y={HEIGHT - 6} textAnchor="middle" fontSize={9} fill="currentColor" opacity={0.45}>
-            {minute}′
+        {AXIS_MINUTES.map((minute) => (
+          <text key={minute} x={xAt(minute)} y={HEIGHT - 6} textAnchor="middle" fontSize={9} fill="currentColor" opacity={0.5}>
+            {minute}&prime;
           </text>
         ))}
-        {CURVES.map((curve, index) => (
-          <motion.path
-            key={curve.label}
-            d={curvePath(curve.sips)}
-            fill="none"
-            stroke={curve.stroke}
-            strokeWidth={2.2}
-            initial={{ pathLength: reduceMotion ? 1 : 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 1.1, delay: index * 0.25, ease: 'easeOut' }}
-          />
-        ))}
+        <motion.path
+          key={scenario.id}
+          d={curvePath(scenario.exposures)}
+          fill="none"
+          stroke="var(--color-accent)"
+          strokeWidth={2.2}
+          strokeLinecap="round"
+          initial={{ pathLength: reduceMotion ? 1 : 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1 }}
+          transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.23, 1, 0.32, 1] }}
+        />
       </svg>
-      <ul className="mt-1 grid grid-cols-2 gap-2 text-[12px]">
-        {CURVES.map((curve) => (
-          <li key={curve.label} className="flex items-start gap-1.5">
-            <span aria-hidden className="mt-1 h-2 w-3 shrink-0 rounded" style={{ background: curve.stroke }} />
-            <span>
-              {curve.label}: <b className="tabular-nums">±{minutesBelowCritical(curve.sips)} menit</b> di zona kritis
-            </span>
-          </li>
-        ))}
-      </ul>
-      <p className="mt-1 text-[10.5px] text-ink/45">Ilustrasi edukatif yang disederhanakan.</p>
+      <p className="mt-1 flex items-baseline justify-between gap-2 text-[13px] text-fg-secondary" aria-live="polite">
+        <span>{scenario.caption}</span>
+        <span className={criticalMinutes ? 'font-semibold text-danger' : 'font-semibold text-success'}>
+          <span className="telemetry tabular-nums">±{criticalMinutes}</span> menit kritis
+        </span>
+      </p>
+      <p className="mt-1 text-[11px] text-fg-muted">Ilustrasi edukatif yang disederhanakan.</p>
     </figure>
   )
 }

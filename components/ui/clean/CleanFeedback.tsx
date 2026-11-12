@@ -5,10 +5,11 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { CheckCircle2, RotateCcw, X } from 'lucide-react'
 import { useCleaningStore } from '@/lib/cleaningStore'
 import { useAppStore } from '@/lib/store'
+import { RECOMMENDED_SECONDS } from './cleanTools'
 import { formatDuration, useCleaningTimer } from './useCleaningTimer'
 
-const RECOMMENDED_SECONDS = 120
 const RINSE_VISIBLE_MS = 1600
+const EASE_OUT = [0.23, 1, 0.32, 1] as const
 
 export function CleanSuccessToast() {
   const cleaning = useAppStore((state) => state.mode === 'clean')
@@ -20,47 +21,46 @@ export function CleanSuccessToast() {
   const reduceMotion = useReducedMotion()
   const [dismissedFor, setDismissedFor] = useState(-1)
   const visible = cleaning && finished && dismissedFor !== resetNonce
+  const offsetY = reduceMotion ? 0 : -12
 
   return (
     <AnimatePresence>
       {visible && (
         <motion.div
           role="status"
-          initial={{ opacity: 0, y: reduceMotion ? 0 : -16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: reduceMotion ? 0 : -16 }}
+          initial={{ opacity: 0, y: offsetY, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: offsetY, scale: 0.97 }}
           transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-          className="glass fixed top-[72px] left-1/2 z-40 w-[min(92vw,380px)] -translate-x-1/2 rounded-2xl p-4 lg:left-[calc((100%-424px)/2)]"
+          className="panel fixed top-[72px] left-1/2 z-40 w-[min(92vw,340px)] -translate-x-1/2 p-4 lg:left-[calc((100%-424px)/2)]"
         >
-          <div className="flex items-start gap-3">
-            <CheckCircle2 className="mt-0.5 size-6 shrink-0 text-mint" aria-hidden />
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="size-6 shrink-0 text-success" aria-hidden />
             <div className="flex-1">
-              <p className="text-[15px] font-extrabold">
-                Bersih {Math.round(overall)}% dalam {formatDuration(elapsed)}
+              <p className="telemetry text-[15px] font-semibold text-fg">
+                {Math.round(overall)}% · {formatDuration(elapsed)}
               </p>
-              <p className="mt-1 text-[12.5px] leading-snug text-ink/70">
-                {elapsed < RECOMMENDED_SECONDS
-                  ? 'Di dunia nyata, menyikat tetap butuh sekitar 2 menit agar semua permukaan benar-benar bersih.'
-                  : 'Sikat 2× sehari, bersihkan sela gigi setiap hari, dan jangan lupa lidah.'}
+              <p className="text-[12.5px] text-fg-secondary">
+                {elapsed < RECOMMENDED_SECONDS ? 'Di dunia nyata, sikat sekitar 2 menit.' : 'Sikat 2× sehari, bersihkan sela gigi.'}
               </p>
-              <button
-                type="button"
-                onClick={reset}
-                className="mt-2.5 flex items-center gap-1.5 rounded-xl bg-mint px-3 py-2 text-xs font-bold text-white"
-              >
-                <RotateCcw className="size-3.5" aria-hidden />
-                Ulangi
-              </button>
             </div>
             <button
               type="button"
               onClick={() => setDismissedFor(resetNonce)}
               aria-label="Tutup notifikasi"
-              className="grid size-7 place-items-center rounded-lg text-ink/50 hover:bg-ink/5"
+              className="grid size-9 cursor-pointer place-items-center rounded-[var(--radius-control)] text-fg-muted hover:text-fg"
             >
               <X className="size-4" aria-hidden />
             </button>
           </div>
+          <button
+            type="button"
+            onClick={reset}
+            className="mt-3 flex min-h-10 w-full cursor-pointer items-center justify-center gap-1.5 rounded-[var(--radius-control)] bg-accent-fill text-[13px] font-semibold text-on-accent transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)]"
+          >
+            <RotateCcw className="size-4" aria-hidden />
+            Ulangi
+          </button>
         </motion.div>
       )}
     </AnimatePresence>
@@ -84,11 +84,11 @@ export function MouthwashOverlay() {
       {rinsing && !reduceMotion && (
         <motion.div
           aria-hidden
-          className="pointer-events-none fixed inset-0 z-10 bg-gradient-to-b from-transparent via-brand/25 to-transparent"
+          className="pointer-events-none fixed inset-0 z-10 bg-[var(--chip-bg)]"
           initial={{ opacity: 0, y: '100%' }}
-          animate={{ opacity: 1, y: '-20%' }}
+          animate={{ opacity: 1, y: '-10%' }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: 'easeOut' }}
+          transition={{ duration: 1.2, ease: EASE_OUT }}
         />
       )}
     </AnimatePresence>
