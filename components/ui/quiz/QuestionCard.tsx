@@ -1,19 +1,18 @@
 'use client'
 
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { CheckCircle2, XCircle } from 'lucide-react'
+import { useCallback } from 'react'
+import { quizFocus } from '@/lib/data/quizFocus'
 import { useQuizStore } from '@/lib/quizStore'
 import type { QuizQuestion } from '@/lib/types'
-import { SourceLinks } from '@/components/ui/shell/PanelParts'
 import { StatusBadge } from '@/components/ui/shell/StatusBadge'
+import { AnswerFeedback } from './AnswerFeedback'
+import { AnswerOption, type AnswerOutcome } from './AnswerOption'
+import { useQuizKeyboard } from './useQuizKeyboard'
 
-const OPTION_LETTERS = ['A', 'B', 'C', 'D']
-
-function optionTone(index: number, question: QuizQuestion, selected: number | null, checked: boolean) {
-  if (!checked) return index === selected ? 'ring-amber bg-amber/10' : 'ring-ink/10 bg-white/70 hover:bg-white'
-  if (index === question.correctIndex) return 'ring-mint bg-mint/12'
-  if (index === selected) return 'ring-coral bg-coral/10'
-  return 'ring-ink/8 bg-white/40 opacity-60'
+function outcomeFor(index: number, question: QuizQuestion, selected: number | null, checked: boolean): AnswerOutcome {
+  if (!checked) return index === selected ? 'selected' : 'idle'
+  if (index === question.correctIndex) return 'correct'
+  return index === selected ? 'wrong' : 'dimmed'
 }
 
 export function QuestionCard({ question, isLast }: { question: QuizQuestion; isLast: boolean }) {
@@ -22,82 +21,57 @@ export function QuestionCard({ question, isLast }: { question: QuizQuestion; isL
   const select = useQuizStore((state) => state.select)
   const check = useQuizStore((state) => state.check)
   const next = useQuizStore((state) => state.next)
-  const reduceMotion = useReducedMotion()
   const correct = checked && selected === question.correctIndex
+
+  const confirm = useCallback(() => {
+    if (checked) next()
+    else if (selected !== null) check(question.id)
+  }, [checked, selected, check, next, question.id])
+
+  useQuizKeyboard({
+    optionCount: question.options.length,
+    selected,
+    checked,
+    onSelect: select,
+    onConfirm: confirm,
+  })
 
   return (
     <article>
-      <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider text-ink/50 uppercase">
+      <div className="telemetry flex items-center gap-2 text-[11px] font-semibold text-fg-muted uppercase">
         <span>{question.topic}</span>
         <span aria-hidden>·</span>
-        <span className="font-mono">{question.id}</span>
+        <span>{question.id}</span>
         <StatusBadge contentId={question.id} baseStatus={question.status} />
       </div>
-      <h3 id={`${question.id}-prompt`} className="mt-2 text-[17px] leading-snug font-extrabold">
+      <h3 id={`${question.id}-prompt`} className="mt-2 text-[17px] leading-snug font-bold text-fg">
         {question.question}
       </h3>
 
-      <motion.div
-        role="radiogroup"
-        aria-labelledby={`${question.id}-prompt`}
-        className="mt-4 space-y-2"
-        animate={checked && !correct && !reduceMotion ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
-        transition={{ duration: 0.35 }}
-      >
+      <div role="radiogroup" aria-labelledby={`${question.id}-prompt`} className="mt-3 space-y-2">
         {question.options.map((option, index) => (
-          <label
+          <AnswerOption
             key={option}
-            className={`flex cursor-pointer items-center gap-3 rounded-2xl px-3 py-2.5 text-[14px] font-semibold ring-1 transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-amber ${optionTone(index, question, selected, checked)}`}
-          >
-            <input
-              type="radio"
-              name={question.id}
-              value={index}
-              checked={selected === index}
-              disabled={checked}
-              onChange={() => select(index)}
-              className="sr-only"
-            />
-            <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-ink/5 text-xs font-extrabold">
-              {OPTION_LETTERS[index]}
-            </span>
-            <span className="flex-1">{option}</span>
-            {checked && index === question.correctIndex && <CheckCircle2 className="size-5 text-mint" aria-label="Jawaban benar" />}
-            {checked && index === selected && index !== question.correctIndex && (
-              <XCircle className="size-5 text-coral" aria-label="Jawaban kamu" />
-            )}
-          </label>
+            position={index + 1}
+            label={option}
+            outcome={outcomeFor(index, question, selected, checked)}
+            disabled={checked}
+            onSelect={() => select(index)}
+          />
         ))}
-      </motion.div>
+      </div>
 
-      <AnimatePresence>
-        {checked && (
-          <motion.div
-            role="status"
-            initial={{ opacity: 0, y: reduceMotion ? 0 : 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: 'spring', stiffness: 360, damping: 30 }}
-            className={`mt-4 rounded-2xl p-3.5 ${correct ? 'bg-mint/12' : 'bg-coral/10'}`}
-          >
-            <p className={`text-[14px] font-extrabold ${correct ? 'text-mint-ink' : 'text-coral'}`}>
-              {correct ? 'Benar!' : 'Belum tepat.'}
-            </p>
-            <p className="mt-1 text-[13.5px] leading-relaxed text-ink/80">{question.explanation}</p>
-            <div className="mt-2">
-              <SourceLinks sourceIds={question.sourceIds} />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {checked && <AnswerFeedback question={question} correct={correct} focus={quizFocus[question.id]} />}
 
       <button
         type="button"
         disabled={!checked && selected === null}
-        onClick={() => (checked ? next() : check(question.id))}
-        className="mt-4 w-full rounded-2xl bg-ink px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-brand-600 disabled:bg-ink/15 disabled:text-ink/40"
+        onClick={confirm}
+        className="mt-4 min-h-11 w-full cursor-pointer rounded-[var(--radius-control)] bg-[var(--button-primary-bg)] px-4 text-sm font-semibold text-[var(--button-primary-fg)] transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] hover:bg-[var(--button-primary-bg-hover)] enabled:active:scale-[var(--scale-press)] disabled:cursor-not-allowed disabled:opacity-40"
       >
-        {!checked ? 'Periksa jawaban' : isLast ? 'Lihat skor' : 'Soal berikutnya'}
+        {!checked ? 'Periksa' : isLast ? 'Lihat skor' : 'Berikutnya'}
       </button>
+      <p className="telemetry mt-2 hidden text-center text-[11px] text-fg-muted md:block">1–4 pilih · Enter lanjut</p>
     </article>
   )
 }

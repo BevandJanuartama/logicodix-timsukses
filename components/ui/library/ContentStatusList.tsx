@@ -5,8 +5,15 @@ import { contentEntries } from '@/lib/data/contentRegistry'
 import { REVIEW_STATUSES, useGovernanceStore } from '@/lib/governanceStore'
 import type { ReviewStatus } from '@/lib/types'
 import { StatusPill } from '@/components/ui/shell/StatusBadge'
+import { ExploreDisclosure } from '@/components/ui/explore/ExploreDisclosure'
 
 type StatusFilter = ReviewStatus | 'all'
+
+const STATUS_LABELS: Record<ReviewStatus, string> = {
+  Draft: 'Draf',
+  'Under Review': 'Ditinjau',
+  Approved: 'Disetujui',
+}
 
 export function ContentStatusList() {
   const overrides = useGovernanceStore((state) => state.overrides)
@@ -25,65 +32,56 @@ export function ContentStatusList() {
 
   return (
     <section aria-label="Status editorial konten">
-      <div className="flex flex-wrap items-center gap-1.5">
-        {(['all', ...REVIEW_STATUSES] as StatusFilter[]).map((option) => (
+      <div className="grid grid-cols-3 gap-2">
+        {REVIEW_STATUSES.map((status) => (
           <button
-            key={option}
+            key={status}
             type="button"
-            aria-pressed={filter === option}
-            onClick={() => setFilter(option)}
-            className="rounded-full bg-white px-3 py-1.5 text-[12.5px] font-semibold text-ink/70 ring-1 ring-ink/10 aria-pressed:bg-ink aria-pressed:text-white aria-pressed:ring-ink"
+            aria-pressed={filter === status}
+            onClick={() => setFilter(filter === status ? 'all' : status)}
+            className="cursor-pointer rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] px-3 py-2 text-left transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)] aria-pressed:border-line-strong aria-pressed:bg-accent-fill/30"
           >
-            {option === 'all' ? `Semua (${entries.length})` : `${option} (${counts[option]})`}
+            <span className="telemetry block text-2xl font-semibold text-fg">{counts[status]}</span>
+            <StatusPill status={status} />
           </button>
         ))}
-        <button
-          type="button"
-          onClick={resetStatuses}
-          disabled={Object.keys(overrides).length === 0}
-          className="ml-auto rounded-lg px-2 py-1 text-xs font-bold text-brand hover:bg-brand-50 disabled:opacity-40"
-        >
-          Kembalikan ke data awal
-        </button>
       </div>
-      <p className="mt-2 text-[12px] text-ink/55">
-        Perubahan status hanya tersimpan di peramban ini sebagai simulasi alur peninjauan.
-      </p>
-      <table className="mt-3 w-full text-left text-[13px]">
-        <thead className="text-[11px] font-bold tracking-wide text-ink/50 uppercase">
-          <tr>
-            <th scope="col" className="py-2 pr-2">ID</th>
-            <th scope="col" className="py-2 pr-2">Konten</th>
-            <th scope="col" className="py-2">Status</th>
-          </tr>
-        </thead>
-        <tbody>
+      <ExploreDisclosure label={`Rincian per item (${visible.length})`}>
+        <div className="mb-2 flex items-center gap-2">
+          <p className="flex-1 text-[12px] text-fg-muted">Perubahan hanya tersimpan di peramban ini.</p>
+          <button
+            type="button"
+            onClick={resetStatuses}
+            disabled={Object.keys(overrides).length === 0}
+            className="min-h-10 cursor-pointer rounded-[var(--radius-control)] px-2 text-xs font-semibold text-accent hover:bg-[var(--button-ghost-bg-hover)] disabled:cursor-default disabled:opacity-40"
+          >
+            Reset
+          </button>
+        </div>
+        <ul>
           {visible.map((entry) => (
-            <tr key={entry.id} className="border-t border-ink/6 align-top">
-              <td className="py-2 pr-2 font-mono text-[11.5px] font-bold whitespace-nowrap text-ink/60">{entry.id}</td>
-              <td className="py-2 pr-2">
-                <span className="line-clamp-2 font-semibold">{entry.title}</span>
-                <span className="text-[11.5px] text-ink/50">{entry.group}</span>
-              </td>
-              <td className="py-2">
-                <div className="flex items-center gap-2">
-                  <StatusPill status={entry.status} />
-                  <select
-                    aria-label={`Ubah status ${entry.id}`}
-                    value={entry.status}
-                    onChange={(event) => setStatus(entry.id, event.target.value as ReviewStatus)}
-                    className="rounded-lg bg-white px-1.5 py-1 text-[12px] ring-1 ring-ink/10"
-                  >
-                    {REVIEW_STATUSES.map((status) => (
-                      <option key={status}>{status}</option>
-                    ))}
-                  </select>
-                </div>
-              </td>
-            </tr>
+            <li key={entry.id} className="flex items-center gap-2 border-t border-line py-2 first:border-t-0">
+              <span className="telemetry w-16 shrink-0 text-[11.5px] font-semibold text-fg-muted">{entry.id}</span>
+              <span className="min-w-0 flex-1">
+                <span className="line-clamp-1 text-[13px] font-semibold text-fg">{entry.title}</span>
+                <span className="text-[11.5px] text-fg-muted">{entry.group}</span>
+              </span>
+              <select
+                aria-label={`Ubah status ${entry.id}`}
+                value={entry.status}
+                onChange={(event) => setStatus(entry.id, event.target.value as ReviewStatus)}
+                className="min-h-10 rounded-[var(--radius-control)] border border-line bg-surface-raised px-1.5 text-[12px] text-fg"
+              >
+                {REVIEW_STATUSES.map((status) => (
+                  <option key={status} value={status}>
+                    {STATUS_LABELS[status]}
+                  </option>
+                ))}
+              </select>
+            </li>
           ))}
-        </tbody>
-      </table>
+        </ul>
+      </ExploreDisclosure>
     </section>
   )
 }
