@@ -1,43 +1,64 @@
+'use client'
+
+import { useState } from 'react'
 import { toothTypes } from '@/lib/knowledgeBase'
 
+type Dentition = 'primary' | 'permanent'
+
+const DENTITION_OPTIONS: { id: Dentition; label: string }[] = [
+  { id: 'primary', label: 'Sulung' },
+  { id: 'permanent', label: 'Permanen' },
+]
+
+const countOf = (type: (typeof toothTypes)[number], dentition: Dentition) =>
+  dentition === 'primary' ? type.primaryCount : type.permanentCount
+
 export function ToothTypeTable({ activeId }: { activeId?: string }) {
-  const totals = toothTypes.reduce(
-    (sum, type) => ({ primary: sum.primary + type.primaryCount, permanent: sum.permanent + type.permanentCount }),
-    { primary: 0, permanent: 0 },
-  )
+  const [dentition, setDentition] = useState<Dentition>('permanent')
+  const total = toothTypes.reduce((sum, type) => sum + countOf(type, dentition), 0)
+  const maxCount = Math.max(...toothTypes.map((type) => countOf(type, dentition)))
+
   return (
-    <table className="w-full overflow-hidden rounded-2xl text-left text-[13px] ring-1 ring-ink/8">
-      <caption className="sr-only">Jumlah gigi per jenis pada dentisi sulung dan permanen</caption>
-      <thead className="bg-ink/[0.04] text-[11px] font-bold tracking-wide text-ink/55 uppercase">
-        <tr>
-          <th scope="col" className="px-3 py-2">Jenis</th>
-          <th scope="col" className="px-2 py-2 text-right">Sulung</th>
-          <th scope="col" className="px-3 py-2 text-right">Permanen</th>
-        </tr>
-      </thead>
-      <tbody className="tabular-nums">
-        {toothTypes.map((type) => (
-          <tr
-            key={type.id}
-            aria-current={type.id === activeId ? 'true' : undefined}
-            className="border-t border-ink/5 bg-white/50 aria-[current=true]:bg-brand-50"
+    <div>
+      <div role="group" aria-label="Jenis dentisi" className="flex gap-1 rounded-[var(--radius-control)] border border-line p-1">
+        {DENTITION_OPTIONS.map((option) => (
+          <button
+            key={option.id}
+            type="button"
+            aria-pressed={dentition === option.id}
+            onClick={() => setDentition(option.id)}
+            className="min-h-10 flex-1 cursor-pointer rounded-[var(--radius-control)] text-[13px] font-semibold text-fg-secondary hover:text-fg aria-pressed:bg-accent-fill aria-pressed:text-on-accent"
           >
-            <th scope="row" className="px-3 py-2 font-semibold">
-              {type.name}
-              <span className="block text-[11.5px] font-medium text-ink/55">{type.function}</span>
-            </th>
-            <td className="px-2 py-2 text-right font-bold">{type.primaryCount}</td>
-            <td className="px-3 py-2 text-right font-bold">{type.permanentCount}</td>
-          </tr>
+            {option.label}
+          </button>
         ))}
-      </tbody>
-      <tfoot className="tabular-nums">
-        <tr className="border-t border-ink/10 text-[12px] font-bold text-ink/70">
-          <th scope="row" className="px-3 py-2">Total</th>
-          <td className="px-2 py-2 text-right">{totals.primary}</td>
-          <td className="px-3 py-2 text-right">{totals.permanent}</td>
-        </tr>
-      </tfoot>
-    </table>
+      </div>
+      <ul className="mt-2 space-y-1">
+        {toothTypes.map((type) => {
+          const count = countOf(type, dentition)
+          return (
+            <li
+              key={type.id}
+              aria-current={type.id === activeId ? 'true' : undefined}
+              className="rounded-[var(--radius-control)] px-2.5 py-2 aria-[current=true]:bg-[var(--chip-bg)]"
+            >
+              <div className="flex items-baseline gap-2 text-[13px]">
+                <span className="telemetry w-12 shrink-0 text-[11px] text-fg-muted">{type.id}</span>
+                <span className="flex-1 truncate font-semibold text-fg">{type.name.split(' / ')[1] ?? type.name}</span>
+                <span className="telemetry text-base font-semibold text-fg">{count}</span>
+              </div>
+              <div aria-hidden className="mt-1.5 h-1 overflow-hidden rounded-full bg-line">
+                <div
+                  className="h-full origin-left rounded-full bg-accent transition-transform duration-[var(--duration-state)] ease-[var(--ease-out)]"
+                  style={{ transform: `scaleX(${maxCount > 0 ? count / maxCount : 0})` }}
+                />
+              </div>
+              <p className="mt-1 pl-14 text-[12px] text-fg-muted">{type.function}</p>
+            </li>
+          )
+        })}
+      </ul>
+      <p className="telemetry mt-1 px-2.5 text-[12px] text-fg-secondary">Total {total} gigi</p>
+    </div>
   )
 }

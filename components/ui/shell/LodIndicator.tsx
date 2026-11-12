@@ -3,10 +3,10 @@
 import { useAppStore } from '@/lib/store'
 import type { Lod } from '@/lib/types'
 
-const LEVELS: { id: Lod; label: string; description: string }[] = [
-  { id: 'macro', label: 'Makro', description: 'Lengkung rahang utuh' },
-  { id: 'meso', label: 'Meso', description: 'Fokus satu gigi' },
-  { id: 'micro', label: 'Mikro', description: 'Penampang lapisan' },
+const LEVELS: { id: Lod; label: string }[] = [
+  { id: 'macro', label: 'Makro' },
+  { id: 'meso', label: 'Meso' },
+  { id: 'micro', label: 'Mikro' },
 ]
 
 export function LodIndicator() {
@@ -18,28 +18,26 @@ export function LodIndicator() {
     <div
       role="status"
       aria-label={`Tingkat detail ${current.label}`}
-      className="glass pointer-events-none fixed top-[68px] left-2.5 z-10 w-[150px] rounded-2xl px-3 py-2.5 sm:top-[76px] sm:left-3 sm:w-[168px] lg:top-auto lg:bottom-[84px] lg:left-5"
+      className="panel telemetry pointer-events-none fixed top-[68px] left-2.5 z-10 w-[132px] px-2.5 py-2 sm:top-[76px] sm:left-3 lg:top-auto lg:bottom-[84px] lg:left-5"
     >
-      <p className="text-[10px] font-bold tracking-[0.14em] text-ink/45 uppercase">Tingkat detail</p>
-      <ol className="mt-1.5 flex gap-1">
+      <ol className="flex gap-0.5">
         {LEVELS.map((level) => (
           <li
             key={level.id}
-            className={`flex-1 rounded-md py-1 text-center text-[11px] font-bold transition-colors ${
-              level.id === lod ? 'bg-brand text-white' : 'bg-ink/5 text-ink/40'
+            className={`flex-1 rounded-[4px] py-1 text-center text-[11px] font-semibold uppercase transition-colors duration-[var(--duration-hover)] ${
+              level.id === lod ? 'bg-accent-fill text-on-accent' : 'text-fg-muted'
             }`}
           >
             {level.label}
           </li>
         ))}
       </ol>
-      <div className="mt-2 h-1 overflow-hidden rounded-full bg-ink/10">
+      <div className="mt-2 h-0.5 overflow-hidden bg-line-strong">
         <div
-          className="h-full origin-left rounded-full bg-brand transition-transform duration-200"
+          className="h-full origin-left bg-accent transition-transform duration-200"
           style={{ transform: `scaleX(${zoomLevel})` }}
         />
       </div>
-      <p className="mt-1.5 text-[11px] font-medium text-ink/55">{current.description}</p>
     </div>
   )
 }

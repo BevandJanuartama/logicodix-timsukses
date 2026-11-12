@@ -1,23 +1,22 @@
 'use client'
 
+import { CircleCheck, CircleDashed, Clock } from 'lucide-react'
 import { useReviewStatus } from '@/lib/governanceStore'
 import type { ReviewStatus } from '@/lib/types'
+import { Badge, type BadgeTone } from './Badge'
 
-const STATUS_STYLES: Record<ReviewStatus, { label: string; className: string }> = {
-  Draft: { label: 'Draf', className: 'bg-ink/8 text-ink/65' },
-  'Under Review': { label: 'Ditinjau', className: 'bg-amber/15 text-amber-ink' },
-  Approved: { label: 'Disetujui', className: 'bg-mint/15 text-mint-ink' },
+const STATUS_STYLES: Record<ReviewStatus, { label: string; tone: BadgeTone; Icon: typeof Clock }> = {
+  Draft: { label: 'Draf', tone: 'neutral', Icon: CircleDashed },
+  'Under Review': { label: 'Ditinjau', tone: 'warning', Icon: Clock },
+  Approved: { label: 'Disetujui', tone: 'success', Icon: CircleCheck },
 }
 
 export function StatusPill({ status }: { status: ReviewStatus }) {
-  const style = STATUS_STYLES[status]
+  const { label, tone, Icon } = STATUS_STYLES[status]
   return (
-    <span
-      title={`Status editorial: ${status}`}
-      className={`inline-flex shrink-0 items-center rounded-md px-1.5 py-0.5 text-[10.5px] font-bold ${style.className}`}
-    >
-      {style.label}
-    </span>
+    <Badge tone={tone} title={`Status editorial: ${status}`} icon={<Icon className="size-3" aria-hidden />}>
+      {label}
+    </Badge>
   )
 }
 

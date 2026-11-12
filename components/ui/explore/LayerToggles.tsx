@@ -2,53 +2,64 @@
 
 import { Eye, EyeOff, RotateCcw } from 'lucide-react'
 import { layerOrder, layerSwatches, sceneTargetLabels } from '@/lib/data/sceneLabels'
+import { findStructureByObjectId } from '@/lib/knowledgeBase'
+import { focusScene } from '@/lib/sceneFocus'
 import { useAppStore } from '@/lib/store'
 import { SectionTitle } from '@/components/ui/shell/PanelParts'
 
 export function LayerToggles() {
   const layers = useAppStore((state) => state.layers)
+  const selectedObjectId = useAppStore((state) => state.selectedObjectId)
   const toggleLayer = useAppStore((state) => state.toggleLayer)
   const resetLayers = useAppStore((state) => state.resetLayers)
-  const allVisible = layerOrder.every((layer) => layers[layer])
+  const hiddenCount = layerOrder.filter((layer) => !layers[layer]).length
 
   return (
-    <section aria-labelledby="layer-toggles-title">
+    <section aria-labelledby="layer-matrix-title">
       <div className="flex items-end justify-between">
         <SectionTitle>
-          <span id="layer-toggles-title">Tampilkan / sembunyikan lapisan</span>
+          <span id="layer-matrix-title">Lapisan anatomi</span>
         </SectionTitle>
         <button
           type="button"
           onClick={resetLayers}
-          disabled={allVisible}
-          className="mb-1.5 flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-bold text-brand hover:bg-brand-50 disabled:opacity-0"
+          aria-label="Tampilkan semua lapisan"
+          title="Tampilkan semua lapisan"
+          style={{ opacity: hiddenCount > 0 ? 1 : 0 }}
+          tabIndex={hiddenCount > 0 ? 0 : -1}
+          className="mb-2 grid size-8 cursor-pointer place-items-center rounded-[var(--radius-control)] text-accent transition-opacity duration-[var(--duration-hover)] ease-[var(--ease-out)] hover:bg-[var(--button-ghost-bg-hover)]"
         >
-          <RotateCcw className="size-3.5" aria-hidden />
-          Semua
+          <RotateCcw className="size-4" aria-hidden />
         </button>
       </div>
-      <ul className="grid grid-cols-2 gap-1">
+      <ul className="divide-y divide-line rounded-[var(--radius-control)] border border-line">
         {layerOrder.map((layer) => {
           const visible = layers[layer]
+          const structure = findStructureByObjectId(layer)
           return (
-            <li key={layer}>
+            <li key={layer} className="flex items-center" style={{ opacity: visible ? 1 : 0.5 }}>
               <button
                 type="button"
-                aria-pressed={visible}
-                onClick={() => toggleLayer(layer)}
-                className="flex w-full items-center gap-2 rounded-xl bg-white/60 px-2.5 py-2 text-left text-[12.5px] font-semibold ring-1 ring-ink/5 transition-colors hover:bg-white aria-[pressed=false]:bg-transparent aria-[pressed=false]:text-ink/40"
+                aria-pressed={selectedObjectId === layer}
+                onClick={() => focusScene({ objectId: layer, preset: 'front' })}
+                className="flex min-h-10 flex-1 cursor-pointer items-center gap-2.5 px-2.5 text-left text-[13px] font-semibold text-fg-secondary hover:text-fg aria-pressed:text-fg"
               >
                 <span
                   aria-hidden
-                  className="size-3 shrink-0 rounded-full ring-1 ring-ink/15"
-                  style={{ background: layerSwatches[layer], opacity: visible ? 1 : 0.35 }}
+                  className="size-3 shrink-0 rounded-full ring-1 ring-line-strong"
+                  style={{ background: layerSwatches[layer] }}
                 />
+                <span className="telemetry w-12 shrink-0 text-[11px] text-fg-muted">{structure?.id}</span>
                 <span className="flex-1 truncate">{sceneTargetLabels[layer]}</span>
-                {visible ? (
-                  <Eye className="size-3.5 shrink-0 text-ink/45" aria-hidden />
-                ) : (
-                  <EyeOff className="size-3.5 shrink-0 text-ink/30" aria-hidden />
-                )}
+              </button>
+              <button
+                type="button"
+                aria-pressed={visible}
+                aria-label={`${visible ? 'Sembunyikan' : 'Tampilkan'} ${sceneTargetLabels[layer]}`}
+                onClick={() => toggleLayer(layer)}
+                className="grid size-10 shrink-0 cursor-pointer place-items-center text-fg-secondary transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] hover:text-fg active:scale-[var(--scale-press)]"
+              >
+                {visible ? <Eye className="size-4" aria-hidden /> : <EyeOff className="size-4" aria-hidden />}
               </button>
             </li>
           )

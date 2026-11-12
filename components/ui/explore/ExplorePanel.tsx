@@ -25,10 +25,11 @@ export function ExplorePanel() {
             <button
               type="button"
               onClick={() => selectTarget(null, null)}
-              className="flex items-center gap-1 rounded-xl bg-ink/5 px-2.5 py-1.5 text-xs font-bold text-ink/60 hover:bg-ink/10"
+              aria-label="Tutup pilihan"
+              title="Tutup pilihan"
+              className="grid size-9 cursor-pointer place-items-center rounded-[var(--radius-control)] border border-line text-fg-secondary transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] hover:text-fg active:scale-[var(--scale-press)]"
             >
-              <X className="size-3.5" aria-hidden />
-              Tutup pilihan
+              <X className="size-4" aria-hidden />
             </button>
           </div>
           {selectedObjectId &&

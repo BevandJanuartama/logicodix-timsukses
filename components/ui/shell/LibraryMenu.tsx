@@ -1,14 +1,20 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { BookOpen, LibraryBig, ShieldCheck } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
+
+const MENU_ITEMS = [
+  { modal: 'references', label: 'Referensi ilmiah', Icon: BookOpen },
+  { modal: 'governance', label: 'Tata kelola konten', Icon: ShieldCheck },
+] as const
 
 export function LibraryMenu() {
   const openModal = useAppStore((state) => state.openModal)
   const [open, setOpen] = useState(false)
   const container = useRef<HTMLDivElement>(null)
+  const trigger = useRef<HTMLButtonElement>(null)
   const reduceMotion = useReducedMotion()
 
   useEffect(() => {
@@ -16,8 +22,10 @@ export function LibraryMenu() {
     const closeOnOutside = (event: PointerEvent) => {
       if (!container.current?.contains(event.target as Node)) setOpen(false)
     }
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false)
+    const closeOnEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      setOpen(false)
+      trigger.current?.focus()
     }
     window.addEventListener('pointerdown', closeOnOutside)
     window.addEventListener('keydown', closeOnEscape)
@@ -27,7 +35,16 @@ export function LibraryMenu() {
     }
   }, [open])
 
-  const choose = (modal: 'references' | 'governance') => {
+  const moveFocus = (event: KeyboardEvent<HTMLUListElement>) => {
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return
+    event.preventDefault()
+    const items = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('[role="menuitem"]'))
+    const step = event.key === 'ArrowDown' ? 1 : -1
+    const next = (items.indexOf(document.activeElement as HTMLElement) + step + items.length) % items.length
+    items[next]?.focus()
+  }
+
+  const choose = (modal: (typeof MENU_ITEMS)[number]['modal']) => {
     setOpen(false)
     openModal(modal)
   }
@@ -35,12 +52,13 @@ export function LibraryMenu() {
   return (
     <div ref={container} className="pointer-events-auto relative">
       <button
+        ref={trigger}
         type="button"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label="Sumber dan tata kelola"
-        className="glass grid size-10 shrink-0 place-items-center sm:size-11 rounded-2xl text-ink/65 hover:text-brand"
+        className="panel grid size-11 shrink-0 cursor-pointer place-items-center text-fg-secondary transition-[color,transform] duration-[var(--duration-press)] ease-[var(--ease-out)] hover:text-fg active:scale-[var(--scale-press)] aria-expanded:text-accent"
       >
         <LibraryBig className="size-5" aria-hidden />
       </button>
@@ -48,34 +66,27 @@ export function LibraryMenu() {
         {open && (
           <motion.ul
             role="menu"
+            onKeyDown={moveFocus}
             initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.95 }}
-            transition={{ duration: 0.15 }}
-            className="glass absolute top-full right-0 mt-2 w-56 origin-top-right rounded-2xl p-1.5"
+            transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
+            className="panel absolute top-full right-0 mt-2 w-56 origin-top-right p-1"
           >
-            <li role="none">
-              <button
-                type="button"
-                role="menuitem"
-                onClick={() => choose('references')}
-                className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[13px] font-semibold hover:bg-brand-50"
-              >
-                <BookOpen className="size-4 text-brand" aria-hidden />
-                Referensi ilmiah
-              </button>
-            </li>
-            <li role="none">
-              <button
-                type="button"
-                role="menuitem"
-                onClick={() => choose('governance')}
-                className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[13px] font-semibold hover:bg-brand-50"
-              >
-                <ShieldCheck className="size-4 text-brand" aria-hidden />
-                Tata kelola konten
-              </button>
-            </li>
+            {MENU_ITEMS.map(({ modal, label, Icon }, index) => (
+              <li key={modal} role="none">
+                <button
+                  type="button"
+                  role="menuitem"
+                  autoFocus={index === 0}
+                  onClick={() => choose(modal)}
+                  className="flex min-h-10 w-full cursor-pointer items-center gap-2.5 rounded-[var(--radius-control)] px-3 text-left text-[13px] font-semibold text-fg-secondary transition-colors duration-[var(--duration-press)] hover:bg-[var(--button-ghost-bg-hover)] hover:text-fg"
+                >
+                  <Icon className="size-4 text-accent" aria-hidden />
+                  {label}
+                </button>
+              </li>
+            ))}
           </motion.ul>
         )}
       </AnimatePresence>

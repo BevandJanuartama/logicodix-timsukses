@@ -6,16 +6,16 @@ import { findReference } from '@/lib/knowledgeBase'
 import { useAppStore } from '@/lib/store'
 
 export function SectionTitle({ children }: { children: ReactNode }) {
-  return <h3 className="mt-6 mb-2 text-[11px] font-bold tracking-[0.12em] text-ink/50 uppercase">{children}</h3>
+  return <h3 className="telemetry mt-6 mb-2 text-[11px] font-semibold text-fg-muted uppercase">{children}</h3>
 }
 
-const DOT_TONES = { brand: 'bg-brand', coral: 'bg-coral', mint: 'bg-mint' } as const
+const DOT_TONES = { brand: 'bg-accent', coral: 'bg-danger', mint: 'bg-success' } as const
 
 export function BulletList({ items, tone = 'brand' }: { items: string[]; tone?: keyof typeof DOT_TONES }) {
   return (
     <ul className="space-y-1.5">
       {items.map((item) => (
-        <li key={item} className="flex gap-2.5 text-[13.5px] leading-snug text-ink/80">
+        <li key={item} className="flex gap-2.5 text-[13.5px] leading-snug text-fg-secondary">
           <span aria-hidden className={`mt-[7px] size-1.5 shrink-0 rounded-full ${DOT_TONES[tone]}`} />
           <span>{item}</span>
         </li>
@@ -34,13 +34,13 @@ export function SourceLinks({ sourceIds }: { sourceIds: string[] }) {
           <button
             type="button"
             onClick={() => openModal('references', source.id)}
-            className="group flex w-full items-start gap-2 rounded-xl px-2 py-1.5 text-left text-[13px] leading-snug hover:bg-brand-50"
+            className="group flex w-full items-start gap-2 rounded-[var(--radius-control)] px-2 py-1.5 text-left text-[13px] leading-snug hover:bg-[var(--button-ghost-bg-hover)]"
           >
-            <span className="mt-px font-mono text-[11px] font-bold text-brand tabular-nums">{source.id}</span>
-            <span className="flex-1 text-ink/75 group-hover:text-ink">
+            <span className="telemetry mt-px text-[11px] font-semibold text-accent">{source.id}</span>
+            <span className="flex-1 text-fg-secondary group-hover:text-fg">
               {source.institution} — {source.title}
             </span>
-            <BookOpen className="mt-0.5 size-3.5 shrink-0 text-ink/35" aria-hidden />
+            <BookOpen className="mt-0.5 size-3.5 shrink-0 text-fg-muted" aria-hidden />
           </button>
         </li>
       ))}

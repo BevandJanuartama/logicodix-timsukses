@@ -1,20 +1,25 @@
 'use client'
 
-import { Eye, FlaskConical, ShieldAlert } from 'lucide-react'
+import { Eye, FlaskConical } from 'lucide-react'
 import { diseaseLinks } from '@/lib/data/diseaseLinks'
 import { sceneTargetLabels } from '@/lib/data/sceneLabels'
+import { findReference } from '@/lib/knowledgeBase'
 import { focusScene } from '@/lib/sceneFocus'
 import { openSimulatorTrack } from '@/lib/simulatorActions'
 import { CLINICAL_TRACKS, type ClinicalTrackId } from '@/lib/simulatorStore'
+import { useAppStore } from '@/lib/store'
 import type { Disease } from '@/lib/types'
-import { SectionTitle, SourceLinks } from '@/components/ui/shell/PanelParts'
+import { ExploreDisclosure } from '@/components/ui/explore/ExploreDisclosure'
 
-const FACTS: { key: keyof Pick<Disease, 'symptoms' | 'riskFactors' | 'affectedStructures' | 'prevention'>; label: string }[] = [
-  { key: 'symptoms', label: 'Gejala umum' },
+const FACTS: { key: 'symptoms' | 'riskFactors' | 'affectedStructures' | 'prevention'; label: string }[] = [
+  { key: 'symptoms', label: 'Gejala' },
   { key: 'riskFactors', label: 'Faktor risiko' },
   { key: 'affectedStructures', label: 'Bagian terdampak' },
   { key: 'prevention', label: 'Pencegahan' },
 ]
+
+const ACTION_CLASSES =
+  'flex min-h-10 cursor-pointer items-center gap-1.5 rounded-[var(--radius-control)] px-3 text-[13px] font-semibold transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)]'
 
 const isClinicalDisease = (diseaseId: string): diseaseId is ClinicalTrackId =>
   (CLINICAL_TRACKS as string[]).includes(diseaseId)
@@ -22,53 +27,66 @@ const isClinicalDisease = (diseaseId: string): diseaseId is ClinicalTrackId =>
 export function DiseaseDetail({ disease }: { disease: Disease }) {
   const link = diseaseLinks[disease.id]
   const diseaseId = disease.id
-  return (
-    <div className="space-y-3 px-3 pt-1 pb-4">
-      <p className="text-[13.5px] leading-relaxed text-ink/80">{disease.definition}</p>
-      <dl className="space-y-2.5">
-        {FACTS.map((fact) => (
-          <div key={fact.key}>
-            <dt className="text-[11px] font-bold tracking-[0.1em] text-ink/50 uppercase">{fact.label}</dt>
-            <dd className="mt-0.5 text-[13px] leading-snug text-ink/80">{disease[fact.key]}</dd>
-          </div>
-        ))}
-      </dl>
+  const openModal = useAppStore((state) => state.openModal)
+  const sourceIds = disease.sourceIds.filter((sourceId) => findReference(sourceId))
 
-      {link && (
-        <div className="flex flex-wrap items-center gap-2 pt-1">
+  return (
+    <div className="px-3 pb-3">
+      <div className="flex flex-wrap items-center gap-2">
+        {link && (
           <button
             type="button"
             onClick={() => focusScene(link.focus)}
-            className="flex items-center gap-1.5 rounded-xl bg-ink px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-brand-600"
+            className={`${ACTION_CLASSES} bg-[var(--button-primary-bg)] text-[var(--button-primary-fg)] hover:bg-[var(--button-primary-bg-hover)]`}
           >
-            <Eye className="size-3.5" aria-hidden />
+            <Eye className="size-4" aria-hidden />
             Lihat di 3D
           </button>
-          {isClinicalDisease(diseaseId) && (
-            <button
-              type="button"
-              onClick={() => openSimulatorTrack(diseaseId)}
-              className="flex items-center gap-1.5 rounded-xl bg-coral px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-coral/90"
-            >
-              <FlaskConical className="size-3.5" aria-hidden />
-              Buka simulator
-            </button>
-          )}
-          {link.structures.slice(0, 3).map((structure) => (
-            <span key={structure} className="text-[12px] font-semibold text-ink/55">
-              {sceneTargetLabels[structure]}
-            </span>
-          ))}
-        </div>
+        )}
+        {isClinicalDisease(diseaseId) && (
+          <button
+            type="button"
+            onClick={() => openSimulatorTrack(diseaseId)}
+            className={`${ACTION_CLASSES} border border-line text-fg-secondary hover:text-fg`}
+          >
+            <FlaskConical className="size-4" aria-hidden />
+            Simulator
+          </button>
+        )}
+      </div>
+
+      {link && link.structures.length > 0 && (
+        <p className="mt-2 text-[12px] text-fg-muted">
+          {link.structures.slice(0, 3).map((structure) => sceneTargetLabels[structure]).join(' · ')}
+        </p>
       )}
 
-      <p className="flex gap-2 rounded-2xl bg-coral/8 p-3 text-[12.5px] leading-snug text-ink/80">
-        <ShieldAlert className="mt-0.5 size-4 shrink-0 text-coral" aria-hidden />
-        {disease.safetyNote}
-      </p>
+      <ExploreDisclosure label="Detail klinis">
+        <dl className="space-y-2.5">
+          {FACTS.map((fact) => (
+            <div key={fact.key}>
+              <dt className="telemetry text-[11px] font-semibold text-fg-muted uppercase">{fact.label}</dt>
+              <dd className="mt-0.5 text-[13px] leading-snug text-fg-secondary">{disease[fact.key]}</dd>
+            </div>
+          ))}
+        </dl>
+        <p className="mt-3 border-l-2 border-danger pl-2.5 text-[12.5px] leading-snug text-fg-secondary">
+          {disease.safetyNote}
+        </p>
+      </ExploreDisclosure>
 
-      <SectionTitle>Sumber</SectionTitle>
-      <SourceLinks sourceIds={disease.sourceIds} />
+      <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+        {sourceIds.map((sourceId) => (
+          <button
+            key={sourceId}
+            type="button"
+            onClick={() => openModal('references', sourceId)}
+            className="telemetry min-h-10 cursor-pointer text-[11px] font-semibold text-accent hover:underline"
+          >
+            {sourceId}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
