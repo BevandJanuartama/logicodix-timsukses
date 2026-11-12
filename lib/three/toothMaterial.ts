@@ -22,6 +22,7 @@ export type ToothLayerKind = 'outer' | 'dentin' | 'pulp'
 export interface LayerUniforms {
   [uniform: string]: THREE.IUniform
   uHighlightBand: { value: THREE.Vector2 }
+  uRimGlow: { value: number }
   uShowBand: { value: THREE.Vector2 }
   uCrownHeight: { value: number }
 }
@@ -91,6 +92,7 @@ const LAYER_LOOK: Record<ToothLayerKind, LayerLook> = {
 function createLayerUniforms(): LayerUniforms {
   return {
     uHighlightBand: { value: new THREE.Vector2(0, 0) },
+    uRimGlow: { value: 0 },
     uShowBand: { value: new THREE.Vector2(1, 1) },
     uCrownHeight: { value: 0.8 },
   }

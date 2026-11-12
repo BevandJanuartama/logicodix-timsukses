@@ -14,6 +14,8 @@ const bodyFont = Atkinson_Hyperlegible_Next({
   weight: ['400', '600'],
   variable: '--font-body',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['system-ui', 'Segoe UI', 'Arial', 'sans-serif'],
 })
 
 export const metadata: Metadata = {

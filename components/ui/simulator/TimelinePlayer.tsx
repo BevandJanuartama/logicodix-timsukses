@@ -7,7 +7,12 @@ import { ExploreChip } from '@/components/ui/explore/ExploreChip'
 const SPEEDS = [1, 2, 4]
 const SLIDER_STEPS = 1000
 
-export function TimelinePlayer({ timeline }: { timeline: [string, string] }) {
+interface TimelinePlayerProps {
+  timeline: [string, string]
+  activeStageLabel?: string
+}
+
+export function TimelinePlayer({ timeline, activeStageLabel }: TimelinePlayerProps) {
   const progress = useSimulatorStore((state) => state.progress)
   const playing = useSimulatorStore((state) => state.playing)
   const speed = useSimulatorStore((state) => state.speed)
@@ -15,6 +20,7 @@ export function TimelinePlayer({ timeline }: { timeline: [string, string] }) {
   const setProgress = useSimulatorStore((state) => state.setProgress)
   const setSpeed = useSimulatorStore((state) => state.setSpeed)
   const percent = Math.round(progress * 100)
+  const stageReadout = activeStageLabel ?? `${percent}%`
 
   return (
     <div className="rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] p-3">
@@ -37,14 +43,14 @@ export function TimelinePlayer({ timeline }: { timeline: [string, string] }) {
               setPlaying(false)
               setProgress(Number(event.target.value) / SLIDER_STEPS)
             }}
-            aria-label="Garis waktu"
-            aria-valuetext={`${percent}%`}
+            aria-label="Garis waktu perkembangan"
+            aria-valuetext={activeStageLabel ? `${activeStageLabel} (${percent}%)` : `${percent}%`}
             className="h-7 w-full cursor-pointer accent-[var(--accent-fill)]"
           />
-          <div className="flex justify-between text-caption font-semibold text-fg-muted">
-            <span>{timeline[0]}</span>
-            <span className="text-fg tabular-nums">{percent}%</span>
-            <span>{timeline[1]}</span>
+          <div className="flex items-center justify-between gap-2 text-caption font-semibold text-fg-muted">
+            <span className="shrink-0">{timeline[0]}</span>
+            <span className="truncate text-fg">{stageReadout}</span>
+            <span className="shrink-0">{timeline[1]}</span>
           </div>
         </div>
       </div>

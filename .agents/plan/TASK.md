@@ -184,24 +184,26 @@ Gunakan perintah `/model <nama>` di Claude Code untuk beralih model sebelum meng
 - [x] **12.5** [🟢 Haiku] Verifikasi: typecheck, build (dev mati), cek kontras, screenshot 1440/390; perbarui `rangkuman.md`
 
 ### Fase 13: Shell, Navigasi & Onboarding
-- [ ] **13.1** [🔵 Sonnet] Bar atas polos + tab teks dengan `layoutId` — `shell/TopBar.tsx`, `shell/ModeTabs.tsx`
-- [ ] **13.2** [🟣 Opus] Kerangka 3 kolom + rail kiri + kartu kanan — `components/Experience.tsx`, `shell/Panel.tsx`, baru `shell/LibraryRail.tsx`, `shell/InfoCard.tsx`
-- [ ] **13.3** [🔵 Sonnet] Toolbar vertikal berlabel menggantikan ViewControls + LodIndicator — `shell/ViewControls.tsx`, `LodIndicator.tsx`, `ViewPresetMenu.tsx`
-- [ ] **13.4** [🔵 Sonnet] Onboarding hero + sticky-note tip — `shell/Hero.tsx`, baru `shell/TipNote.tsx`
-- [ ] **13.5** [🔵 Sonnet] Sheet mobile 3 posisi + tab bawah — `shell/BottomSheet.tsx`
-- [ ] **13.6** [🟢 Haiku] Verifikasi: keyboard/fokus, 1440/768/390, reduced motion; `rangkuman.md`
+- [x] **13.1** [🔵 Sonnet] Bar atas polos + tab teks dengan `layoutId` — `shell/TopBar.tsx`, `shell/ModeTabs.tsx`
+- [x] **13.2** [🟣 Opus] Kerangka 3 kolom + rail kiri + kartu kanan — `components/Experience.tsx`, `shell/Panel.tsx`, baru `shell/LibraryRail.tsx`, `shell/InfoCard.tsx`
+- [x] **13.3** [🔵 Sonnet] Toolbar vertikal berlabel menggantikan ViewControls + LodIndicator — `shell/ViewControls.tsx`, `LodIndicator.tsx`, `ViewPresetMenu.tsx`
+- [x] **13.4** [🔵 Sonnet] Onboarding hero + sticky-note tip — `shell/Hero.tsx`, baru `shell/TipNote.tsx`
+- [x] **13.5** [🔵 Sonnet] Sheet mobile 3 posisi + tab bawah — `shell/BottomSheet.tsx`
+- [x] **13.6** [🟢 Haiku] Verifikasi: keyboard/fokus, 1440/768/390, reduced motion; `rangkuman.md`
 
 ### Fase 14: Anatomi & Penyakit + Hotspot 3D (One Live Thing)
-- [ ] **14.1** [🟣 Opus] Hotspot drei `Html` + luncuran kamera + sorotan gigi — baru `components/three/Hotspots.tsx`, `useToothHighlight.ts`, `CameraRig.tsx`
-- [ ] **14.2** [🔵 Sonnet] Rampingkan Anatomi (buang TT-, chip, angka gula; lapisan dilipat) — `components/ui/explore/*`
-- [ ] **14.3** [🔵 Sonnet] Rail penyakit per status + kartu + CTA ke Simulasi — `components/ui/diseases/*`, `shell/PanelParts.tsx`
-- [ ] **14.4** [🟢 Haiku] Thumbnail statis dari render model sendiri — `public/thumbs/*`
-- [ ] **14.5** [🟢 Haiku] Verifikasi: FPS dengan hotspot, occlusion, tap mobile; `rangkuman.md`
+- [x] **14.1** [🟣 Opus] Hotspot drei `Html` + luncuran kamera + sorotan gigi — baru `components/three/Hotspots.tsx`, `useToothHighlight.ts`, `CameraRig.tsx`
+- [x] **14.2** [🔵 Sonnet] Rampingkan Anatomi (buang TT-, chip, angka gula; lapisan dilipat) — `components/ui/explore/*`
+- [x] **14.3** [🔵 Sonnet] Rail penyakit per status + kartu + CTA ke Simulasi — `components/ui/diseases/*`, `shell/PanelParts.tsx`
+- [x] **14.4** [🔵 Sonnet] Thumbnail rail dirender sekali saat runtime dari scene sendiri (dataURL di-cache), bukan file statis — `components/three/*`, `shell/LibraryRail.tsx`
+- [x] **14.5** [🟢 Haiku] Verifikasi: tap hotspot desktop & mobile, build produksi; `rangkuman.md` — FPS dan occlusion hotspot saat model diputar BELUM diverifikasi (cek manual DevTools Performance)
+
+> **Catatan dari Fase 13:** di layar >= 1280px kolom rail kiri 280px kosong di mode Simulasi, Bersihkan, dan Kuis. Brief Fase 15/16 wajib mengisi rail di mode itu atau melipat kolomnya.
 
 ### Fase 15: Simulasi & Latihan Sikat
-- [ ] **15.1** [🔵 Sonnet] Penggeser waktu besar + tahap berkata, Stephan dilipat — `components/ui/simulator/*`
-- [ ] **15.2** [🔵 Sonnet] Skor tinta, bar tebal, timer berhenti di 2:00, alat di rail, pilar ke ringkasan — `components/ui/clean/*`
-- [ ] **15.3** [🟢 Haiku] Verifikasi: alur sikat 2 menit, scrubber keyboard; `rangkuman.md`
+- [x] **15.1** [🔵 Sonnet] Penggeser waktu besar + tahap berkata, Stephan dilipat — `components/ui/simulator/*`
+- [x] **15.2** [🔵 Sonnet] Skor tinta, bar tebal, timer berhenti di 2:00, alat di rail, pilar ke ringkasan — `components/ui/clean/*`
+- [x] **15.3** [🟢 Haiku] Verifikasi: alur sikat 2 menit, scrubber keyboard; `rangkuman.md`
 
 ### Fase 16: Kuis, Pustaka, Bahasa Awam & Audit Akhir
 - [ ] **16.1** [🔵 Sonnet] Kuis di tengah + model menyorot gigi terkait — `components/ui/quiz/*`

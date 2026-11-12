@@ -40,6 +40,8 @@ interface AppState {
   zoomLevel: number
   cutaway: boolean
   cameraCommand: CameraCommand | null
+  hotspotTouched: boolean
+  thumbnails: Record<string, string>
   setMode: (mode: AppMode) => void
   setIntro: (intro: boolean) => void
   selectObject: (objectId: SceneTargetId | null) => void
@@ -55,6 +57,8 @@ interface AppState {
   setZoomLevel: (zoomLevel: number) => void
   setCutaway: (cutaway: boolean) => void
   requestCamera: (request: CameraRequest) => void
+  markHotspotTouched: () => void
+  setThumbnail: (id: string, dataUrl: string) => void
 }
 
 let cameraNonce = 0
@@ -73,6 +77,8 @@ export const useAppStore = create<AppState>((set) => ({
   zoomLevel: 0,
   cutaway: false,
   cameraCommand: null,
+  hotspotTouched: false,
+  thumbnails: {},
   setMode: (mode) => set({ mode, intro: false, hover: null, ...(mode === 'clean' ? { selectedToothId: null, selectedObjectId: null, cutaway: false } : {}) }),
   setIntro: (intro) => set({ intro }),
   selectObject: (selectedObjectId) => set({ selectedObjectId }),
@@ -89,6 +95,8 @@ export const useAppStore = create<AppState>((set) => ({
   setZoomLevel: (zoomLevel) => set({ zoomLevel }),
   setCutaway: (cutaway) => set({ cutaway }),
   requestCamera: (request) => set({ cameraCommand: { ...request, nonce: ++cameraNonce } }),
+  markHotspotTouched: () => set({ hotspotTouched: true }),
+  setThumbnail: (id, dataUrl) => set((state) => ({ thumbnails: { ...state.thumbnails, [id]: dataUrl } })),
 }))
 
 export const sectionedToothOf = (state: AppState) =>

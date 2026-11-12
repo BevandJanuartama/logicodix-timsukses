@@ -1,8 +1,8 @@
 import * as THREE from 'three'
+import { TOOTH_NAMES, type Jaw, type Quadrant, type ToothIdentity, type ToothKind } from '@/lib/data/dentition'
 import { smoothstep } from '@/lib/three/math'
 
-export type ToothKind = 'incisor' | 'canine' | 'premolar' | 'molar'
-export type Jaw = 'upper' | 'lower'
+export type { Jaw, ToothKind }
 
 export interface ToothParams {
   kind: ToothKind
@@ -44,31 +44,7 @@ const LOWER_PARAMS: ToothParams[] = [
   params('molar', 0.9, 0.86, 0.6, 1.0, 0.24),
 ]
 
-const TOOTH_NAMES = [
-  'Gigi Seri Sentral',
-  'Gigi Seri Lateral',
-  'Gigi Taring',
-  'Premolar Pertama',
-  'Premolar Kedua',
-  'Molar Pertama',
-  'Molar Kedua',
-  'Molar Ketiga (Bungsu)',
-]
-
-const QUADRANT_NAMES: Record<number, string> = {
-  1: 'kanan atas',
-  2: 'kiri atas',
-  3: 'kiri bawah',
-  4: 'kanan bawah',
-}
-
-export interface ToothInfo {
-  id: string
-  fdi: number
-  quadrant: number
-  jaw: Jaw
-  index: number
-  name: string
+export interface ToothInfo extends Omit<ToothIdentity, 'kind'> {
   params: ToothParams
   position: THREE.Vector3
   quaternion: THREE.Quaternion
@@ -151,7 +127,7 @@ function buildJaw(jaw: Jaw): JawLayout {
   const contacts: Contact[] = []
 
   for (const side of [1, -1] as const) {
-    const quadrant = jaw === 'lower' ? (side === 1 ? 3 : 4) : side === 1 ? 1 : 2
+    const quadrant: Quadrant = jaw === 'lower' ? (side === 1 ? 3 : 4) : side === 1 ? 1 : 2
     intervals.forEach((interval, i) => {
       const { point, outward } = sampleArch((interval.start + interval.end) / 2, side)
       const xAxis = new THREE.Vector3().crossVectors(UP, outward).normalize()
@@ -222,5 +198,3 @@ export function getLayouts(): Layouts {
   cachedLayouts = { upper, lower, byId }
   return cachedLayouts
 }
-
-export const toothLabel = (info: ToothInfo) => `${info.name} ${QUADRANT_NAMES[info.quadrant]}`

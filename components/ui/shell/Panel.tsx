@@ -3,16 +3,37 @@
 import type { ReactNode } from 'react'
 import { useMediaQuery } from '@/lib/hooks/useMediaQuery'
 import { BottomSheet } from './BottomSheet'
+import type { SheetPosition } from './useSheetSnap'
+import { InfoCard } from './InfoCard'
 
-export function Panel({ label, children }: { label: string; children: ReactNode }) {
-  const isDesktop = useMediaQuery('(min-width: 1024px)')
-  if (!isDesktop) return <BottomSheet label={label}>{children}</BottomSheet>
+interface PanelProps {
+  label: string
+  contentKey: string
+  footer?: ReactNode
+  children: ReactNode
+}
+
+const HALF_OPEN_KEYS = new Set(['quiz', 'destroy'])
+
+export function Panel({ label, contentKey, footer, children }: PanelProps) {
+  const isDesktop = useMediaQuery('(min-width: 768px)')
+
+  if (!isDesktop) {
+    const initialPosition: SheetPosition = HALF_OPEN_KEYS.has(contentKey) ? 'half' : 'peek'
+    return (
+      <BottomSheet key={contentKey} label={label} initialPosition={initialPosition}>
+        {children}
+        {footer}
+      </BottomSheet>
+    )
+  }
+
   return (
-    <aside
-      aria-label={label}
-      className="panel thin-scroll fixed top-[84px] right-4 bottom-4 z-20 w-[400px] overflow-y-auto overscroll-contain p-5"
-    >
-      {children}
-    </aside>
+    <div className="flex h-full min-h-0 flex-col gap-2">
+      <InfoCard label={label} contentKey={contentKey}>
+        {children}
+      </InfoCard>
+      {footer}
+    </div>
   )
 }

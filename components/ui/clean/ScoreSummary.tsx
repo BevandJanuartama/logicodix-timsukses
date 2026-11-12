@@ -5,19 +5,18 @@ import { useCleaningStore } from '@/lib/cleaningStore'
 import { RECOMMENDED_SECONDS } from './cleanTools'
 import { formatDuration, useCleaningTimer } from './useCleaningTimer'
 
-const gradeTone = (score: number) => (score >= 80 ? 'text-success' : score >= 50 ? 'text-warning' : 'text-danger')
-
 function Meter({ label, value }: { label: string; value: number }) {
+  const rounded = Math.round(value)
   return (
     <div>
-      <div className="mb-1 flex justify-between text-caption text-fg-secondary">
+      <div className="mb-1.5 flex justify-between text-caption font-semibold text-fg-secondary">
         <span>{label}</span>
-        <span className="tabular-nums text-fg">{Math.round(value)}%</span>
+        <span className="tabular-nums text-fg">{rounded}%</span>
       </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-[var(--chip-bg)]">
+      <div className="h-2.5 overflow-hidden rounded-full bg-surface-sunken">
         <div
-          className="h-full origin-left rounded-full bg-accent-fill transition-transform duration-[var(--duration-state)] ease-[var(--ease-out)]"
-          style={{ transform: `scaleX(${value / 100})` }}
+          className="h-full origin-left rounded-full bg-success transition-transform duration-[var(--duration-state)] ease-[var(--ease-out)]"
+          style={{ transform: `scaleX(${Math.min(1, Math.max(0, value / 100))})` }}
         />
       </div>
     </div>
@@ -28,26 +27,35 @@ export function ScoreSummary() {
   const stats = useCleaningStore((state) => state.stats)
   const elapsed = useCleaningTimer()
   const score = Math.round(stats.overall)
+  const surface = Math.round(stats.surface)
+  const interdental = Math.round(stats.interdental)
+  const tongue = Math.round(stats.tongue)
 
   return (
-    <div className="mt-4">
-      <div role="status" aria-label={`Skor kebersihan ${score} persen`} className="flex items-end justify-between">
-        <p className={`font-display tabular-nums text-6xl leading-none font-semibold ${gradeTone(score)}`}>
-          {score}
-          <span className="font-display text-title text-fg-muted">%</span>
-        </p>
-        <p className="tabular-nums flex items-center gap-1.5 pb-1 text-caption text-fg-secondary">
-          <Timer className="size-4" aria-hidden />
+    <div className="mt-4 rounded-[var(--radius-control)] bg-surface-sunken p-4">
+      <div role="status" aria-label={`Skor kebersihan ${score} persen`} className="flex items-end justify-between gap-3">
+        <div>
+          <p className="text-caption font-semibold text-fg-muted">Kebersihan mulut</p>
+          <p className="mt-1 font-display text-display leading-none font-semibold text-fg tabular-nums">
+            {score}
+            <span className="ml-0.5 font-display text-title text-fg-muted">%</span>
+          </p>
+        </div>
+        <p className="flex items-center gap-1.5 pb-1 text-caption font-semibold text-fg-secondary tabular-nums">
+          <Timer className="size-4 text-accent" aria-hidden />
           {formatDuration(elapsed)} / 2:00
         </p>
       </div>
-      <div className="mt-2 h-1 overflow-hidden rounded-full bg-[var(--chip-bg)]">
+      <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-surface-sand">
         <div
-          className="h-full origin-left rounded-full bg-fg-muted transition-transform duration-500 ease-linear"
+          className="h-full origin-left rounded-full bg-accent-fill transition-transform duration-500 ease-linear"
           style={{ transform: `scaleX(${Math.min(1, elapsed / RECOMMENDED_SECONDS)})` }}
         />
       </div>
-      <div className="mt-3 grid grid-cols-3 gap-3">
+      <p className="mt-3 text-caption font-semibold text-fg-secondary tabular-nums">
+        Gigi {surface}% · Sela {interdental}% · Lidah {tongue}%
+      </p>
+      <div className="mt-2.5 grid grid-cols-3 gap-3 bg-surface-raised p-3 rounded-[var(--radius-thumb)]">
         <Meter label="Gigi" value={stats.surface} />
         <Meter label="Sela" value={stats.interdental} />
         <Meter label="Lidah" value={stats.tongue} />

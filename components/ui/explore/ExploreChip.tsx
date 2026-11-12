@@ -19,9 +19,9 @@ export function ExploreChip({ children, onClick, pressed, swatch, tone = 'defaul
       type="button"
       aria-pressed={pressed}
       onClick={onClick}
-      className={`flex min-h-10 cursor-pointer items-center gap-1.5 rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] px-2.5 text-caption font-semibold transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)] ${TONE_CLASSES[tone]}`}
+      className={`flex min-h-10 cursor-pointer items-center gap-1.5 rounded-[var(--radius-control)] bg-surface-sunken px-3 text-caption font-semibold whitespace-nowrap transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)] ${TONE_CLASSES[tone]}`}
     >
-      {swatch && <span aria-hidden className="size-2.5 shrink-0 rounded-full ring-1 ring-line-strong" style={{ background: swatch }} />}
+      {swatch && <span aria-hidden className="size-2.5 shrink-0 rounded-full" style={{ background: swatch }} />}
       {children}
     </button>
   )

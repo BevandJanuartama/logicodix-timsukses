@@ -57,20 +57,20 @@ export function LibraryMenu() {
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-haspopup="menu"
-        aria-label="Sumber dan tata kelola"
-        className="panel grid size-11 shrink-0 cursor-pointer place-items-center text-fg-secondary transition-[color,transform] duration-[var(--duration-press)] ease-[var(--ease-out)] hover:text-fg active:scale-[var(--scale-press)] aria-expanded:text-accent"
+        className="flex min-h-11 shrink-0 cursor-pointer items-center gap-2 rounded-[var(--radius-control)] px-3 text-caption font-semibold text-fg-secondary transition-[color,background-color,transform] duration-[var(--duration-press)] ease-[var(--ease-out)] hover:bg-[var(--button-ghost-bg-hover)] hover:text-fg active:scale-[var(--scale-press)] aria-expanded:text-accent"
       >
-        <LibraryBig className="size-5" aria-hidden />
+        <LibraryBig className="size-4" aria-hidden />
+        Sumber
       </button>
       <AnimatePresence>
         {open && (
           <motion.ul
             role="menu"
             onKeyDown={moveFocus}
-            initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.95 }}
+            initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.95 }}
-            transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
+            exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.96 }}
+            transition={{ duration: 0.18, ease: [0.23, 1, 0.32, 1] }}
             className="panel absolute top-full right-0 mt-2 w-56 origin-top-right p-1"
           >
             {MENU_ITEMS.map(({ modal, label, Icon }, index) => (

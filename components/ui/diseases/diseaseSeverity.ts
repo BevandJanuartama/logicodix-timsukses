@@ -4,14 +4,38 @@ export type SeverityLevel = 'mild' | 'moderate' | 'urgent'
 
 export interface SeverityStyle {
   label: string
+  groupTitle: string
   Icon: LucideIcon
   iconClassName: string
+  dotClassName: string
 }
 
+export const SEVERITY_ORDER: SeverityLevel[] = ['urgent', 'moderate', 'mild']
+
+export const SEVERITY_NOTE = 'Tingkat perhatian adalah perkiraan, belum ditinjau dokter gigi.'
+
 export const SEVERITY_STYLES: Record<SeverityLevel, SeverityStyle> = {
-  mild: { label: 'Ringan', Icon: CircleCheck, iconClassName: 'text-success' },
-  moderate: { label: 'Sedang', Icon: TriangleAlert, iconClassName: 'text-warning' },
-  urgent: { label: 'Segera', Icon: OctagonAlert, iconClassName: 'text-danger' },
+  mild: {
+    label: 'Ringan',
+    groupTitle: 'Ringan',
+    Icon: CircleCheck,
+    iconClassName: 'text-success',
+    dotClassName: 'bg-success',
+  },
+  moderate: {
+    label: 'Sedang',
+    groupTitle: 'Perlu perhatian',
+    Icon: TriangleAlert,
+    iconClassName: 'text-warning',
+    dotClassName: 'bg-warning',
+  },
+  urgent: {
+    label: 'Segera',
+    groupTitle: 'Perlu segera ke dokter gigi',
+    Icon: OctagonAlert,
+    iconClassName: 'text-danger',
+    dotClassName: 'bg-danger',
+  },
 }
 
 const SEVERITY_BY_DISEASE: Record<string, SeverityLevel> = {

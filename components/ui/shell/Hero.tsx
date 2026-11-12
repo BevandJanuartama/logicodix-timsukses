@@ -1,67 +1,47 @@
 'use client'
 
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { ArrowRight, Hand, Move3d, ZoomIn } from 'lucide-react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { ArrowRight } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
 
-const GESTURES = [
-  { icon: Move3d, label: 'Putar' },
-  { icon: ZoomIn, label: 'Zoom' },
-  { icon: Hand, label: 'Pilih' },
-]
+const PRESS_TRANSITION =
+  'transition-[transform,background-color] duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[0.97]'
 
 export function Hero() {
-  const intro = useAppStore((state) => state.intro)
   const setMode = useAppStore((state) => state.setMode)
   const reduceMotion = useReducedMotion()
-  const offset = reduceMotion ? 0 : 16
 
   return (
-    <AnimatePresence>
-      {intro && (
-        <motion.div
-          key="hero"
-          className="pointer-events-none fixed inset-0 z-20 flex items-end p-3 sm:p-6 lg:items-center lg:p-12"
-          initial={{ opacity: 0, y: offset }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: offset }}
-          transition={{ duration: 0.32, ease: [0.23, 1, 0.32, 1] }}
+    <motion.section
+      aria-label="Selamat datang"
+      className="panel flex max-h-[45dvh] flex-col gap-4 overflow-y-auto p-5 md:max-h-none md:h-full md:justify-center md:gap-6 md:p-7"
+      initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+    >
+      <h1 className="font-display text-[26px] font-extrabold leading-tight tracking-tight text-fg md:text-title xl:text-[30px]">
+        Kenali gigimu, dari luar sampai akar.
+      </h1>
+      <p className="text-[15px] leading-relaxed text-fg-secondary">
+        Putar model 3D gigi, lihat bagian-bagiannya, lalu pelajari masalah yang sering terjadi.
+      </p>
+      <div className="flex flex-col gap-2">
+        <button
+          type="button"
+          onClick={() => setMode('explore')}
+          className={`flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-control)] bg-accent-fill px-5 text-[15px] font-semibold text-on-accent hover:bg-[var(--button-primary-bg-hover)] ${PRESS_TRANSITION}`}
         >
-          <section className="panel pointer-events-auto w-full max-w-[400px] p-5 sm:p-6">
-            <p className="tabular-nums text-caption text-fg-muted">10 struktur · 10 penyakit</p>
-            <h1 className="mt-2 font-display text-title font-extrabold tracking-tight text-fg sm:text-display">
-              Anatomi gigi, <span className="text-accent">3D</span>.
-            </h1>
-            <ul className="mt-4 flex gap-4 text-fg-secondary">
-              {GESTURES.map(({ icon: Icon, label }) => (
-                <li key={label} className="flex items-center gap-1.5 text-caption font-medium">
-                  <Icon className="size-4 text-accent" aria-hidden />
-                  {label}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-5 flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setMode('explore')}
-                className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-[var(--radius-control)] bg-accent-fill px-5 text-caption font-semibold text-on-accent transition-[transform,background-color] duration-[var(--duration-press)] ease-[var(--ease-out)] hover:bg-[var(--button-primary-bg-hover)] active:scale-[0.97]"
-              >
-                Mulai <ArrowRight className="size-4" aria-hidden />
-              </button>
-              <button
-                type="button"
-                onClick={() => setMode('diseases')}
-                className="min-h-11 rounded-[var(--radius-control)] px-4 text-caption font-semibold text-danger transition-[transform,background-color] duration-[var(--duration-press)] ease-[var(--ease-out)] hover:bg-[var(--button-ghost-bg-hover)] active:scale-[0.97]"
-              >
-                Penyakit
-              </button>
-            </div>
-            <p className="mt-4 border-t border-line pt-3 text-caption text-fg-muted">
-              Edukasi, bukan diagnosis. Keluhan perlu tenaga kesehatan.
-            </p>
-          </section>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          Mulai menjelajah <ArrowRight className="size-4" aria-hidden />
+        </button>
+        <button
+          type="button"
+          onClick={() => setMode('diseases')}
+          className={`min-h-11 rounded-[var(--radius-control)] px-4 text-[15px] font-semibold text-accent underline-offset-4 hover:bg-[var(--button-ghost-bg-hover)] hover:underline ${PRESS_TRANSITION}`}
+        >
+          Lihat masalah gigi
+        </button>
+      </div>
+      <p className="border-t border-line pt-3 text-[15px] text-fg-muted">Untuk belajar, bukan diagnosis.</p>
+    </motion.section>
   )
 }

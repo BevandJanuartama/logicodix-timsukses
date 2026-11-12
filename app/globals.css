@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 
 :root {
+  --sheet-peek-h: 120px;
+  --mobile-tabbar-h: 0px;
   --p-cream: #fbf5ee;
   --p-paper: #fffcf8;
   --p-sunken: #f3e8dc;
@@ -144,6 +146,12 @@
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (max-width: 767px) {
+  :root {
+    --mobile-tabbar-h: calc(3.5rem + env(safe-area-inset-bottom));
+  }
 }
 
 @utility font-display {

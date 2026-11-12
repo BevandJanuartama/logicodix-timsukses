@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect } from 'react'
-import dynamic from 'next/dynamic'
+import { MotionConfig } from 'framer-motion'
+import { useMediaQuery } from '@/lib/hooks/useMediaQuery'
 import { useAppStore } from '@/lib/store'
 import type { AppMode } from '@/lib/types'
 import { CleanPanel } from '@/components/ui/clean/CleanPanel'
@@ -10,30 +11,15 @@ import { DiseasesPanel } from '@/components/ui/diseases/DiseasesPanel'
 import { ExplorePanel } from '@/components/ui/explore/ExplorePanel'
 import { GovernanceDialog } from '@/components/ui/library/GovernanceDialog'
 import { ReferencesDialog } from '@/components/ui/library/ReferencesDialog'
+import { CanvasStage } from '@/components/ui/shell/CanvasStage'
 import { Hero } from '@/components/ui/shell/Hero'
 import { HoverTip } from '@/components/ui/shell/HoverTip'
-import { LodIndicator } from '@/components/ui/shell/LodIndicator'
+import { ModeRail } from '@/components/ui/shell/ModeRail'
+import { NextStepLink } from '@/components/ui/shell/NextStepLink'
 import { Panel } from '@/components/ui/shell/Panel'
 import { QuizPanel } from '@/components/ui/quiz/QuizPanel'
 import { SimulatorPanel } from '@/components/ui/simulator/SimulatorPanel'
-import { ToothMark } from '@/components/ui/shell/ToothMark'
 import { TopBar } from '@/components/ui/shell/TopBar'
-import { ViewControls } from '@/components/ui/shell/ViewControls'
-
-function SceneLoader() {
-  return (
-    <div className="absolute inset-0 grid place-items-center">
-      <p className="flex flex-col items-center gap-3 text-caption text-fg-secondary">
-        <span className="panel grid size-14 animate-pulse place-items-center text-accent">
-          <ToothMark size={28} />
-        </span>
-        Memuat model
-      </p>
-    </div>
-  )
-}
-
-const Scene = dynamic(() => import('@/components/three/Scene'), { ssr: false, loading: SceneLoader })
 
 const PANELS: Record<AppMode, { label: string; Content: () => React.JSX.Element }> = {
   explore: { label: 'Panel anatomi', Content: ExplorePanel },
@@ -58,27 +44,44 @@ export function Experience() {
   const intro = useAppStore((state) => state.intro)
   const mode = useAppStore((state) => state.mode)
   const { label, Content } = PANELS[mode]
+  const isWide = useMediaQuery('(min-width: 1280px)')
+  const isDesktop = useMediaQuery('(min-width: 768px)')
+  const heroSlot = isWide ? 'rail' : isDesktop ? 'card' : 'sheet'
   useEscapeToDeselect()
 
   return (
-    <main className="bg-app fixed inset-0 overflow-hidden select-none">
-      <div className={`absolute inset-0 ${intro ? '' : 'lg:right-[424px]'}`}>
-        <Scene />
-      </div>
+    <main className="bg-app fixed inset-0 flex flex-col overflow-hidden">
       <TopBar />
+      <div aria-hidden className="h-[68px] shrink-0 md:h-[76px]" />
+      <MotionConfig reducedMotion="user">
+        <div className="grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)] pb-[calc(var(--mobile-tabbar-h,0px)+var(--sheet-peek-h))] md:grid-cols-[minmax(0,1fr)_340px] md:gap-4 md:px-4 md:pb-4 xl:grid-cols-[280px_minmax(0,1fr)_380px]">
+          <div className="hidden min-h-0 xl:flex xl:flex-col">
+            {intro ? heroSlot === 'rail' && <Hero /> : <ModeRail />}
+          </div>
+          <CanvasStage showControls={!intro} />
+          <div className="contents md:flex md:min-h-0 md:flex-col">
+            {intro
+              ? heroSlot === 'card' && <Hero />
+              : (
+                  <Panel label={label} contentKey={mode} footer={<NextStepLink />}>
+                    <Content />
+                  </Panel>
+                )}
+          </div>
+        </div>
+      </MotionConfig>
       {!intro && (
         <>
-          <LodIndicator />
-          <ViewControls />
           <HoverTip />
-          <Panel key={mode} label={label}>
-            <Content />
-          </Panel>
           <CleanSuccessToast />
           <MouthwashOverlay />
         </>
       )}
-      <Hero />
+      {intro && heroSlot === 'sheet' && (
+        <div className="fixed inset-x-3 bottom-[calc(var(--mobile-tabbar-h,0px)+12px)] z-20">
+          <Hero />
+        </div>
+      )}
       <ReferencesDialog />
       <GovernanceDialog />
     </main>

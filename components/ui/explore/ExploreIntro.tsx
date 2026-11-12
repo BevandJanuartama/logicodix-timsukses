@@ -1,15 +1,15 @@
 'use client'
 
-import { Maximize, Microscope, ZoomIn, type LucideIcon } from 'lucide-react'
+import { useState } from 'react'
 import { focusScene, type SceneFocus } from '@/lib/sceneFocus'
-import { useAppStore } from '@/lib/store'
-import type { Lod } from '@/lib/types'
-import { SectionTitle } from '@/components/ui/shell/PanelParts'
+import { useMediaQuery } from '@/lib/hooks/useMediaQuery'
+import { DentitionToggle, type Dentition } from './DentitionToggle'
 import { ExploreChip } from './ExploreChip'
+import { ExploreDisclosure } from './ExploreDisclosure'
 import { KeyFigures } from './KeyFigures'
 import { ToothTypeTable } from './ToothTypeTable'
 
-const QUICK_TARGETS: { label: string; focus: SceneFocus }[] = [
+export const QUICK_TARGETS: { label: string; focus: SceneFocus }[] = [
   { label: 'Geraham 36', focus: { toothId: '36' } },
   { label: 'Gigi seri 11', focus: { toothId: '11' } },
   { label: 'Taring 13', focus: { toothId: '13' } },
@@ -18,48 +18,33 @@ const QUICK_TARGETS: { label: string; focus: SceneFocus }[] = [
   { label: 'Lidah', focus: { objectId: 'tongue_dorsum', preset: 'top' } },
 ]
 
-const DETAIL_STEPS: { id: Lod; label: string; hint: string; Icon: LucideIcon }[] = [
-  { id: 'macro', label: 'Makro', hint: 'Lengkung rahang, lidah, gusi, dan 32 gigi', Icon: Maximize },
-  { id: 'meso', label: 'Meso', hint: 'Klik satu gigi untuk mendekat', Icon: ZoomIn },
-  { id: 'micro', label: 'Mikro', hint: 'Zoom dalam untuk melihat dentin dan pulpa', Icon: Microscope },
-]
-
 export function ExploreIntro() {
-  const lod = useAppStore((state) => state.lod)
+  const [dentition, setDentition] = useState<Dentition>('permanent')
+  const hasRail = useMediaQuery('(min-width: 1280px)')
 
   return (
-    <>
-      <h2 className="text-subtitle font-semibold tracking-tight text-fg">Klik bagian mana pun</h2>
-      <p className="mt-1 text-caption text-fg-secondary">Pilih gigi, gusi, atau lidah di 3D, atau mulai dari pintasan.</p>
+    <div className="space-y-4">
+      <div>
+        <h2 className="font-display text-title font-semibold tracking-tight text-fg">Pilih satu gigi</h2>
+        <p className="mt-1 text-body text-fg-secondary">Ketuk titik oranye di model atau pilih dari daftar.</p>
+      </div>
 
-      <ul className="mt-3 flex flex-wrap gap-1.5">
-        {QUICK_TARGETS.map((target) => (
-          <li key={target.label}>
-            <ExploreChip onClick={() => focusScene(target.focus)}>{target.label}</ExploreChip>
-          </li>
-        ))}
-      </ul>
+      {!hasRail && (
+        <ul className="flex gap-1.5 overflow-x-auto pb-1">
+          {QUICK_TARGETS.map((target) => (
+            <li key={target.label} className="shrink-0">
+              <ExploreChip onClick={() => focusScene(target.focus)}>{target.label}</ExploreChip>
+            </li>
+          ))}
+        </ul>
+      )}
 
-      <SectionTitle>Zoom</SectionTitle>
-      <ol className="flex gap-1.5">
-        {DETAIL_STEPS.map(({ id, label, hint, Icon }) => (
-          <li
-            key={id}
-            title={hint}
-            aria-current={lod === id ? 'step' : undefined}
-            className="flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-[var(--radius-control)] border border-line text-caption font-semibold text-fg-muted aria-[current=step]:border-line-strong aria-[current=step]:bg-[var(--chip-bg)] aria-[current=step]:text-fg"
-          >
-            <Icon className="size-4" aria-hidden />
-            {label}
-            <span className="sr-only">: {hint}</span>
-          </li>
-        ))}
-      </ol>
-
-      <SectionTitle>Jenis gigi</SectionTitle>
-      <ToothTypeTable />
-
+      <DentitionToggle value={dentition} onChange={setDentition} />
       <KeyFigures />
-    </>
+
+      <ExploreDisclosure label="Bandingkan jenis gigi">
+        <ToothTypeTable dentition={dentition} />
+      </ExploreDisclosure>
+    </div>
   )
 }

@@ -14,6 +14,7 @@ const CRACK_SEGMENT = 6
 export function useToothEffects(info: ToothInfo, materials: ToothMaterials, crown: CrownMetrics) {
   const effects = useMemo(() => createToothEffects(), [])
   const crackMeshes = useRef<(THREE.Mesh | null)[]>([])
+  const dirty = useRef(false)
   const inSimulator = useAppStore((state) => state.mode === 'destroy')
   const iceTrack = useSimulatorStore((state) => state.track === 'ice')
   const showsIceCracks = inSimulator && iceTrack
@@ -27,6 +28,9 @@ export function useToothEffects(info: ToothInfo, materials: ToothMaterials, crow
   const animate = useCallback(
     (elapsed: number) => {
       const track = useAppStore.getState().mode === 'destroy' ? useSimulatorStore.getState().track : null
+      if (!track && !dirty.current) return
+      dirty.current = track !== null
+
       computeToothEffects(effects, track, simulationClock.progress, info, crown)
       const uniforms = materials.effects
       uniforms.uTime.value = elapsed

@@ -21,7 +21,7 @@ const jawSize = new THREE.Vector3()
 export function Pedestal() {
   const pedestal = useRef<THREE.Group>(null!)
   const shadows = useRef<THREE.Group>(null!)
-  const geometry = useMemo(() => new THREE.CylinderGeometry(1, 1, PEDESTAL_THICKNESS, 96), [])
+  const geometry = useMemo(() => new THREE.CylinderGeometry(1, 1, PEDESTAL_THICKNESS, 72), [])
   const material = useMemo(() => new THREE.MeshStandardMaterial({ color: PEDESTAL_COLOR, roughness: 0.92, metalness: 0 }), [])
 
   useEffect(
@@ -59,11 +59,11 @@ export function Pedestal() {
         <ContactShadows
           scale={FALLBACK_RADIUS * SHADOW_SPAN}
           far={4.2}
-          resolution={512}
+          resolution={256}
           color={SHADOW_COLOR}
           opacity={0.32}
           blur={2.4}
-          frames={Infinity}
+          frames={1}
         />
       </group>
     </>

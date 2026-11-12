@@ -19,6 +19,7 @@ const pickable = (enabled: boolean) => (enabled ? (clipRaycast as never) : (noRa
 const SECTIONED_CUTAWAY = 1
 const PEELED_CUTAWAY = 0.4
 const CUTAWAY_EASE = 6
+const CUTAWAY_EPSILON = 0.0005
 
 export function Tooth({ info }: { info: ToothInfo }) {
   const id = info.id
@@ -64,7 +65,11 @@ export function Tooth({ info }: { info: ToothInfo }) {
     animateHighlight(state.clock.elapsedTime, delta)
     effects.animate(state.clock.elapsedTime)
     const cutaway = materials.anatomy.uCutaway
-    cutaway.value = MathUtils.damp(cutaway.value, cutawayTarget, CUTAWAY_EASE, delta)
+    if (Math.abs(cutaway.value - cutawayTarget) > CUTAWAY_EPSILON) {
+      cutaway.value = MathUtils.damp(cutaway.value, cutawayTarget, CUTAWAY_EASE, delta)
+    } else if (cutaway.value !== cutawayTarget) {
+      cutaway.value = cutawayTarget
+    }
   })
 
   const showOuter = layers.enamel || layers.cementum

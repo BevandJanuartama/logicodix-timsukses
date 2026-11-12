@@ -51,6 +51,7 @@ float opticsFacing = saturate( dot( normal, geometryViewDir ) );
   outgoingLight += scatteredLight * diffuseColor.rgb * vec3( 1.0, 0.8, 0.6 ) * translucency;
   vec3 opalescentRim = mix( vec3( 1.0, 0.93, 0.84 ), vec3( 0.74, 0.86, 1.0 ), smoothstep( 0.55, 1.0, crownT ) );
   outgoingLight += opalescentRim * pow( 1.0 - opticsFacing, 4.0 ) * ( 0.05 + 0.2 * enamelMask );
+  outgoingLight += vec3( 0.76, 0.13, 0.05 ) * uRimGlow * pow( 1.0 - opticsFacing, 1.8 );
 #endif
 #ifdef TOOTH_DENTIN
   outgoingLight += vec3( 0.9, 0.68, 0.42 ) * pow( 1.0 - opticsFacing, 3.0 ) * ( 0.04 + 0.06 * uCutaway );

@@ -37,6 +37,7 @@ vLocalPos = position;
 
 export const FRAGMENT_DECLARATIONS = `
 uniform vec2 uHighlightBand;
+uniform float uRimGlow;
 uniform vec2 uShowBand;
 uniform float uCrownHeight;
 uniform float uDecay;

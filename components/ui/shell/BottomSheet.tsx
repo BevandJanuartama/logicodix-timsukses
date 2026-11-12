@@ -1,76 +1,77 @@
 'use client'
 
-import { useLayoutEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
-import { motion, useDragControls, useReducedMotion, type PanInfo } from 'framer-motion'
+import { useRef, type KeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { motion, useDragControls } from 'framer-motion'
+import { useSheetSnap, type SheetPosition } from './useSheetSnap'
 
-const SHEET_PEEK = 156
-const SHEET_VIEWPORT_RATIO = 0.45
-const DISMISS_VELOCITY_PX_PER_MS = 0.11
-const SHEET_SPRING = { type: 'spring', stiffness: 380, damping: 40 } as const
+const SHEET_HEIGHT = 'calc(100dvh - var(--mobile-tabbar-h) - 4.5rem)'
 
-export function BottomSheet({ label, children }: { label: string; children: ReactNode }) {
+const HANDLE_LABEL = {
+  peek: 'Buka panel',
+  half: 'Perluas panel',
+  full: 'Ciutkan panel',
+} as const
+
+interface BottomSheetProps {
+  label: string
+  initialPosition?: SheetPosition
+  children: ReactNode
+}
+
+export function BottomSheet({ label, initialPosition = 'peek', children }: BottomSheetProps) {
   const sheet = useRef<HTMLElement>(null)
-  const [height, setHeight] = useState(() => window.innerHeight * SHEET_VIEWPORT_RATIO)
-  const [open, setOpen] = useState(false)
   const dragControls = useDragControls()
   const wasDragged = useRef(false)
-  const reduceMotion = useReducedMotion()
-  const closedOffset = Math.max(0, height - SHEET_PEEK)
+  const { y, position, peekY, open, cycle, step, stopAnimation, settle } = useSheetSnap(sheet, initialPosition)
+  const scrollable = position !== 'peek'
 
-  useLayoutEffect(() => {
-    const node = sheet.current
-    if (!node) return
-    const observer = new ResizeObserver(([entry]) => setHeight(entry.contentRect.height))
-    observer.observe(node)
-    return () => observer.disconnect()
-  }, [])
-
-  const beginHandleDrag = (event: ReactPointerEvent) => {
+  const beginDrag = (event: ReactPointerEvent) => {
+    stopAnimation()
     wasDragged.current = false
     dragControls.start(event)
   }
 
-  const settle = (_: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) => {
-    const velocity = info.velocity.y / 1000
-    if (velocity < -DISMISS_VELOCITY_PX_PER_MS) return setOpen(true)
-    if (velocity > DISMISS_VELOCITY_PX_PER_MS) return setOpen(false)
-    const restingOffset = (open ? 0 : closedOffset) + info.offset.y
-    setOpen(restingOffset < closedOffset / 2)
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'ArrowUp') step(1)
+    else if (event.key === 'ArrowDown') step(-1)
+    else return
+    event.preventDefault()
   }
 
   return (
     <motion.aside
       ref={sheet}
       aria-label={label}
-      className="panel fixed inset-x-0 bottom-0 z-20 flex h-[45dvh] flex-col rounded-b-none"
+      className="panel shadow-float fixed inset-x-0 z-20 flex flex-col rounded-b-none will-change-transform"
+      style={{ y, bottom: 'var(--mobile-tabbar-h)', height: SHEET_HEIGHT }}
       drag="y"
       dragControls={dragControls}
       dragListener={false}
-      dragConstraints={{ top: 0, bottom: closedOffset }}
-      dragElastic={0.06}
+      dragConstraints={{ top: 0, bottom: peekY }}
+      dragElastic={0.04}
+      dragMomentum={false}
       onDragStart={() => {
         wasDragged.current = true
       }}
-      onDragEnd={settle}
-      initial={false}
-      animate={{ y: open ? 0 : closedOffset }}
-      transition={reduceMotion ? { duration: 0 } : SHEET_SPRING}
+      onDragEnd={(_, info) => settle(info)}
     >
       <button
         type="button"
-        onPointerDown={beginHandleDrag}
-        onClick={() => !wasDragged.current && setOpen(!open)}
-        aria-expanded={open}
-        aria-label={open ? 'Ciutkan panel' : 'Buka panel'}
-        className="flex min-h-10 shrink-0 cursor-grab touch-none items-center justify-center active:cursor-grabbing"
+        onPointerDown={beginDrag}
+        onClick={() => !wasDragged.current && cycle()}
+        onKeyDown={handleKeyDown}
+        aria-expanded={scrollable}
+        aria-label={HANDLE_LABEL[position]}
+        className="flex h-11 shrink-0 cursor-grab touch-none items-center justify-center rounded-t-[var(--radius-panel)] active:cursor-grabbing"
       >
         <span className="h-1 w-10 rounded-full bg-[var(--border-strong)]" />
       </button>
       <div
-        className={`thin-scroll flex-1 overscroll-contain px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] ${
-          open ? 'overflow-y-auto' : 'overflow-hidden'
+        className={`thin-scroll min-h-0 flex-1 overscroll-contain px-4 pb-5 ${
+          scrollable ? 'overflow-y-auto' : 'touch-none overflow-hidden'
         }`}
-        onClickCapture={() => !open && setOpen(true)}
+        onPointerDown={scrollable ? undefined : beginDrag}
+        onClick={() => !scrollable && !wasDragged.current && open()}
       >
         {children}
       </div>

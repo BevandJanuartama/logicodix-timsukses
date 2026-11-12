@@ -1,9 +1,10 @@
 'use client'
 
 import { X } from 'lucide-react'
+import { toothById } from '@/lib/data/dentition'
 import { isOralRegion } from '@/lib/data/oralRegions'
 import { useAppStore } from '@/lib/store'
-import { getLayouts } from '@/lib/three/layout'
+import { ExploreDisclosure } from './ExploreDisclosure'
 import { ExploreIntro } from './ExploreIntro'
 import { LayerToggles } from './LayerToggles'
 import { OralRegionDetail } from './OralRegionDetail'
@@ -14,7 +15,7 @@ export function ExplorePanel() {
   const selectedToothId = useAppStore((state) => state.selectedToothId)
   const selectedObjectId = useAppStore((state) => state.selectedObjectId)
   const selectTarget = useAppStore((state) => state.selectTarget)
-  const tooth = selectedToothId ? getLayouts().byId.get(selectedToothId) : undefined
+  const tooth = selectedToothId ? toothById.get(selectedToothId) : undefined
   const hasSelection = Boolean(tooth || selectedObjectId)
 
   return (
@@ -27,7 +28,7 @@ export function ExplorePanel() {
               onClick={() => selectTarget(null, null)}
               aria-label="Tutup pilihan"
               title="Tutup pilihan"
-              className="grid size-9 cursor-pointer place-items-center rounded-[var(--radius-control)] border border-line text-fg-secondary transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] hover:text-fg active:scale-[var(--scale-press)]"
+              className="grid size-9 cursor-pointer place-items-center rounded-[var(--radius-control)] bg-surface-sunken text-fg-secondary transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] hover:text-fg active:scale-[var(--scale-press)]"
             >
               <X className="size-4" aria-hidden />
             </button>
@@ -43,7 +44,9 @@ export function ExplorePanel() {
       ) : (
         <ExploreIntro />
       )}
-      <LayerToggles />
+      <ExploreDisclosure label="Atur lapisan yang terlihat">
+        <LayerToggles />
+      </ExploreDisclosure>
     </div>
   )
 }

@@ -1,11 +1,10 @@
 'use client'
 
 import { Eye, EyeOff, RotateCcw } from 'lucide-react'
-import { layerOrder, layerSwatches, sceneTargetLabels } from '@/lib/data/sceneLabels'
-import { findStructureByObjectId } from '@/lib/knowledgeBase'
+import { layerOrder, layerSwatches } from '@/lib/data/sceneLabels'
 import { focusScene } from '@/lib/sceneFocus'
 import { useAppStore } from '@/lib/store'
-import { SectionTitle } from '@/components/ui/shell/PanelParts'
+import { plainNames } from './plainLabels'
 
 export function LayerToggles() {
   const layers = useAppStore((state) => state.layers)
@@ -16,10 +15,10 @@ export function LayerToggles() {
 
   return (
     <section aria-labelledby="layer-matrix-title">
-      <div className="flex items-end justify-between">
-        <SectionTitle>
-          <span id="layer-matrix-title">Lapisan anatomi</span>
-        </SectionTitle>
+      <div className="flex items-center justify-between">
+        <h3 id="layer-matrix-title" className="text-caption font-semibold text-fg-secondary">
+          Tampilkan atau sembunyikan
+        </h3>
         <button
           type="button"
           onClick={resetLayers}
@@ -27,35 +26,29 @@ export function LayerToggles() {
           title="Tampilkan semua lapisan"
           style={{ opacity: hiddenCount > 0 ? 1 : 0 }}
           tabIndex={hiddenCount > 0 ? 0 : -1}
-          className="mb-2 grid size-8 cursor-pointer place-items-center rounded-[var(--radius-control)] text-accent transition-opacity duration-[var(--duration-hover)] ease-[var(--ease-out)] hover:bg-[var(--button-ghost-bg-hover)]"
+          className="grid size-9 cursor-pointer place-items-center rounded-[var(--radius-control)] text-accent transition-opacity duration-[var(--duration-hover)] ease-[var(--ease-out)] hover:bg-[var(--button-ghost-bg-hover)]"
         >
           <RotateCcw className="size-4" aria-hidden />
         </button>
       </div>
-      <ul className="divide-y divide-line rounded-[var(--radius-control)] border border-line">
+      <ul>
         {layerOrder.map((layer) => {
           const visible = layers[layer]
-          const structure = findStructureByObjectId(layer)
           return (
             <li key={layer} className="flex items-center" style={{ opacity: visible ? 1 : 0.5 }}>
               <button
                 type="button"
                 aria-pressed={selectedObjectId === layer}
                 onClick={() => focusScene({ objectId: layer, preset: 'front' })}
-                className="flex min-h-10 flex-1 cursor-pointer items-center gap-2.5 px-2.5 text-left text-caption font-semibold text-fg-secondary hover:text-fg aria-pressed:text-fg"
+                className="flex min-h-10 flex-1 cursor-pointer items-center gap-2.5 rounded-[var(--radius-control)] px-2 text-left text-caption font-semibold text-fg-secondary hover:text-fg aria-pressed:bg-accent-tint aria-pressed:text-fg"
               >
-                <span
-                  aria-hidden
-                  className="size-3 shrink-0 rounded-full ring-1 ring-line-strong"
-                  style={{ background: layerSwatches[layer] }}
-                />
-                <span className="w-12 shrink-0 text-caption text-fg-muted">{structure?.id}</span>
-                <span className="flex-1 truncate">{sceneTargetLabels[layer]}</span>
+                <span aria-hidden className="size-3 shrink-0 rounded-full" style={{ background: layerSwatches[layer] }} />
+                <span className="flex-1 truncate">{plainNames[layer]}</span>
               </button>
               <button
                 type="button"
                 aria-pressed={visible}
-                aria-label={`${visible ? 'Sembunyikan' : 'Tampilkan'} ${sceneTargetLabels[layer]}`}
+                aria-label={`${visible ? 'Sembunyikan' : 'Tampilkan'} ${plainNames[layer]}`}
                 onClick={() => toggleLayer(layer)}
                 className="grid size-10 shrink-0 cursor-pointer place-items-center text-fg-secondary transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] hover:text-fg active:scale-[var(--scale-press)]"
               >

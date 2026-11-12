@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { CheckCircle2, RotateCcw, X } from 'lucide-react'
 import { useCleaningStore } from '@/lib/cleaningStore'
 import { useAppStore } from '@/lib/store'
+import { useStageBox } from '@/components/ui/shell/useStageBox'
 import { RECOMMENDED_SECONDS } from './cleanTools'
 import { formatDuration, useCleaningTimer } from './useCleaningTimer'
 
@@ -18,9 +19,10 @@ export function CleanSuccessToast() {
   const resetNonce = useCleaningStore((state) => state.resetNonce)
   const reset = useCleaningStore((state) => state.reset)
   const elapsed = useCleaningTimer()
+  const stage = useStageBox()
   const reduceMotion = useReducedMotion()
   const [dismissedFor, setDismissedFor] = useState(-1)
-  const visible = cleaning && finished && dismissedFor !== resetNonce
+  const visible = cleaning && finished && dismissedFor !== resetNonce && stage !== null
   const offsetY = reduceMotion ? 0 : -12
 
   return (
@@ -32,7 +34,8 @@ export function CleanSuccessToast() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: offsetY, scale: 0.97 }}
           transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-          className="panel fixed top-[72px] left-1/2 z-40 w-[min(92vw,340px)] -translate-x-1/2 p-4 lg:left-[calc((100%-424px)/2)]"
+          style={{ left: stage?.centerX, top: (stage?.top ?? 0) + 12, width: Math.min((stage?.width ?? 340) - 24, 340) }}
+          className="panel fixed z-40 -translate-x-1/2 p-4"
         >
           <div className="flex items-center gap-3">
             <CheckCircle2 className="size-6 shrink-0 text-success" aria-hidden />
