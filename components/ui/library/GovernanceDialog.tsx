@@ -48,7 +48,7 @@ export function GovernanceDialog() {
             aria-selected={tab === item.id}
             tabIndex={tab === item.id ? 0 : -1}
             onClick={() => setTab(item.id)}
-            className="min-h-10 flex-1 cursor-pointer rounded-[var(--radius-control)] px-2 text-[13px] font-semibold text-fg-secondary transition-colors duration-[var(--duration-press)] hover:text-fg aria-selected:bg-accent-fill aria-selected:text-on-accent"
+            className="min-h-10 flex-1 cursor-pointer rounded-[var(--radius-control)] px-2 text-caption font-semibold text-fg-secondary transition-colors duration-[var(--duration-press)] hover:text-fg aria-selected:bg-accent-fill aria-selected:text-on-accent"
           >
             {item.label}
           </button>

@@ -8,9 +8,9 @@ export function OralRegionDetail({ regionId }: { regionId: OralRegionId }) {
   const region = oralRegions[regionId]
   return (
     <article>
-      <h2 className="text-[22px] leading-tight font-semibold tracking-tight text-fg">{sceneTargetLabels[regionId]}</h2>
-      <p className="text-[13px] font-medium text-fg-muted italic">{region.clinicalName}</p>
-      <p className="mt-3 text-[14px] leading-snug text-fg-secondary">{region.summary}</p>
+      <h2 className="font-display text-title font-semibold tracking-tight text-fg">{sceneTargetLabels[regionId]}</h2>
+      <p className="text-caption font-medium text-fg-muted italic">{region.clinicalName}</p>
+      <p className="mt-3 text-body text-fg-secondary">{region.summary}</p>
       <ExploreDisclosure label="Fungsi">
         <BulletList items={region.functions} />
       </ExploreDisclosure>

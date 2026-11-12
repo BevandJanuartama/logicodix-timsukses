@@ -41,11 +41,11 @@ export function ToothSummary({ tooth }: { tooth: ToothInfo }) {
     <section aria-label={`Gigi FDI ${tooth.fdi}`} className="border-t border-line pt-3">
       <div className="flex items-start justify-between gap-3">
         <div className="leading-tight">
-          <p className="text-[15px] font-semibold text-fg">{tooth.name}</p>
-          <p className="telemetry mt-1 text-[12px] text-fg-secondary">
+          <p className="text-body font-semibold text-fg">{tooth.name}</p>
+          <p className="tabular-nums mt-1 text-caption text-fg-secondary">
             FDI {tooth.fdi} · {toothType?.region}
           </p>
-          <p className="mt-1 text-[12.5px] text-fg-muted">{toothType?.function}</p>
+          <p className="mt-1 text-caption text-fg-muted">{toothType?.function}</p>
         </div>
         <button
           type="button"

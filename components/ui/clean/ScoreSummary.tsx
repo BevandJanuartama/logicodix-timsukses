@@ -10,9 +10,9 @@ const gradeTone = (score: number) => (score >= 80 ? 'text-success' : score >= 50
 function Meter({ label, value }: { label: string; value: number }) {
   return (
     <div>
-      <div className="mb-1 flex justify-between text-[12px] text-fg-secondary">
+      <div className="mb-1 flex justify-between text-caption text-fg-secondary">
         <span>{label}</span>
-        <span className="telemetry text-fg">{Math.round(value)}%</span>
+        <span className="tabular-nums text-fg">{Math.round(value)}%</span>
       </div>
       <div className="h-1.5 overflow-hidden rounded-full bg-[var(--chip-bg)]">
         <div
@@ -32,11 +32,11 @@ export function ScoreSummary() {
   return (
     <div className="mt-4">
       <div role="status" aria-label={`Skor kebersihan ${score} persen`} className="flex items-end justify-between">
-        <p className={`telemetry text-6xl leading-none font-semibold ${gradeTone(score)}`}>
+        <p className={`font-display tabular-nums text-6xl leading-none font-semibold ${gradeTone(score)}`}>
           {score}
-          <span className="text-2xl text-fg-muted">%</span>
+          <span className="font-display text-title text-fg-muted">%</span>
         </p>
-        <p className="telemetry flex items-center gap-1.5 pb-1 text-[13px] text-fg-secondary">
+        <p className="tabular-nums flex items-center gap-1.5 pb-1 text-caption text-fg-secondary">
           <Timer className="size-4" aria-hidden />
           {formatDuration(elapsed)} / 2:00
         </p>

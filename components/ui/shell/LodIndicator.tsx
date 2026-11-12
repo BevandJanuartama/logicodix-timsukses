@@ -18,13 +18,13 @@ export function LodIndicator() {
     <div
       role="status"
       aria-label={`Tingkat detail ${current.label}`}
-      className="panel telemetry pointer-events-none fixed top-[68px] left-2.5 z-10 w-[132px] px-2.5 py-2 sm:top-[76px] sm:left-3 lg:top-auto lg:bottom-[84px] lg:left-5"
+      className="panel pointer-events-none fixed top-[68px] left-2.5 z-10 w-[132px] px-2.5 py-2 sm:top-[76px] sm:left-3 lg:top-auto lg:bottom-[84px] lg:left-5"
     >
       <ol className="flex gap-0.5">
         {LEVELS.map((level) => (
           <li
             key={level.id}
-            className={`flex-1 rounded-[4px] py-1 text-center text-[11px] font-semibold uppercase transition-colors duration-[var(--duration-hover)] ${
+            className={`flex-1 rounded-[4px] py-1 text-center text-caption font-semibold transition-colors duration-[var(--duration-hover)] ${
               level.id === lod ? 'bg-accent-fill text-on-accent' : 'text-fg-muted'
             }`}
           >

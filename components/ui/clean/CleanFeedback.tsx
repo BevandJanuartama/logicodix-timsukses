@@ -37,10 +37,10 @@ export function CleanSuccessToast() {
           <div className="flex items-center gap-3">
             <CheckCircle2 className="size-6 shrink-0 text-success" aria-hidden />
             <div className="flex-1">
-              <p className="telemetry text-[15px] font-semibold text-fg">
+              <p className="tabular-nums text-body font-semibold text-fg">
                 {Math.round(overall)}% · {formatDuration(elapsed)}
               </p>
-              <p className="text-[12.5px] text-fg-secondary">
+              <p className="text-caption text-fg-secondary">
                 {elapsed < RECOMMENDED_SECONDS ? 'Di dunia nyata, sikat sekitar 2 menit.' : 'Sikat 2× sehari, bersihkan sela gigi.'}
               </p>
             </div>
@@ -56,7 +56,7 @@ export function CleanSuccessToast() {
           <button
             type="button"
             onClick={reset}
-            className="mt-3 flex min-h-10 w-full cursor-pointer items-center justify-center gap-1.5 rounded-[var(--radius-control)] bg-accent-fill text-[13px] font-semibold text-on-accent transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)]"
+            className="mt-3 flex min-h-10 w-full cursor-pointer items-center justify-center gap-1.5 rounded-[var(--radius-control)] bg-accent-fill text-caption font-semibold text-on-accent transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)]"
           >
             <RotateCcw className="size-4" aria-hidden />
             Ulangi

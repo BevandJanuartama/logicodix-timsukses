@@ -4,7 +4,7 @@ import { ChevronDown } from 'lucide-react'
 export function ExploreDisclosure({ label, children }: { label: string; children: ReactNode }) {
   return (
     <details className="group mt-2 border-t border-line pt-1">
-      <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between text-[13px] font-semibold text-fg-secondary hover:text-fg [&::-webkit-details-marker]:hidden">
+      <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between text-caption font-semibold text-fg-secondary hover:text-fg [&::-webkit-details-marker]:hidden">
         {label}
         <ChevronDown className="size-4 transition-transform duration-[var(--duration-state)] ease-[var(--ease-out)] group-open:rotate-180" aria-hidden />
       </summary>

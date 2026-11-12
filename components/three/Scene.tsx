@@ -10,7 +10,10 @@ import { CleaningController } from './cleaning/CleaningController'
 import { ToolCursor } from './cleaning/ToolCursor'
 import { SimulationClock } from './simulation/SimulationClock'
 import { Mouth } from './Mouth'
+import { Pedestal } from './Pedestal'
 import { StudioLights } from './StudioLights'
+
+const CANVAS_BACKGROUND = '#F6ECE1'
 
 const deviceRatioCap = () => Math.min(window.devicePixelRatio || 1, 2)
 
@@ -25,8 +28,9 @@ export default function Scene() {
   return (
     <Canvas
       dpr={[1, maxDpr]}
+      style={{ background: CANVAS_BACKGROUND }}
       camera={{ position: [0, 2.4, 11], fov: 38, near: 0.05, far: 120 }}
-      gl={{ antialias: true, powerPreference: 'high-performance', alpha: true, toneMapping: ACESFilmicToneMapping, toneMappingExposure: 1 }}
+      gl={{ antialias: true, powerPreference: 'high-performance', alpha: true, toneMapping: ACESFilmicToneMapping, toneMappingExposure: 1.05 }}
       onCreated={({ gl }) => {
         gl.localClippingEnabled = true
       }}
@@ -42,6 +46,7 @@ export default function Scene() {
       />
       <StudioLights />
       <Mouth />
+      <Pedestal />
       <CleaningController />
       <ToolCursor />
       <SimulationClock />

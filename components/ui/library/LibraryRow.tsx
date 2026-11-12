@@ -24,7 +24,7 @@ export function LibraryRow({ summary, trailing, children, rowId, current }: Libr
             aria-hidden
           />
         </summary>
-        <div className="space-y-1.5 px-2 pb-3 text-[13px] leading-snug text-fg-secondary">{children}</div>
+        <div className="space-y-1.5 px-2 pb-3 text-caption text-fg-secondary">{children}</div>
       </details>
       {trailing}
     </li>

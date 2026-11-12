@@ -20,7 +20,7 @@ export function ToolPicker() {
               role="radio"
               aria-checked={item.id === tool}
               onClick={() => setTool(item.id)}
-              className="flex min-h-10 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-[var(--radius-control)] px-2 text-[13px] font-semibold text-fg-secondary transition-[transform,background-color] duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)] aria-checked:bg-accent-fill aria-checked:text-on-accent"
+              className="flex min-h-10 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-[var(--radius-control)] px-2 text-caption font-semibold text-fg-secondary transition-[transform,background-color] duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)] aria-checked:bg-accent-fill aria-checked:text-on-accent"
             >
               <Icon className="size-4 shrink-0" />
               {item.name}
@@ -28,7 +28,7 @@ export function ToolPicker() {
           )
         })}
       </div>
-      <p className="mt-2 text-[13px] text-fg-secondary">{active.hint}</p>
+      <p className="mt-2 text-caption text-fg-secondary">{active.hint}</p>
     </div>
   )
 }

@@ -169,3 +169,42 @@ Gunakan perintah `/model <nama>` di Claude Code untuk beralih model sebelum meng
   ```bash
   git commit -m "refactor: polish motion choreography accessibility and 60fps rendering"
   ```
+
+---
+
+## BAGIAN III: REDESIGN "RUANG PRAKTIK HANGAT" (FASE 12–16)
+
+> **Arah desain:** `.agents/plan/FASE12_DIRECTION.md`. Satu fase per giliran, subagent sesuai label model, tanpa commit oleh agen (pengguna commit manual). Jangan jalankan `npm run build` saat dev server aktif.
+
+### Fase 12: Fondasi Token, Font & Panggung 3D Krem
+- [x] **12.1** [🔵 Sonnet] Palet §2 sebagai primitive → semantic → component, hapus tema gelap dan kelas `telemetry`, easing & durasi §5 — `app/globals.css`
+- [x] **12.2** [🟢 Haiku] Font Newsreader + Atkinson Hyperlegible Next (fallback Figtree), `colorScheme: 'light'`, `themeColor: #FBF5EE` — `app/layout.tsx`
+- [x] **12.3** [🔵 Sonnet] Latar kanvas krem, alas + ContactShadows, lampu hangat — `components/three/Scene.tsx`, `StudioLights.tsx`, baru `Pedestal.tsx`
+- [x] **12.4** [🟢 Haiku] Ganti `telemetry`/`uppercase`/`text-[11–13px]` di `components/ui/**` ke skala baru
+- [x] **12.5** [🟢 Haiku] Verifikasi: typecheck, build (dev mati), cek kontras, screenshot 1440/390; perbarui `rangkuman.md`
+
+### Fase 13: Shell, Navigasi & Onboarding
+- [ ] **13.1** [🔵 Sonnet] Bar atas polos + tab teks dengan `layoutId` — `shell/TopBar.tsx`, `shell/ModeTabs.tsx`
+- [ ] **13.2** [🟣 Opus] Kerangka 3 kolom + rail kiri + kartu kanan — `components/Experience.tsx`, `shell/Panel.tsx`, baru `shell/LibraryRail.tsx`, `shell/InfoCard.tsx`
+- [ ] **13.3** [🔵 Sonnet] Toolbar vertikal berlabel menggantikan ViewControls + LodIndicator — `shell/ViewControls.tsx`, `LodIndicator.tsx`, `ViewPresetMenu.tsx`
+- [ ] **13.4** [🔵 Sonnet] Onboarding hero + sticky-note tip — `shell/Hero.tsx`, baru `shell/TipNote.tsx`
+- [ ] **13.5** [🔵 Sonnet] Sheet mobile 3 posisi + tab bawah — `shell/BottomSheet.tsx`
+- [ ] **13.6** [🟢 Haiku] Verifikasi: keyboard/fokus, 1440/768/390, reduced motion; `rangkuman.md`
+
+### Fase 14: Anatomi & Penyakit + Hotspot 3D (One Live Thing)
+- [ ] **14.1** [🟣 Opus] Hotspot drei `Html` + luncuran kamera + sorotan gigi — baru `components/three/Hotspots.tsx`, `useToothHighlight.ts`, `CameraRig.tsx`
+- [ ] **14.2** [🔵 Sonnet] Rampingkan Anatomi (buang TT-, chip, angka gula; lapisan dilipat) — `components/ui/explore/*`
+- [ ] **14.3** [🔵 Sonnet] Rail penyakit per status + kartu + CTA ke Simulasi — `components/ui/diseases/*`, `shell/PanelParts.tsx`
+- [ ] **14.4** [🟢 Haiku] Thumbnail statis dari render model sendiri — `public/thumbs/*`
+- [ ] **14.5** [🟢 Haiku] Verifikasi: FPS dengan hotspot, occlusion, tap mobile; `rangkuman.md`
+
+### Fase 15: Simulasi & Latihan Sikat
+- [ ] **15.1** [🔵 Sonnet] Penggeser waktu besar + tahap berkata, Stephan dilipat — `components/ui/simulator/*`
+- [ ] **15.2** [🔵 Sonnet] Skor tinta, bar tebal, timer berhenti di 2:00, alat di rail, pilar ke ringkasan — `components/ui/clean/*`
+- [ ] **15.3** [🟢 Haiku] Verifikasi: alur sikat 2 menit, scrubber keyboard; `rangkuman.md`
+
+### Fase 16: Kuis, Pustaka, Bahasa Awam & Audit Akhir
+- [ ] **16.1** [🔵 Sonnet] Kuis di tengah + model menyorot gigi terkait — `components/ui/quiz/*`
+- [ ] **16.2** [🟢 Haiku] Dialog sumber/tata kelola ke palet & skala baru — `components/ui/library/*`, `shell/Dialog.tsx`
+- [ ] **16.3** [🟣 Opus] Audit bahasa awam (<= 25 kata, tanpa jargon) + audit anti-slop & motion
+- [ ] **16.4** [🟢 Haiku] Verifikasi akhir: typecheck, build, kontras, FPS, 3 lebar layar; `rangkuman.md` + `TASK.md`

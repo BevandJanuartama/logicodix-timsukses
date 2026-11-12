@@ -41,7 +41,7 @@ export function ModeTabs() {
             aria-label={tab.label}
             aria-current={active ? 'page' : undefined}
             whileTap={reduceMotion ? undefined : { scale: 0.97 }}
-            className={`relative flex min-h-10 items-center gap-1.5 rounded-[var(--radius-control)] px-3 text-sm font-semibold transition-colors duration-[var(--duration-hover)] max-sm:min-w-10 max-sm:justify-center max-sm:px-2.5 ${
+            className={`relative flex min-h-10 items-center gap-1.5 rounded-[var(--radius-control)] px-3 text-caption font-semibold transition-colors duration-[var(--duration-hover)] max-sm:min-w-10 max-sm:justify-center max-sm:px-2.5 ${
               active ? 'text-on-accent' : 'text-fg-secondary hover:bg-[var(--button-ghost-bg-hover)] hover:text-fg'
             }`}
           >

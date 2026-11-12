@@ -41,9 +41,9 @@ export function TimelinePlayer({ timeline }: { timeline: [string, string] }) {
             aria-valuetext={`${percent}%`}
             className="h-7 w-full cursor-pointer accent-[var(--accent-fill)]"
           />
-          <div className="flex justify-between text-[11px] font-semibold text-fg-muted">
+          <div className="flex justify-between text-caption font-semibold text-fg-muted">
             <span>{timeline[0]}</span>
-            <span className="telemetry text-fg tabular-nums">{percent}%</span>
+            <span className="text-fg tabular-nums">{percent}%</span>
             <span>{timeline[1]}</span>
           </div>
         </div>

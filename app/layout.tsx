@@ -1,23 +1,18 @@
 import type { Metadata, Viewport } from 'next'
-import { Archivo, Instrument_Sans, JetBrains_Mono } from 'next/font/google'
+import { Atkinson_Hyperlegible_Next, Newsreader } from 'next/font/google'
 import './globals.css'
 
-const headingFont = Archivo({
+const displayFont = Newsreader({
   subsets: ['latin'],
-  axes: ['wdth'],
-  variable: '--font-heading',
+  weight: ['500', '600'],
+  variable: '--font-display',
   display: 'swap',
 })
 
-const bodyFont = Instrument_Sans({
+const bodyFont = Atkinson_Hyperlegible_Next({
   subsets: ['latin'],
+  weight: ['400', '600'],
   variable: '--font-body',
-  display: 'swap',
-})
-
-const telemetryFont = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-telemetry',
   display: 'swap',
 })
 
@@ -31,13 +26,13 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  colorScheme: 'dark',
-  themeColor: '#000000',
+  colorScheme: 'light',
+  themeColor: '#FBF5EE',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={`${headingFont.variable} ${bodyFont.variable} ${telemetryFont.variable}`}>
+    <html lang="id" className={`${displayFont.variable} ${bodyFont.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   )

@@ -10,8 +10,8 @@ export function GapList() {
           key={gap.id}
           summary={
             <div className="flex items-center gap-2">
-              <span className="telemetry text-[12px] font-semibold text-warning">{gap.id}</span>
-              <span className="min-w-0 flex-1 truncate text-[14px] font-semibold text-fg">{gap.area}</span>
+              <span className="text-caption font-semibold text-warning">{gap.id}</span>
+              <span className="min-w-0 flex-1 truncate text-body font-semibold text-fg">{gap.area}</span>
               <Badge tone="warning">{gap.status}</Badge>
             </div>
           }

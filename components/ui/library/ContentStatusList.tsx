@@ -41,19 +41,19 @@ export function ContentStatusList() {
             onClick={() => setFilter(filter === status ? 'all' : status)}
             className="cursor-pointer rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] px-3 py-2 text-left transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)] aria-pressed:border-line-strong aria-pressed:bg-accent-fill/30"
           >
-            <span className="telemetry block text-2xl font-semibold text-fg">{counts[status]}</span>
+            <span className="font-display tabular-nums block text-title font-semibold text-fg">{counts[status]}</span>
             <StatusPill status={status} />
           </button>
         ))}
       </div>
       <ExploreDisclosure label={`Rincian per item (${visible.length})`}>
         <div className="mb-2 flex items-center gap-2">
-          <p className="flex-1 text-[12px] text-fg-muted">Perubahan hanya tersimpan di peramban ini.</p>
+          <p className="flex-1 text-caption text-fg-muted">Perubahan hanya tersimpan di peramban ini.</p>
           <button
             type="button"
             onClick={resetStatuses}
             disabled={Object.keys(overrides).length === 0}
-            className="min-h-10 cursor-pointer rounded-[var(--radius-control)] px-2 text-xs font-semibold text-accent hover:bg-[var(--button-ghost-bg-hover)] disabled:cursor-default disabled:opacity-40"
+            className="min-h-10 cursor-pointer rounded-[var(--radius-control)] px-2 text-caption font-semibold text-accent hover:bg-[var(--button-ghost-bg-hover)] disabled:cursor-default disabled:opacity-40"
           >
             Reset
           </button>
@@ -61,16 +61,16 @@ export function ContentStatusList() {
         <ul>
           {visible.map((entry) => (
             <li key={entry.id} className="flex items-center gap-2 border-t border-line py-2 first:border-t-0">
-              <span className="telemetry w-16 shrink-0 text-[11.5px] font-semibold text-fg-muted">{entry.id}</span>
+              <span className="w-16 shrink-0 text-caption font-semibold text-fg-muted">{entry.id}</span>
               <span className="min-w-0 flex-1">
-                <span className="line-clamp-1 text-[13px] font-semibold text-fg">{entry.title}</span>
-                <span className="text-[11.5px] text-fg-muted">{entry.group}</span>
+                <span className="line-clamp-1 text-caption font-semibold text-fg">{entry.title}</span>
+                <span className="text-caption text-fg-muted">{entry.group}</span>
               </span>
               <select
                 aria-label={`Ubah status ${entry.id}`}
                 value={entry.status}
                 onChange={(event) => setStatus(entry.id, event.target.value as ReviewStatus)}
-                className="min-h-10 rounded-[var(--radius-control)] border border-line bg-surface-raised px-1.5 text-[12px] text-fg"
+                className="min-h-10 rounded-[var(--radius-control)] border border-line bg-surface-raised px-1.5 text-caption text-fg"
               >
                 {REVIEW_STATUSES.map((status) => (
                   <option key={status} value={status}>

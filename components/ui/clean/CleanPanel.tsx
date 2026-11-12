@@ -18,8 +18,8 @@ export function CleanPanel() {
 
   return (
     <div className="pb-2">
-      <h2 className="text-xl font-semibold tracking-tight text-fg">Bersihkan plak</h2>
-      <p className="mt-1 text-[13px] text-fg-secondary">Gosok gumpalan kuning di gigi, sela, dan lidah.</p>
+      <h2 className="text-subtitle font-semibold tracking-tight text-fg">Bersihkan plak</h2>
+      <p className="mt-1 text-caption text-fg-secondary">Gosok gumpalan kuning di gigi, sela, dan lidah.</p>
 
       <ScoreSummary />
 
@@ -30,7 +30,7 @@ export function CleanPanel() {
           type="button"
           onClick={useMouthwash}
           disabled={rinsed}
-          className="flex min-h-10 flex-1 cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-control)] bg-accent-fill text-[13px] font-semibold text-on-accent transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)] disabled:cursor-default disabled:opacity-45 disabled:active:scale-100"
+          className="flex min-h-10 flex-1 cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-control)] bg-accent-fill text-caption font-semibold text-on-accent transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)] disabled:cursor-default disabled:opacity-45 disabled:active:scale-100"
         >
           <Droplets className="size-4" aria-hidden />
           {rinsed ? 'Sudah berkumur' : 'Obat kumur'}
@@ -38,7 +38,7 @@ export function CleanPanel() {
         <button
           type="button"
           onClick={reset}
-          className="flex min-h-10 cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] px-4 text-[13px] font-semibold text-fg-secondary transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] hover:text-fg active:scale-[var(--scale-press)]"
+          className="flex min-h-10 cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] px-4 text-caption font-semibold text-fg-secondary transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] hover:text-fg active:scale-[var(--scale-press)]"
         >
           <RotateCcw className="size-4" aria-hidden />
           Ulangi
@@ -53,7 +53,7 @@ export function CleanPanel() {
           </ExploreChip>
         ))}
       </div>
-      <p className="mt-3 text-[12px] text-fg-muted">Klik kiri atau satu jari menggosok. Klik kanan atau dua jari memutar.</p>
+      <p className="mt-3 text-caption text-fg-muted">Klik kiri atau satu jari menggosok. Klik kanan atau dua jari memutar.</p>
 
       <PreventionPillars />
     </div>

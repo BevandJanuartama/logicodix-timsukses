@@ -29,8 +29,8 @@ export function ExploreIntro() {
 
   return (
     <>
-      <h2 className="text-xl font-semibold tracking-tight text-fg">Klik bagian mana pun</h2>
-      <p className="mt-1 text-[13.5px] leading-snug text-fg-secondary">Pilih gigi, gusi, atau lidah di 3D, atau mulai dari pintasan.</p>
+      <h2 className="text-subtitle font-semibold tracking-tight text-fg">Klik bagian mana pun</h2>
+      <p className="mt-1 text-caption text-fg-secondary">Pilih gigi, gusi, atau lidah di 3D, atau mulai dari pintasan.</p>
 
       <ul className="mt-3 flex flex-wrap gap-1.5">
         {QUICK_TARGETS.map((target) => (
@@ -47,7 +47,7 @@ export function ExploreIntro() {
             key={id}
             title={hint}
             aria-current={lod === id ? 'step' : undefined}
-            className="flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-[var(--radius-control)] border border-line text-[13px] font-semibold text-fg-muted aria-[current=step]:border-line-strong aria-[current=step]:bg-[var(--chip-bg)] aria-[current=step]:text-fg"
+            className="flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-[var(--radius-control)] border border-line text-caption font-semibold text-fg-muted aria-[current=step]:border-line-strong aria-[current=step]:bg-[var(--chip-bg)] aria-[current=step]:text-fg"
           >
             <Icon className="size-4" aria-hidden />
             {label}

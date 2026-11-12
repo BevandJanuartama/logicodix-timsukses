@@ -18,7 +18,7 @@ export function QuizPanel() {
 
   return (
     <div className="px-3 pb-3">
-      <div className="telemetry mb-1.5 flex justify-between text-[11px] font-semibold text-fg-muted uppercase">
+      <div className="tabular-nums mb-1.5 flex justify-between text-caption font-semibold text-fg-muted">
         <span>{finished ? 'Selesai' : `Soal ${index + 1}/${total}`}</span>
         <span className="tabular-nums">{Math.round((answeredCount / total) * 100)}%</span>
       </div>

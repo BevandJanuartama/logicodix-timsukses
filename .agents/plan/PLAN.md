@@ -158,3 +158,19 @@ Eksekusi dilakukan bertahap per fase, satu fase per giliran, dengan alokasi mode
 | **Fase 9** | Redesign Interactive Pathology Simulator & 3D Oral Hygiene Lab | 🔵 **Sonnet** (Simulator Logic & Particles) | `feat: implement interactive pathology simulator and 3d hygiene lab` |
 | **Fase 10** | Redesign Clinical Quiz Assessment, Reference Library & Governance Dialogs | 🔵 **Sonnet** (Dialogs & Quiz Logic) | `feat: add clinical quiz assessment reference library and governance dialogs` |
 | **Fase 11** | Anti-Slop Audit, Performance Hardening (60 FPS) & Final Verification | 🔵 **Sonnet** (Bugfix) + 🟢 **Haiku** (Audit & Build) | `refactor: polish motion choreography accessibility and 60fps rendering` |
+
+### F. Redesign "Ruang Praktik Hangat" (Fase 12 – 16)
+Detail lengkap: `.agents/plan/FASE12_DIRECTION.md` (diagnosis, palet, tipografi, tata letak per mode, motion, rencana fase).
+- **Konsep:** gigi di atas alas lembut, latar krem hangat, satu aksen coral, tinta cokelat tua. Tenang, bukan klinis. Satu tema terang.
+- **Palet inti:** krem `#FBF5EE`, paper `#FFFCF8`, sunken `#F3E8DC`, sand `#EADBCB`, ink `#2A201B`, coral `#E2643F` (non-teks), coral-deep `#A93E1F` (teks/tombol). Status selalu warna + kata.
+- **Font (2):** Newsreader (display serif) + Atkinson Hyperlegible Next (teks). Isi 17px, minimum 15px. Tanpa mono, tanpa label kapital kecil, tanpa kode internal (TT-/SRC-).
+- **Tata letak:** bar atas polos, rail kiri 280px dengan thumbnail, kanvas tengah dengan alas dan toolbar berlabel, kartu info kanan 380px, tautan "Langkah berikutnya".
+- **One Live Thing:** "Ketuk titik, gigi menoleh padamu" — hotspot coral bernapas di model, kamera meluncur 700ms ke gigi terpilih.
+
+| Fase | Deskripsi | Model Rekomendasi | Commit Message Target (dilakukan pengguna) |
+|:---:|---|:---:|---|
+| **Fase 12** | Fondasi token, font, panggung 3D krem | 🔵 Sonnet + 🟢 Haiku | `feat: warm cream design tokens typography and 3d stage` |
+| **Fase 13** | Shell, navigasi, rail, toolbar, onboarding, sheet mobile | 🟣 Opus → 🔵 Sonnet | `feat: rebuild shell with library rail toolbar and onboarding` |
+| **Fase 14** | Anatomi & Penyakit + hotspot 3D | 🟣 Opus → 🔵 Sonnet | `feat: add 3d hotspots and simplify anatomy and disease views` |
+| **Fase 15** | Simulasi & Latihan sikat | 🔵 Sonnet | `feat: redesign time slider simulator and brushing practice` |
+| **Fase 16** | Kuis, pustaka, bahasa awam, audit akhir | 🔵 Sonnet + 🟣 Opus + 🟢 Haiku | `refactor: plain language audit and final polish` |

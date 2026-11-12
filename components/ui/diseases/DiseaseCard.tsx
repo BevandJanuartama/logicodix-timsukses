@@ -25,10 +25,10 @@ export function DiseaseCard({ disease, expanded, onToggle }: DiseaseCardProps) {
       >
         <span className="min-w-0 flex-1">
           <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-            <span className="text-[15px] font-semibold text-fg">{disease.displayName}</span>
+            <span className="text-body font-semibold text-fg">{disease.displayName}</span>
             <SeverityBadge diseaseId={disease.id} />
           </span>
-          <span className="mt-0.5 block text-[13px] leading-snug text-fg-secondary">{disease.definition}</span>
+          <span className="mt-0.5 block text-caption text-fg-secondary">{disease.definition}</span>
         </span>
         <ChevronDown
           className={`size-4 shrink-0 text-fg-muted transition-transform duration-[var(--duration-state)] ease-[var(--ease-out)] ${expanded ? 'rotate-180' : ''}`}

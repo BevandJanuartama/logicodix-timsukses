@@ -25,17 +25,17 @@ export function StructureDetail({ objectId }: { objectId: AnatomyObjectId }) {
 
   return (
     <article>
-      <p className="telemetry flex items-center gap-2 text-[11px] font-semibold text-fg-muted">
+      <p className="flex items-center gap-2 text-caption font-semibold text-fg-muted">
         {structure.id} · {structure.tissueType}
         <StatusBadge contentId={structure.id} baseStatus={structure.status} />
       </p>
-      <h2 className="mt-1 text-[22px] leading-tight font-semibold tracking-tight text-fg">{sceneTargetLabels[objectId]}</h2>
-      <p className="mt-2 text-[14px] leading-snug text-fg-secondary">{structure.description}</p>
-      <p className="telemetry mt-2 text-[12px] text-fg-muted">Lokasi: {structure.location}</p>
+      <h2 className="font-display mt-1 text-title font-semibold tracking-tight text-fg">{sceneTargetLabels[objectId]}</h2>
+      <p className="mt-2 text-body text-fg-secondary">{structure.description}</p>
+      <p className="mt-2 text-caption text-fg-muted">Lokasi: {structure.location}</p>
 
       <ExploreDisclosure label="Catatan klinis">
-        <p className="text-[13px] leading-snug text-fg-secondary">{structure.clinicalNote}</p>
-        <p className="telemetry mt-2 text-[11px] text-fg-muted">{structure.sourceLabel}</p>
+        <p className="text-caption text-fg-secondary">{structure.clinicalNote}</p>
+        <p className="mt-2 text-caption text-fg-muted">{structure.sourceLabel}</p>
       </ExploreDisclosure>
 
       {relatedDiseases.length > 0 && (

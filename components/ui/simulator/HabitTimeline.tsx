@@ -28,13 +28,13 @@ export function HabitTimeline({ habitId }: { habitId: HabitId }) {
             />
           ))}
         </ol>
-        <h3 className="font-display text-[15px] font-semibold text-fg">
-          <span className="telemetry mr-2 text-[11px] text-fg-muted tabular-nums">
+        <h3 className="font-display text-body font-semibold text-fg">
+          <span className="mr-2 text-caption text-fg-muted tabular-nums">
             {stageIndex + 1}/{scenario.stages.length}
           </span>
           {stage.title}
         </h3>
-        <p className="mt-1 text-[13px] leading-snug text-fg-secondary">{stage.description}</p>
+        <p className="mt-1 text-caption text-fg-secondary">{stage.description}</p>
       </article>
 
       {scenario.inspectToothId && <SectionToggle toothId={scenario.inspectToothId} label="Belah geraham" />}

@@ -35,7 +35,7 @@ export function ViewPresetMenu({ open, onChoose }: ViewPresetMenuProps) {
               <button
                 type="button"
                 onClick={() => onChoose(preset.id)}
-                className="block min-h-10 w-full rounded-[var(--radius-control)] px-3 text-left text-[13px] font-semibold text-fg-secondary transition-colors hover:bg-[var(--button-ghost-bg-hover)] hover:text-fg"
+                className="block min-h-10 w-full rounded-[var(--radius-control)] px-3 text-left text-caption font-semibold text-fg-secondary transition-colors hover:bg-[var(--button-ghost-bg-hover)] hover:text-fg"
               >
                 {preset.label}
               </button>

@@ -33,11 +33,11 @@ export function ReferencesDialog() {
             current={reference.id === focusedReferenceId}
             summary={
               <>
-                <p className="flex items-baseline gap-2 text-[12px]">
-                  <span className="telemetry shrink-0 whitespace-nowrap font-semibold text-accent">{reference.id}</span>
+                <p className="flex items-baseline gap-2 text-caption">
+                  <span className="shrink-0 whitespace-nowrap font-semibold text-accent">{reference.id}</span>
                   <span className="truncate text-fg-muted">{reference.institution}</span>
                 </p>
-                <p className="line-clamp-2 text-[14px] font-semibold text-fg">{reference.title}</p>
+                <p className="line-clamp-2 text-body font-semibold text-fg">{reference.title}</p>
               </>
             }
             trailing={
@@ -54,7 +54,7 @@ export function ReferencesDialog() {
           >
             <p>{reference.publication} · {reference.sourceType}</p>
             <p className="text-fg">{reference.relevantContent}</p>
-            <p className="text-[12px] text-fg-muted">{reference.accessNote}</p>
+            <p className="text-caption text-fg-muted">{reference.accessNote}</p>
           </LibraryRow>
         ))}
       </ul>

@@ -38,13 +38,13 @@ export function QuestionCard({ question, isLast }: { question: QuizQuestion; isL
 
   return (
     <article>
-      <div className="telemetry flex items-center gap-2 text-[11px] font-semibold text-fg-muted uppercase">
+      <div className="flex items-center gap-2 text-caption font-semibold text-fg-muted">
         <span>{question.topic}</span>
         <span aria-hidden>·</span>
         <span>{question.id}</span>
         <StatusBadge contentId={question.id} baseStatus={question.status} />
       </div>
-      <h3 id={`${question.id}-prompt`} className="mt-2 text-[17px] leading-snug font-bold text-fg">
+      <h3 id={`${question.id}-prompt`} className="mt-2 text-body font-bold text-fg">
         {question.question}
       </h3>
 
@@ -67,11 +67,11 @@ export function QuestionCard({ question, isLast }: { question: QuizQuestion; isL
         type="button"
         disabled={!checked && selected === null}
         onClick={confirm}
-        className="mt-4 min-h-11 w-full cursor-pointer rounded-[var(--radius-control)] bg-[var(--button-primary-bg)] px-4 text-sm font-semibold text-[var(--button-primary-fg)] transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] hover:bg-[var(--button-primary-bg-hover)] enabled:active:scale-[var(--scale-press)] disabled:cursor-not-allowed disabled:opacity-40"
+        className="mt-4 min-h-11 w-full cursor-pointer rounded-[var(--radius-control)] bg-[var(--button-primary-bg)] px-4 text-caption font-semibold text-[var(--button-primary-fg)] transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] hover:bg-[var(--button-primary-bg-hover)] enabled:active:scale-[var(--scale-press)] disabled:cursor-not-allowed disabled:opacity-40"
       >
         {!checked ? 'Periksa' : isLast ? 'Lihat skor' : 'Berikutnya'}
       </button>
-      <p className="telemetry mt-2 hidden text-center text-[11px] text-fg-muted md:block">1–4 pilih · Enter lanjut</p>
+      <p className="mt-2 hidden text-center text-caption text-fg-muted md:block">1–4 pilih · Enter lanjut</p>
     </article>
   )
 }

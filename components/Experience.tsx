@@ -23,7 +23,7 @@ import { ViewControls } from '@/components/ui/shell/ViewControls'
 function SceneLoader() {
   return (
     <div className="absolute inset-0 grid place-items-center">
-      <p className="telemetry flex flex-col items-center gap-3 text-xs text-fg-secondary uppercase">
+      <p className="flex flex-col items-center gap-3 text-caption text-fg-secondary">
         <span className="panel grid size-14 animate-pulse place-items-center text-accent">
           <ToothMark size={28} />
         </span>

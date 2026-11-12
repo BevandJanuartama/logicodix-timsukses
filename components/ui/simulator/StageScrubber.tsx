@@ -63,8 +63,8 @@ export function StageScrubber({ label, items, activeIndex, indicatorId, onSelect
                 transition={reduceMotion ? { duration: 0 } : INDICATOR_SPRING}
               />
             )}
-            <span className="relative block text-[17px] leading-tight font-semibold tabular-nums">{item.stageNumber}</span>
-            <span className="telemetry relative block truncate text-[10px] opacity-70">{item.id}</span>
+            <span className="relative block text-body font-semibold tabular-nums">{item.stageNumber}</span>
+            <span className="relative block truncate text-caption opacity-70">{item.id}</span>
           </button>
         )
       })}

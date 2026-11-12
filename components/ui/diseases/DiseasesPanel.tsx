@@ -35,11 +35,11 @@ export function DiseasesPanel() {
 
   return (
     <div className="pb-2">
-      <h2 className="text-xl font-semibold tracking-tight text-fg">Penyakit gigi & mulut</h2>
-      <p className="mt-1 text-[13px] text-fg-secondary">Ketuk untuk detail. Lihat lokasinya di model 3D.</p>
+      <h2 className="text-subtitle font-semibold tracking-tight text-fg">Penyakit gigi & mulut</h2>
+      <p className="mt-1 text-caption text-fg-secondary">Ketuk untuk detail. Lihat lokasinya di model 3D.</p>
 
       {structureFilter && (
-        <p className="mt-3 flex items-center justify-between gap-2 rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] py-1 pr-1 pl-3 text-[13px] font-semibold text-fg">
+        <p className="mt-3 flex items-center justify-between gap-2 rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] py-1 pr-1 pl-3 text-caption font-semibold text-fg">
           Terkait {sceneTargetLabels[structureFilter]}
           <button
             type="button"
@@ -73,9 +73,9 @@ export function DiseasesPanel() {
         ))}
       </ul>
       {visibleDiseases.length === 0 && (
-        <p className="mt-4 text-center text-[13px] text-fg-muted">Tidak ada penyakit pada filter ini.</p>
+        <p className="mt-4 text-center text-caption text-fg-muted">Tidak ada penyakit pada filter ini.</p>
       )}
-      <p className="mt-4 text-[12px] leading-snug text-fg-muted">Edukatif, status draf; bukan pengganti pemeriksaan tenaga kesehatan.</p>
+      <p className="mt-4 text-caption text-fg-muted">Edukatif, status draf; bukan pengganti pemeriksaan tenaga kesehatan.</p>
     </div>
   )
 }

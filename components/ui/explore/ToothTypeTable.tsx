@@ -27,7 +27,7 @@ export function ToothTypeTable({ activeId }: { activeId?: string }) {
             type="button"
             aria-pressed={dentition === option.id}
             onClick={() => setDentition(option.id)}
-            className="min-h-10 flex-1 cursor-pointer rounded-[var(--radius-control)] text-[13px] font-semibold text-fg-secondary hover:text-fg aria-pressed:bg-accent-fill aria-pressed:text-on-accent"
+            className="min-h-10 flex-1 cursor-pointer rounded-[var(--radius-control)] text-caption font-semibold text-fg-secondary hover:text-fg aria-pressed:bg-accent-fill aria-pressed:text-on-accent"
           >
             {option.label}
           </button>
@@ -42,10 +42,10 @@ export function ToothTypeTable({ activeId }: { activeId?: string }) {
               aria-current={type.id === activeId ? 'true' : undefined}
               className="rounded-[var(--radius-control)] px-2.5 py-2 aria-[current=true]:bg-[var(--chip-bg)]"
             >
-              <div className="flex items-baseline gap-2 text-[13px]">
-                <span className="telemetry w-12 shrink-0 text-[11px] text-fg-muted">{type.id}</span>
+              <div className="flex items-baseline gap-2 text-caption">
+                <span className="w-12 shrink-0 text-caption text-fg-muted">{type.id}</span>
                 <span className="flex-1 truncate font-semibold text-fg">{type.name.split(' / ')[1] ?? type.name}</span>
-                <span className="telemetry text-base font-semibold text-fg">{count}</span>
+                <span className="tabular-nums text-body font-semibold text-fg">{count}</span>
               </div>
               <div aria-hidden className="mt-1.5 h-1 overflow-hidden rounded-full bg-line">
                 <div
@@ -53,12 +53,12 @@ export function ToothTypeTable({ activeId }: { activeId?: string }) {
                   style={{ transform: `scaleX(${maxCount > 0 ? count / maxCount : 0})` }}
                 />
               </div>
-              <p className="mt-1 pl-14 text-[12px] text-fg-muted">{type.function}</p>
+              <p className="mt-1 pl-14 text-caption text-fg-muted">{type.function}</p>
             </li>
           )
         })}
       </ul>
-      <p className="telemetry mt-1 px-2.5 text-[12px] text-fg-secondary">Total {total} gigi</p>
+      <p className="tabular-nums mt-1 px-2.5 text-caption text-fg-secondary">Total {total} gigi</p>
     </div>
   )
 }

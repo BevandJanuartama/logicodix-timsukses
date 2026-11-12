@@ -43,10 +43,10 @@ export function Dialog({ open, title, description, onClose, children }: DialogPr
         >
           <header className="flex items-start gap-3 border-b border-line px-5 pt-4 pb-3">
             <div className="flex-1">
-              <h2 id={titleId} className="font-display text-lg font-bold tracking-tight">
+              <h2 id={titleId} className="font-display text-subtitle font-bold tracking-tight">
                 {title}
               </h2>
-              {description && <p className="mt-0.5 text-[13px] leading-snug text-fg-muted">{description}</p>}
+              {description && <p className="mt-0.5 text-caption text-fg-muted">{description}</p>}
             </div>
             <button
               type="button"

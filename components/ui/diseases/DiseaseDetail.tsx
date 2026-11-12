@@ -19,7 +19,7 @@ const FACTS: { key: 'symptoms' | 'riskFactors' | 'affectedStructures' | 'prevent
 ]
 
 const ACTION_CLASSES =
-  'flex min-h-10 cursor-pointer items-center gap-1.5 rounded-[var(--radius-control)] px-3 text-[13px] font-semibold transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)]'
+  'flex min-h-10 cursor-pointer items-center gap-1.5 rounded-[var(--radius-control)] px-3 text-caption font-semibold transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)]'
 
 const isClinicalDisease = (diseaseId: string): diseaseId is ClinicalTrackId =>
   (CLINICAL_TRACKS as string[]).includes(diseaseId)
@@ -56,7 +56,7 @@ export function DiseaseDetail({ disease }: { disease: Disease }) {
       </div>
 
       {link && link.structures.length > 0 && (
-        <p className="mt-2 text-[12px] text-fg-muted">
+        <p className="mt-2 text-caption text-fg-muted">
           {link.structures.slice(0, 3).map((structure) => sceneTargetLabels[structure]).join(' · ')}
         </p>
       )}
@@ -65,12 +65,12 @@ export function DiseaseDetail({ disease }: { disease: Disease }) {
         <dl className="space-y-2.5">
           {FACTS.map((fact) => (
             <div key={fact.key}>
-              <dt className="telemetry text-[11px] font-semibold text-fg-muted uppercase">{fact.label}</dt>
-              <dd className="mt-0.5 text-[13px] leading-snug text-fg-secondary">{disease[fact.key]}</dd>
+              <dt className="text-caption font-semibold text-fg-muted">{fact.label}</dt>
+              <dd className="mt-0.5 text-caption text-fg-secondary">{disease[fact.key]}</dd>
             </div>
           ))}
         </dl>
-        <p className="mt-3 border-l-2 border-danger pl-2.5 text-[12.5px] leading-snug text-fg-secondary">
+        <p className="mt-3 border-l-2 border-danger pl-2.5 text-caption text-fg-secondary">
           {disease.safetyNote}
         </p>
       </ExploreDisclosure>
@@ -81,7 +81,7 @@ export function DiseaseDetail({ disease }: { disease: Disease }) {
             key={sourceId}
             type="button"
             onClick={() => openModal('references', sourceId)}
-            className="telemetry min-h-10 cursor-pointer text-[11px] font-semibold text-accent hover:underline"
+            className="min-h-10 cursor-pointer text-caption font-semibold text-accent hover:underline"
           >
             {sourceId}
           </button>

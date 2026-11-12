@@ -27,7 +27,7 @@ export function TopBar() {
         <span className="grid size-9 place-items-center rounded-[var(--radius-control)] bg-accent-fill text-on-accent">
           <ToothMark />
         </span>
-        <span className="hidden font-display text-[15px] font-bold tracking-tight text-fg sm:block">Dental Explorer</span>
+        <span className="hidden font-display text-body font-bold tracking-tight text-fg sm:block">Dental Explorer</span>
       </button>
       <div className="ml-auto lg:ml-3">
         <ModeTabs />

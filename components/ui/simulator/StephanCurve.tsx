@@ -38,7 +38,7 @@ export function StephanCurve() {
 
   return (
     <figure className="rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] p-3">
-      <figcaption className="font-display text-[14px] font-semibold text-fg">Kurva pH plak</figcaption>
+      <figcaption className="font-display text-body font-semibold text-fg">Kurva pH plak</figcaption>
       <div role="group" aria-label="Pola minum" className="mt-2 flex flex-wrap gap-1.5">
         {stephanScenarios.map((item) => (
           <ExploreChip key={item.id} pressed={item.id === scenario.id} onClick={() => setScenarioId(item.id)}>
@@ -78,13 +78,13 @@ export function StephanCurve() {
           transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.23, 1, 0.32, 1] }}
         />
       </svg>
-      <p className="mt-1 flex items-baseline justify-between gap-2 text-[13px] text-fg-secondary" aria-live="polite">
+      <p className="mt-1 flex items-baseline justify-between gap-2 text-caption text-fg-secondary" aria-live="polite">
         <span>{scenario.caption}</span>
         <span className={criticalMinutes ? 'font-semibold text-danger' : 'font-semibold text-success'}>
-          <span className="telemetry tabular-nums">±{criticalMinutes}</span> menit kritis
+          <span className="tabular-nums">±{criticalMinutes}</span> menit kritis
         </span>
       </p>
-      <p className="mt-1 text-[11px] text-fg-muted">Ilustrasi edukatif yang disederhanakan.</p>
+      <p className="mt-1 text-caption text-fg-muted">Ilustrasi edukatif yang disederhanakan.</p>
     </figure>
   )
 }

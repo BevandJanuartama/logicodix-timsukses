@@ -45,18 +45,18 @@ export function ClinicalStages({ track }: { track: ClinicalTrackId }) {
           transition={{ duration: 0.18, ease: [0.23, 1, 0.32, 1] }}
           className="rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] p-3"
         >
-          <h3 className="font-display text-[15px] font-semibold text-fg">{stage.title}</h3>
-          <p className="mt-1 text-[13px] leading-snug text-fg-secondary">{stage.description}</p>
+          <h3 className="font-display text-body font-semibold text-fg">{stage.title}</h3>
+          <p className="mt-1 text-caption text-fg-secondary">{stage.description}</p>
         </motion.article>
       </AnimatePresence>
 
       <SectionToggle toothId={clinicalFocusTooth[track]} label={SECTION_LABELS[track]} />
 
       <ExploreDisclosure label="Detail klinis">
-        <div className="space-y-2 text-[13px] leading-snug text-fg-secondary">
+        <div className="space-y-2 text-caption text-fg-secondary">
           <p className="flex items-center gap-2">
             <StatusBadge contentId={stage.id} baseStatus={stage.status} />
-            <span className="telemetry text-[11px] text-fg-muted">{stage.id}</span>
+            <span className="text-caption text-fg-muted">{stage.id}</span>
           </p>
           <p>
             <span className="font-semibold text-fg">Visual: </span>

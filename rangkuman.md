@@ -34,7 +34,7 @@
 
 | No | Fitur Utama | Modul PRD | Deskripsi Alur & Fungsi | Status Implementasi |
 |:--:|---|---|---|:--:|
-| 1 | **Home & Quick Mode Switcher** | `FR-001` | Pengenalan produk dengan antarmuka *Clean Medical Tech Glassmorphism* dan navigasi cepat antar-modul | `Selesai (Fase 3)` — Hero + tab Anatomi/Penyakit; tab Simulator/Kuis menyusul Fase 4–5 |
+| 1 | **Home & Quick Mode Switcher** | `FR-001` | Pengenalan produk dengan antarmuka krem terang *Ruang Praktik Hangat* (Fase 12) dan navigasi cepat antar-modul | `Selesai (Fase 3)` — Hero + tab Anatomi/Penyakit; tab Simulator/Kuis menyusul Fase 4–5 |
 | 2 | **3D Dental & Mouth Explorer (LOD Makro–Meso–Mikro)** | `FR-002`..`FR-006` | Eksplorasi 3D 32 gigi (FDI), *rotate/zoom/pan/reset*, pemilih mesh berdasarkan object ID, *cutaway cross-section*, dan *Show/Hide Layer Anatomi* | `Selesai (Fase 2)` — engine 3D, raycast 10 struktur + 7 zona rongga mulut, toggle 10 lapisan, cutaway |
 | 3 | **Katalog Anatomi & Klasifikasi Jenis Gigi** | `FR-007` | Informasi mendalam 10 struktur (`AN-001` Enamel s/d `AN-010` CEJ) & 4 jenis gigi (`TT-001`..`TT-004` sulung vs permanen) beserta meter kerentanan | `Selesai (Fase 3)` — tanpa meter kerentanan (tidak ada di Knowledge Base) |
 | 4 | **Katalog 10 Penyakit & Kondisi Gigi** | `FR-008`..`FR-009` | Direktori `DIS-001` s/d `DIS-010` lengkap dengan definisi, faktor risiko, gejala umum, bagian terdampak, pencegahan, *safety note*, dan rujukan `SRC-xxx` | `Selesai (Fase 3)` — + tombol "Lihat di 3D"; "Buka Simulator" di Fase 4 |
@@ -50,7 +50,8 @@
   * Framework: **Next.js 15** (App Router) + **React 19** + **TypeScript 5.9**
   * 3D Rendering: **Three.js (`0.180`)** + **React Three Fiber (`@react-three/fiber` v9)** + **`@react-three/drei` v10** (Procedural Geometry + Custom GLSL Shaders + Local Clipping Planes + `InstancedMesh` + `PerformanceMonitor`)
   * State Management: **Zustand v5** (Reactive UI store + non-reactive 60 FPS simulation state `sim.ts`)
-  * Styling & UI: **Tailwind CSS v4** (`@tailwindcss/postcss`) + Design System Token Tiga Lapis (primitif → semantik → komponen) dengan tipografi `Archivo` (judul), `Instrument Sans` (body), dan `JetBrains Mono` (telemetri)
+  * Styling & UI: **Tailwind CSS v4** (`@tailwindcss/postcss`) + Design System Token Tiga Lapis (primitif → semantik → komponen) dengan satu tema krem terang (cream `#FBF5EE`, paper `#FFFCF8`, ink `#2A201B`, coral `#E2643F` non-teks, coral-deep `#A93E1F` untuk teks dan tombol; status ok `#2E7048`, warn `#8F5300`, danger `#B42318`)
+  * Tipografi: **`Newsreader`** (display) dan **`Atkinson Hyperlegible Next`** (teks), skala `text-display` / `title` / `subtitle` / `body` (17px) / `caption` (15px)
   * Motion & UI Components: **framer-motion** + komponen dari **21st.dev** (shadcn registry, di-restyle ke token desain)
   * Iconography: **Lucide React** + Custom Clinical Dental SVG Icons
 * **Data & Knowledge Base Architecture:**
@@ -66,7 +67,7 @@
 ```mermaid
 graph TD
     User["Pengguna (Desktop / Tablet / Mobile)"]
-    UI["Next.js 15 App Router UI Layer (.glass HUD)"]
+    UI["Next.js 15 App Router UI Layer (HUD krem)"]
     Store["Zustand Reactive Store & 60FPS Sim State"]
     R3F["React Three Fiber 3D Scene Engine"]
     Proc["Procedural Tooth/Mouth Geometry & Custom Shaders"]
@@ -168,8 +169,8 @@ Sesuai kebutuhan `FR-014` dan `FR-015` pada PRD, aplikasi menyertakan fitur **Co
    * **Shader gusi** (`lib/three/gingivaShader.ts`, `lib/three/softTissue.ts`): specular *wetness* saliva (Schlick Fresnel) dan rona sehat vs meradang lewat `uGumInflammation` (`AN-010`).
    * **Studio lighting** (`components/three/StudioLights.tsx`): rig tiga titik (key hangat-putih, cool rim dari belakang, warm fill) ditambah hemisphere light; rig berotasi mengikuti azimuth kamera dengan damping.
 7. **Redesign Design System & Shell HUD Fase 8 (Token Tiga Lapis, Explore & Katalog Penyakit):**
-   * **Token tiga lapis** (`app/globals.css`): primitif `--p-*`, semantik `--surface-*` / `--text-*` / `--status-*`, dan komponen `--panel-*`, `--button-*`, `--chip-*`; tema terang dan gelap lewat `data-theme`; kurva easing `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)`.
-   * **Tipografi** (`app/layout.tsx`): `Archivo` (judul, sumbu `wdth`), `Instrument Sans` (body), `JetBrains Mono` (telemetri); maksimal dua font display/body ditambah satu mono.
+   * **Token tiga lapis** (`app/globals.css`): primitif `--p-*`, semantik `--surface-*` / `--text-*` / `--status-*`, dan komponen `--panel-*`, `--button-*`, `--chip-*`; tema terang dan gelap lewat `data-theme` (tema gelap dihapus Fase 12, lihat item 11); kurva easing `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)`.
+   * **Tipografi:** digantikan pada Fase 12 (lihat item 11).
    * **Shell HUD** (`components/ui/shell/*`): navigasi spasial dengan indikator `layoutId`, panel inspektor, dan bottom-sheet mobile yang dapat di-drag.
    * **Explore** (`components/ui/explore/*`): bagian detail dapat dilipat (`ExploreDisclosure`), matriks lapisan `AN-001..010`, dan perbandingan `TT-001..004`.
    * **Katalog penyakit** (`components/ui/diseases/*`): kartu `DiseaseCard` dengan lencana tingkat perhatian editorial (`Ringan` / `Sedang` / `Segera`, dari `diseaseSeverity.ts`), filter cepat, sitasi `SRC-*`, dan aksi "Lihat di 3D".
@@ -181,6 +182,7 @@ Sesuai kebutuhan `FR-014` dan `FR-015` pada PRD, aplikasi menyertakan fitur **Co
    * **Skor kebersihan** (`components/ui/clean/ScoreSummary.tsx`, `CleanFeedback.tsx`): *Cleaning Score* 0–100% dengan umpan balik per alat.
    * **5 pilar pencegahan** (`components/ui/clean/PreventionPillars.tsx`): materi `PRE-001..005` disajikan dalam lipatan agar panel tetap ringkas.
    * **Catatan terbuka:** (a) 4 skenario Stephan di `lib/data/stephanScenarios.ts` adalah pola editorial yang **belum bersumber** dan belum ditinjau klinisi; (b) alat yang tersedia saat ini adalah sikat, benang gigi, pembersih lidah, dan obat kumur; scaler, kalkulus, dan noda **belum ada di logika**.
+
 9. **Redesign Kuis, Referensi & Tata Kelola Fase 10 (Transisi Soal, Dialog Native & Badge):**
    * **Kuis** (`components/ui/quiz/*`, `useQuizKeyboard.ts`): transisi antar soal, umpan balik instan per jawaban (`AnswerFeedback`), skor akhir (`QuizResult`), navigasi keyboard 1–4 / panah / Enter, dan tombol "Tunjukkan di 3D".
    * **Dialog native** (`components/ui/shell/Dialog.tsx`): tema gelap dengan animasi `scale(0.95)`; **Referensi** (`ReferencesDialog.tsx`): 12 SRC dengan sorotan; **Tata Kelola** (`GovernanceDialog.tsx`): bertab dengan status konten (`ContentStatusList`), AST, GAP (`GapList`), dan disclaimer FR-015 (`MedicalDisclaimer`).
@@ -194,6 +196,14 @@ Sesuai kebutuhan `FR-014` dan `FR-015` pada PRD, aplikasi menyertakan fitur **Co
    * **Build produksi:** `npm run typecheck` dan `npm run build` lulus 0 error (Next.js 15.5); route `/` 187 kB, First Load JS 290 kB, shared 103 kB.
    * **Belum terverifikasi:** FPS 60 (panel browser tersembunyi), drag sentuh nyata, dan perangkat nyata.
    * **Ringkasan catatan terbuka:** (a) tingkat keparahan penyakit (`components/ui/diseases/diseaseSeverity.ts`), (b) 4 skenario Stephan (`lib/data/stephanScenarios.ts`), dan (c) peta fokus kuis Q-001..Q-006 (`lib/data/quizFocus.ts`) adalah keputusan editorial yang **belum ditinjau klinisi**; (d) angka Kemenkes SKI belum tersedia (GAP-004).
+11. **Redesign Arah "Ruang Praktik Hangat" Fase 12 (Tema Krem Terang, Tipografi & Alas 3D):**
+   * **Arah desain** (`.agents/plan/FASE12_DIRECTION.md`): nama tab tetap; tema gelap dihapus; thumbnail rail dibuat dari render model sendiri.
+   * **Tema tunggal** (`app/globals.css`): satu tema krem terang; nama token lama dipertahankan sebagai alias. Dihapus: tema gelap, `.glass`, rim-light, dan palet navy/biru.
+   * **Tipografi** (`app/layout.tsx`): `Newsreader` (display, `--font-display`) dan `Atkinson Hyperlegible Next` (teks, `--font-body`) menggantikan `Archivo`, `Instrument Sans`, dan `JetBrains Mono`; `colorScheme: light`, `themeColor #FBF5EE`. Kelas telemetri kini alias `tabular-nums`.
+   * **Keterbacaan:** 50 file komponen; label mono/kapital kecil dan teks di bawah 15px diganti ke skala baru.
+   * **Alas 3D:** latar canvas `#F6ECE1` (CSS, tidak terkena tone mapping); alas baru `components/three/Pedestal.tsx` (silinder `#EADBCB` + `ContactShadows` dari drei); lampu hangat (hemisphere `#FFF7EE`/`#E8CDB9`, key `#FFF1E0`, fill `#FFD9BD`, rim `#FFE2CF`); exposure 1.05.
+   * **Verifikasi:** `typecheck` dan `build` produksi lulus (route `/` 187 kB, First Load JS 290 kB); tampilan krem terlihat di browser 1440x900 dan 375x812.
+   * **Catatan terbuka (dijadwalkan Fase 13–14):** (a) indikator Makro/Meso/Mikro sempit setelah teks membesar; (b) kode `TT-` membungkus dua baris di tabel jenis gigi; (c) framing kamera awal terlalu dekat di desktop.
 
 ---
 
@@ -206,7 +216,7 @@ Sesuai kebutuhan `FR-014` dan `FR-015` pada PRD, aplikasi menyertakan fitur **Co
 * **framer-motion & camera-controls** (Lisensi MIT)
 * **Engine prosedural & konten skenario** diadaptasi dari proyek referensi `D:\test-bepan\dentascope`
 * **Tailwind CSS v4 & Lucide React** (Lisensi MIT / ISC)
-* **Tipografi:** `Archivo`, `Instrument Sans`, dan `JetBrains Mono` via Google Fonts (OFL, dimuat lewat `next/font`)
+* **Tipografi:** `Newsreader` dan `Atkinson Hyperlegible Next` via Google Fonts (OFL, dimuat lewat `next/font`)
 
 ### B. Referensi Ilmiah & Medis Resmi (Sesuai `01_Dental_Research` & `03_Dental_Knowledge_Base`)
 * **`SRC-001`** — World Health Organization (WHO). *Oral health*. https://www.who.int/news-room/fact-sheets/detail/oral-health
@@ -245,4 +255,5 @@ Sesuai kebutuhan `FR-014` dan `FR-015` pada PRD, aplikasi menyertakan fitur **Co
 | `v1.1.0` | 12/11/2026 | Fase 8: Redesign Design System, Shell HUD & Explorer | Token tiga lapis di `app/globals.css` (primitif, semantik, komponen; easing `--ease-out`); font baru `Archivo`, `Instrument Sans`, `JetBrains Mono` di `app/layout.tsx` (menggantikan `Plus Jakarta Sans`); shell HUD spasial dan bottom-sheet (`components/ui/shell/*`); explore dengan bagian lipat (`components/ui/explore/*`); katalog penyakit dengan lencana tingkat perhatian editorial (`components/ui/diseases/*`, `diseaseSeverity.ts`). Audit: 0 komentar kode, `typecheck` dan `build` lulus. Lint anti-slop: temuan desain dilaporkan, belum diperbaiki. Tingkat perhatian keparahan **belum ditinjau klinisi**. Tanpa dependensi paket baru |
 | `v1.2.0` | 12/11/2026 | Fase 9: Redesign Simulator Patologi & 3D Hygiene Lab | Scrubber tahap ST-CAR/ST-PER dengan indikator `layoutId` dan tombol tahan-bandingkan (`StageScrubber`, `CompareHold`, `TimelinePlayer`); Kurva Stephan dengan zona kritis pH `< 5,5`; hygiene lab dengan partikel `InstancedMesh` (`PlaqueLayer`, `CleaningSparkles`); skor kebersihan 0–100%; 5 pilar pencegahan dalam lipatan. Audit: 0 komentar kode, `typecheck` lulus. Lint anti-slop: temuan desain dilaporkan, belum diperbaiki. Catatan terbuka: (a) 4 skenario Stephan di `lib/data/stephanScenarios.ts` adalah pola editorial yang belum bersumber; (b) alat yang tersedia adalah sikat, benang gigi, pembersih lidah, dan obat kumur; scaler, kalkulus, dan noda belum ada di logika. Tanpa dependensi paket baru |
 | `v1.3.0` | 12/11/2026 | Fase 10: Redesign Kuis, Referensi & Tata Kelola | Kuis dengan transisi soal, umpan balik instan, skor akhir, navigasi keyboard 1–4/panah/Enter, dan tombol "Tunjukkan di 3D" (`components/ui/quiz/*`, `useQuizKeyboard.ts`); `Dialog` native gelap dengan `scale(0.95)`; ReferencesDialog 12 SRC dengan sorotan; GovernanceDialog bertab (status konten, AST, GAP, disclaimer FR-015); `StatusBadge` dan `Badge` baru dengan ikon. Audit: 0 komentar kode, `typecheck` lulus, `build` tidak dijalankan pada iterasi ini. Lint anti-slop: temuan desain dilaporkan, belum diperbaiki. Catatan terbuka: peta struktur soal `lib/data/quizFocus.ts` (Q-001..Q-006) adalah keputusan editorial yang belum ditinjau klinisi. Tanpa dependensi paket baru |
+| `v1.5.0` | 12/11/2026 | Fase 12: Redesign Arah "Ruang Praktik Hangat" | Tema krem terang tunggal di `app/globals.css` (tema gelap, `.glass`, rim-light, dan palet navy dihapus; token lama dipertahankan sebagai alias; coral-deep `#A93E1F` untuk teks dan tombol); font `Newsreader` dan `Atkinson Hyperlegible Next` di `app/layout.tsx` (menggantikan Archivo, Instrument Sans, JetBrains Mono); skala tipografi baru `text-display`/`title`/`subtitle`/`body`/`caption`; 50 file komponen disesuaikan ke skala baru; alas 3D `components/three/Pedestal.tsx`, lampu hangat dan latar canvas krem; thumbnail rail dari render model sendiri. `typecheck` dan `build` lulus (route `/` 187 kB, First Load JS 290 kB); tampilan krem diperiksa di browser 1440x900 dan 375x812. Catatan terbuka dijadwalkan Fase 13–14: indikator Makro/Meso/Mikro sempit, kode `TT-` membungkus, framing kamera awal terlalu dekat |
 | `v1.4.0` | 12/11/2026 | Fase 11: Audit & Hardening | Audit: 0 komentar kode, 0 impor/parameter tak terpakai (`tsc --noUnusedLocals --noUnusedParameters`). Lint anti-slop `taste-skill`: 16 FAIL + 8 WARN (temuan desain, belum diputuskan). Inspeksi browser 1440x900 dan 375x812 di 5 mode serta dialog Referensi dan Tata Kelola: tanpa overflow horizontal, tanpa kontras teks < 4,5:1, tanpa error konsol. Perbaikan: target sentuh minimal 40px (ModeTabs, BottomSheet handle, ExploreChip, ToothTypeTable, ContentStatusList, GovernanceDialog, AnswerFeedback, ViewPresetMenu, CompareHold, SimulatorPanel, DiseaseDetail), label LOD 11px, ID referensi tidak terpecah dan judul line-clamp-2 di ReferencesDialog. `npm run typecheck` dan `npm run build` lulus 0 error (Next.js 15.5; route `/` 187 kB, First Load JS 290 kB, shared 103 kB). Belum terverifikasi: FPS 60 (panel browser tersembunyi), drag sentuh nyata, perangkat nyata. Catatan terbuka: tingkat keparahan penyakit, 4 skenario Stephan, dan peta kuis Q-001..Q-006 belum ditinjau klinisi; angka Kemenkes SKI belum tersedia (GAP-004). Tanpa dependensi paket baru |

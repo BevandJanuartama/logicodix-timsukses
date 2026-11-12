@@ -42,14 +42,14 @@ export function LayerToggles() {
                 type="button"
                 aria-pressed={selectedObjectId === layer}
                 onClick={() => focusScene({ objectId: layer, preset: 'front' })}
-                className="flex min-h-10 flex-1 cursor-pointer items-center gap-2.5 px-2.5 text-left text-[13px] font-semibold text-fg-secondary hover:text-fg aria-pressed:text-fg"
+                className="flex min-h-10 flex-1 cursor-pointer items-center gap-2.5 px-2.5 text-left text-caption font-semibold text-fg-secondary hover:text-fg aria-pressed:text-fg"
               >
                 <span
                   aria-hidden
                   className="size-3 shrink-0 rounded-full ring-1 ring-line-strong"
                   style={{ background: layerSwatches[layer] }}
                 />
-                <span className="telemetry w-12 shrink-0 text-[11px] text-fg-muted">{structure?.id}</span>
+                <span className="w-12 shrink-0 text-caption text-fg-muted">{structure?.id}</span>
                 <span className="flex-1 truncate">{sceneTargetLabels[layer]}</span>
               </button>
               <button
