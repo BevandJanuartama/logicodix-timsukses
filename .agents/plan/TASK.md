@@ -103,14 +103,14 @@ Gunakan perintah `/model <nama>` di Claude Code untuk beralih model sebelum meng
   python .agents/skills/ui-ux-pro-max/scripts/search.py "medical 3d interactive anatomy lab" --design-system --variance 7 --motion 7 --density 6 -p "Dental Explorer 3D"
   .agents\skills\impeccable\scripts\impeccable.cmd context
   ```
-- [ ] **8.2** [🟣 Opus] **Sistem Token 3-Lapis & Tipografi Anti-Slop:** Perbarui `app/globals.css` dan `app/layout.tsx` berdasarkan rekomendasi 8.1 (warna fungsional, kontras permukaan tonal, pasangan font berkarakter maksimal 2 font + 1 mono telemetri, kurva easing Emil Kowalski `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)`).
-- [ ] **8.3** [🔵 Sonnet] **Spatial HUD Shell & Primitif 21st.dev:** Redesign `components/ui/shell/*` (`TopBar.tsx`, `Hero.tsx`, `Panel.tsx`, `ViewControls.tsx`, `LodIndicator.tsx`, `HoverTip.tsx`):
+- [x] **8.2** [🟣 Opus] **Sistem Token 3-Lapis & Tipografi Anti-Slop:** Perbarui `app/globals.css` dan `app/layout.tsx` berdasarkan rekomendasi 8.1 (warna fungsional, kontras permukaan tonal, pasangan font berkarakter maksimal 2 font + 1 mono telemetri, kurva easing Emil Kowalski `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)`).
+- [x] **8.3** [🔵 Sonnet] **Spatial HUD Shell & Primitif 21st.dev:** Redesign `components/ui/shell/*` (`TopBar.tsx`, `Hero.tsx`, `Panel.tsx`, `ViewControls.tsx`, `LodIndicator.tsx`, `HoverTip.tsx`):
   - Navigasi spasial mengambang dengan indikator pegas `layoutId` (`framer-motion`), respons tekan `scale(0.97)`, dan popover sadar titik asal (*origin-aware* dari `scale(0.95)`).
   - Panel inspektor bergaya *precision surgical instrument* dan *draggable bottom-sheet* mobile (`velocity > 0.11` dismissal) yang menyisakan `>= 55%` kanvas 3D.
-- [ ] **8.4** [🔵 Sonnet] **Anatomy & Tooth Type Explorer:** Redesign `components/ui/explore/*` (`ExplorePanel.tsx`, `ExploreIntro.tsx`, `StructureView.tsx`, `ToothOverview.tsx`, `RegionView.tsx`, `LayerToggles.tsx`):
+- [x] **8.4** [🔵 Sonnet] **Anatomy & Tooth Type Explorer:** Redesign `components/ui/explore/*` (`ExplorePanel.tsx`, `ExploreIntro.tsx`, `StructureView.tsx`, `ToothOverview.tsx`, `RegionView.tsx`, `LayerToggles.tsx`):
   - Matriks visibilitas 10 lapisan anatomi (`AN-001..010`), perbandingan dentisi `TT-001..004`, dan kartu statistik resmi WHO/Kemenkes tanpa grid kartu 3-kolom generik.
-- [ ] **8.5** [🔵 Sonnet] **Pathology & Disease Catalog:** Redesign `components/ui/diseases/*` (`DiseasesPanel.tsx`, `DiseaseCard.tsx`) untuk 10 penyakit (`DIS-001..010`) dengan filter cepat, lencana keparahan, sitasi `SRC-*`, dan aksi **"Lihat di 3D"** yang mengisolasi struktur terdampak.
-- [ ] **8.6** [🟢 Haiku] **Verifikasi & Commit Fase 8:** Jalankan `node .agents/skills/taste-skill/scripts/lint.mjs app/ components/`, `npm run typecheck`, pastikan 0 komentar kode, perbarui `rangkuman.md`, lalu buat commit:
+- [x] **8.5** [🔵 Sonnet] **Pathology & Disease Catalog:** Redesign `components/ui/diseases/*` (`DiseasesPanel.tsx`, `DiseaseCard.tsx`) untuk 10 penyakit (`DIS-001..010`) dengan filter cepat, lencana keparahan, sitasi `SRC-*`, dan aksi **"Lihat di 3D"** yang mengisolasi struktur terdampak.
+- [x] **8.6** [🟢 Haiku] **Verifikasi & Commit Fase 8:** Jalankan `node .agents/skills/taste-skill/scripts/lint.mjs app/ components/`, `npm run typecheck`, pastikan 0 komentar kode, perbarui `rangkuman.md`, lalu buat commit:
   ```bash
   git commit -m "feat: build spatial hud shell with anatomy and disease explorer"
   ```
@@ -122,13 +122,13 @@ Gunakan perintah `/model <nama>` di Claude Code untuk beralih model sebelum meng
 > **Skill Wajib:** `animate`, `choreograph`, `emil-design-eng`, `threejs-react-three-fiber`  
 > **Commit Target:** `feat: implement interactive pathology simulator and 3d hygiene lab`
 
-- [ ] **9.1** [🔵 Sonnet] **Caries & Periodontal Stage Scrubber:** Redesign `components/ui/simulator/*` (`SimulatorPanel.tsx`, `StephanCurve.tsx`) dan `components/three/simulation/*`:
+- [x] **9.1** [🔵 Sonnet] **Caries & Periodontal Stage Scrubber:** Redesign `components/ui/simulator/*` (`SimulatorPanel.tsx`, `StephanCurve.tsx`) dan `components/three/simulation/*`:
   - Scrubber tahap interaktif (`ST-CAR-0..3` & `ST-PER-0..2`) dengan indikator pegas `layoutId`, transisi visual perbandingan, dan sinkronisasi real-time ke shader gigi/gusi/tulang 3D.
   - Visualisasi dinamis **Kurva pH Stephan** (titik kritis pH `< 5.5` vs remineralisasi) dan 4 skenario kebiasaan harian.
-- [ ] **9.2** [🔵 Sonnet] **3D Hygiene Lab & Prevention Pillars:** Redesign `components/ui/clean/*` (`CleanPanel.tsx`, `CleanToast.tsx`) dan `components/three/cleaning/*` (`PlaqueLayer.tsx`, `ToolCursor.tsx`, `CleaningController.tsx`):
+- [x] **9.2** [🔵 Sonnet] **3D Hygiene Lab & Prevention Pillars:** Redesign `components/ui/clean/*` (`CleanPanel.tsx`, `CleanToast.tsx`) dan `components/three/cleaning/*` (`PlaqueLayer.tsx`, `ToolCursor.tsx`, `CleaningController.tsx`):
   - Pengalaman interaktif pembersihan plak, kalkulus, dan noda langsung pada permukaan gigi 3D menggunakan Sikat Gigi Fluoride, Flosser, Scaler, dan Obat Kumur dengan umpan balik visual/partikel dan *Cleaning Score* (`0–100%`).
   - Integrasi 5 Pilar Pencegahan (`PRE-001..005`) dengan tata letak ringkas anti-slop.
-- [ ] **9.3** [🟢 Haiku] **Verifikasi & Commit Fase 9:** Jalankan `npm run typecheck`, `node .agents/skills/taste-skill/scripts/lint.mjs components/ui/simulator components/ui/clean`, perbarui `rangkuman.md`, lalu buat commit:
+- [x] **9.3** [🟢 Haiku] **Verifikasi & Commit Fase 9:** Jalankan `npm run typecheck`, `node .agents/skills/taste-skill/scripts/lint.mjs components/ui/simulator components/ui/clean`, perbarui `rangkuman.md`, lalu buat commit:
   ```bash
   git commit -m "feat: implement interactive pathology simulator and 3d hygiene lab"
   ```
@@ -140,11 +140,11 @@ Gunakan perintah `/model <nama>` di Claude Code untuk beralih model sebelum meng
 > **Skill Wajib:** `impeccable`, `ui-styling`, `emil-design-eng`  
 > **Commit Target:** `feat: add clinical quiz assessment reference library and governance dialogs`
 
-- [ ] **10.1** [🔵 Sonnet] **Clinical Quiz Experience:** Redesign `components/ui/quiz/*` (`QuizPanel.tsx`, `QuizSummary.tsx`):
+- [x] **10.1** [🔵 Sonnet] **Clinical Quiz Experience:** Redesign `components/ui/quiz/*` (`QuizPanel.tsx`, `QuizSummary.tsx`):
   - Transisi pergantian soal dengan `AnimatePresence` (`scale(0.98)` + `opacity`), umpan balik instan, skor akhir, serta tombol **"Tunjukkan di 3D"** yang mengarahkan kamera ke struktur anatomi terkait.
-- [ ] **10.2** [🔵 Sonnet] **Reference Library & Governance Dialogs:** Redesign `components/ui/library/*` (`ReferencesDialog.tsx`, `GovernanceDialog.tsx`, `LibraryMenu.tsx`), `Dialog.tsx`, `Badge.tsx`, dan `StatusBadge.tsx`:
+- [x] **10.2** [🔵 Sonnet] **Reference Library & Governance Dialogs:** Redesign `components/ui/library/*` (`ReferencesDialog.tsx`, `GovernanceDialog.tsx`, `LibraryMenu.tsx`), `Dialog.tsx`, `Badge.tsx`, dan `StatusBadge.tsx`:
   - Dialog modal bergaya instrumen bedah presisi (`scale(0.95)` entry, backdrop blur, navigasi keyboard penuh) untuk 12 referensi institusional (`SRC-001..012`), status review konten (`draft` / `reviewed` / `approved`), matriks aset 3D (`AST-001..004`), daftar `GAP-001..006`, dan *Medical Disclaimer* (`FR-015`).
-- [ ] **10.3** [🟢 Haiku] **Verifikasi & Commit Fase 10:** Jalankan `npm run typecheck`, perbarui `rangkuman.md`, lalu buat commit:
+- [x] **10.3** [🟢 Haiku] **Verifikasi & Commit Fase 10:** Jalankan `npm run typecheck`, perbarui `rangkuman.md`, lalu buat commit:
   ```bash
   git commit -m "feat: add clinical quiz assessment reference library and governance dialogs"
   ```
@@ -156,16 +156,16 @@ Gunakan perintah `/model <nama>` di Claude Code untuk beralih model sebelum meng
 > **Skill Wajib:** `taste-skill`, `impeccable`, `web-design-guidelines`, `verification-before-completion`  
 > **Commit Target:** `refactor: polish motion choreography accessibility and 60fps rendering`
 
-- [ ] **11.1** [🟢 Haiku] **Zero Comment & Anti-Slop Lint:** Pastikan 0 komentar kode di seluruh direktori `app/`, `components/`, dan `lib/`, serta verifikasi bebas slop via:
+- [x] **11.1** [🟢 Haiku] **Zero Comment & Anti-Slop Lint:** Pastikan 0 komentar kode di seluruh direktori `app/`, `components/`, dan `lib/`, serta verifikasi bebas slop via:
   ```bash
   node .agents/skills/taste-skill/scripts/lint.mjs app/ components/
   ```
-- [ ] **11.2** [🔵 Sonnet] **Live Browser Inspection & Responsiveness:** Uji tampilan langsung di desktop (`1440×900`) dan mobile (`375×812`) via:
+- [x] **11.2** [🔵 Sonnet] **Live Browser Inspection & Responsiveness:** Uji tampilan langsung di desktop (`1440×900`) dan mobile (`375×812`) via:
   ```bash
   node .agents/skills/taste-skill/scripts/inspect.mjs http://localhost:3000 --app
   ```
   Pastikan bebas *overflow*, tidak ada elemen tumpang tindih, dan panel merespons sentuhan/drag dengan mulus.
-- [ ] **11.3** [🟢 Haiku] **Production Build & Final Documentation Sync:** Jalankan `npm run typecheck` dan `npm run build` hingga 100% lulus 0 error, sinkronkan seluruh pencatatan di `rangkuman.md` (Hukum 8), lalu buat commit penutup:
+- [x] **11.3** [🟢 Haiku] **Production Build & Final Documentation Sync:** Jalankan `npm run typecheck` dan `npm run build` hingga 100% lulus 0 error, sinkronkan seluruh pencatatan di `rangkuman.md` (Hukum 8), lalu buat commit penutup:
   ```bash
   git commit -m "refactor: polish motion choreography accessibility and 60fps rendering"
   ```
