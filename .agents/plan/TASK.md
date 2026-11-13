@@ -206,7 +206,35 @@ Gunakan perintah `/model <nama>` di Claude Code untuk beralih model sebelum meng
 - [x] **15.3** [🟢 Haiku] Verifikasi: alur sikat 2 menit, scrubber keyboard; `rangkuman.md`
 
 ### Fase 16: Kuis, Pustaka, Bahasa Awam & Audit Akhir
-- [ ] **16.1** [🔵 Sonnet] Kuis di tengah + model menyorot gigi terkait — `components/ui/quiz/*`
-- [ ] **16.2** [🟢 Haiku] Dialog sumber/tata kelola ke palet & skala baru — `components/ui/library/*`, `shell/Dialog.tsx`
-- [ ] **16.3** [🟣 Opus] Audit bahasa awam (<= 25 kata, tanpa jargon) + audit anti-slop & motion
-- [ ] **16.4** [🟢 Haiku] Verifikasi akhir: typecheck, build, kontras, FPS, 3 lebar layar; `rangkuman.md` + `TASK.md`
+- [x] **16.1** [🔵 Sonnet] Kuis di tengah + model menyorot gigi terkait — `components/ui/quiz/*`
+- [x] **16.2** [🟢 Haiku] Dialog sumber/tata kelola ke palet & skala baru — `components/ui/library/*`, `shell/Dialog.tsx`
+- [x] **16.3** [🟣 Opus] Audit bahasa awam (<= 25 kata, tanpa jargon) + audit anti-slop & motion
+- [x] **16.4** [🟢 Haiku] Verifikasi akhir: typecheck, build, kontras, FPS, 3 lebar layar; `rangkuman.md` + `TASK.md`
+
+---
+
+## Bagian IV — Modul Kondisi & Asisten Chat
+
+> Keputusan pengguna: tab "Penyakit" diganti nama **"Kondisi"** dan memuat penyakit + kelainan bentuk/posisi gigi; asisten chat mengambang (tombol kecil kanan bawah, chat bebas); data tambahan dari CSV via URL (URL menyusul, jarang berubah); 3D memakai **deformasi model yang ada**, bukan mesh baru.
+> Koreksi keamanan: kunci Gemini **tidak** memakai `NEXT_PUBLIC_` (akan bocor ke browser). Nama variabel: `GEMINI_API_KEY`, hanya dibaca di route server `app/api/chat/route.ts`.
+> Konten klinis kelainan wajib bersumber (masuk `references`), berstatus draf sampai ditinjau, tanpa angka karangan.
+
+### Fase 17: Fondasi Data & Tab Kondisi
+- [x] **17.1** [🔵 Sonnet] Tipe `ConditionCategory` (penyakit, posisi & gigitan, tumbuh gigi, struktur email, kebiasaan & benturan) + rename tab "Penyakit" → "Kondisi" + filter kategori di rail — `lib/types.ts`, `components/ui/diseases/*`, `ModeTabs`
+- [x] **17.2** [🟣 Opus] Isi data kelainan bersumber: overbite, underbite, open bite, crossbite, crowding, impaksi bungsu, hipodonsia, hiperdonsia, amelogenesis/dentinogenesis imperfecta, fluorosis, bruxism, gigi retak/patah (karies sudah ada) — `lib/data/diseases.ts`, `lib/data/references.ts`
+- [x] **17.3** [🟢 Haiku] Verifikasi: typecheck, tab Kondisi di 3 lebar layar; `rangkuman.md`
+
+### Fase 18: Visual 3D Deformasi
+- [x] **18.1** [🟣 Opus] Sistem pose rahang & gigi (`ConditionPose`: geser/putar rahang bawah, offset/rotasi per gigi, sembunyikan gigi, gigi ekstra dari klon, warna/kekasaran email) dengan transisi transform saja — `components/three/useConditionPose.ts`
+- [x] **18.2** [🔵 Sonnet] Pose per kondisi + tombol "Bandingkan dengan normal" — `lib/data/conditionPoses.ts`, `DiseaseDetail`
+- [x] **18.3** [🟢 Haiku] Verifikasi visual tiap pose, cleanup animasi; `rangkuman.md`
+
+### Fase 19: Data CSV dari URL
+- [x] **19.1** [🔵 Sonnet] Skema CSV + `.env.example` (`CONDITIONS_CSV_URL`) + loader server dengan cache (revalidate harian) + validasi baris; data lokal tetap jadi cadangan bila URL kosong/gagal — `lib/data/conditionsCsv.ts`
+- [x] **19.2** [🟢 Haiku] Contoh `docs/conditions-template.csv` + verifikasi gabung data
+
+### Fase 20: Asisten Chat Gemini
+- [x] **20.1** [🔵 Sonnet] Route server `app/api/chat/route.ts` (SDK `@google/genai`, cek via context7; `GEMINI_API_KEY`), konteks = data kondisi, batas panjang & laju, penolakan diagnosis pribadi
+- [x] **20.2** [🔵 Sonnet] `ChatButton` + `FloatingChat` (fokus terkunci, Esc, mobile di atas tab bar, streaming) — `components/ui/chat/*`
+- [x] **20.3** [🟣 Opus] Keluaran terstruktur `{ reply, show?: { conditionId, toothId? } }` → tombol "Lihat di model 3D" yang memanggil `chooseDisease` + pose
+- [x] **20.4** [🟢 Haiku] Verifikasi tanpa kunci (pesan ramah), dengan kunci, mobile; `rangkuman.md`

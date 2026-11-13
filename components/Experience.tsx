@@ -1,13 +1,15 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { MotionConfig } from 'framer-motion'
 import { useMediaQuery } from '@/lib/hooks/useMediaQuery'
+import type { RemoteCondition } from '@/lib/data/conditionRows'
 import { useAppStore } from '@/lib/store'
 import type { AppMode } from '@/lib/types'
 import { CleanPanel } from '@/components/ui/clean/CleanPanel'
 import { CleanSuccessToast, MouthwashOverlay } from '@/components/ui/clean/CleanFeedback'
 import { DiseasesPanel } from '@/components/ui/diseases/DiseasesPanel'
+import { registerConditions } from '@/components/ui/diseases/registerConditions'
 import { ExplorePanel } from '@/components/ui/explore/ExplorePanel'
 import { GovernanceDialog } from '@/components/ui/library/GovernanceDialog'
 import { ReferencesDialog } from '@/components/ui/library/ReferencesDialog'
@@ -23,7 +25,7 @@ import { TopBar } from '@/components/ui/shell/TopBar'
 
 const PANELS: Record<AppMode, { label: string; Content: () => React.JSX.Element }> = {
   explore: { label: 'Panel anatomi', Content: ExplorePanel },
-  diseases: { label: 'Panel penyakit', Content: DiseasesPanel },
+  diseases: { label: 'Panel kondisi', Content: DiseasesPanel },
   destroy: { label: 'Panel simulasi', Content: SimulatorPanel },
   clean: { label: 'Panel pembersihan', Content: CleanPanel },
   quiz: { label: 'Panel kuis', Content: QuizPanel },
@@ -40,13 +42,15 @@ function useEscapeToDeselect() {
   }, [])
 }
 
-export function Experience() {
+export function Experience({ remoteConditions }: { remoteConditions: RemoteCondition[] }) {
+  useState(() => registerConditions(remoteConditions))
   const intro = useAppStore((state) => state.intro)
   const mode = useAppStore((state) => state.mode)
   const { label, Content } = PANELS[mode]
   const isWide = useMediaQuery('(min-width: 1280px)')
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const heroSlot = isWide ? 'rail' : isDesktop ? 'card' : 'sheet'
+  const centeredQuiz = mode === 'quiz' && !intro
   useEscapeToDeselect()
 
   return (
@@ -54,10 +58,12 @@ export function Experience() {
       <TopBar />
       <div aria-hidden className="h-[68px] shrink-0 md:h-[76px]" />
       <MotionConfig reducedMotion="user">
-        <div className="grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)] pb-[calc(var(--mobile-tabbar-h,0px)+var(--sheet-peek-h))] md:grid-cols-[minmax(0,1fr)_340px] md:gap-4 md:px-4 md:pb-4 xl:grid-cols-[280px_minmax(0,1fr)_380px]">
-          <div className="hidden min-h-0 xl:flex xl:flex-col">
-            {intro ? heroSlot === 'rail' && <Hero /> : <ModeRail />}
-          </div>
+        <div className={`grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)] pb-[calc(var(--mobile-tabbar-h,0px)+var(--sheet-peek-h))] md:grid-cols-[minmax(0,1fr)_340px] md:gap-4 md:px-4 md:pb-4 ${centeredQuiz ? 'xl:grid-cols-[minmax(0,1fr)_clamp(520px,40vw,640px)]' : 'xl:grid-cols-[280px_minmax(0,1fr)_380px]'}`}>
+          {!centeredQuiz && (
+            <div className="hidden min-h-0 xl:flex xl:flex-col">
+              {intro ? heroSlot === 'rail' && <Hero /> : <ModeRail />}
+            </div>
+          )}
           <CanvasStage showControls={!intro} />
           <div className="contents md:flex md:min-h-0 md:flex-col">
             {intro
