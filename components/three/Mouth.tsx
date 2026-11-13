@@ -14,6 +14,7 @@ import { getLayouts } from '@/lib/three/layout'
 import { sceneRegistry } from '@/lib/three/registry'
 import { activeConditionPose } from '@/lib/three/conditionPose'
 import { ConditionExtraTooth } from './ConditionExtraTooth'
+import { IceCube } from './IceCube'
 import { JawContent } from './JawContent'
 import { periodontalFrame } from './periodontalFrame'
 import { bindGlobalToolRelease, useMouthHandlers } from './useMouthHandlers'
@@ -55,6 +56,7 @@ function targetJawPose(elapsed: number): JawPose {
   return neutral
 }
 
+const tintColor = new THREE.Color()
 const xAxis = new THREE.Vector3()
 const zAxis = new THREE.Vector3()
 const origin = new THREE.Vector3()
@@ -130,6 +132,15 @@ export function Mouth() {
     const tongueCoat = mode === 'clean' ? cleaningState.tongueCoat * 0.85 : periodontal.tongueCoat
     materials.tongue.color.copy(TONGUE_HEALTHY).lerp(TONGUE_COATED, tongueCoat)
 
+    const conditionPose = activeConditionPose()
+    if (conditionPose?.gumTint) {
+      tintColor.set(conditionPose.gumTint.color)
+      for (const jaw of ['upper', 'lower'] as const) materials.gum[jaw].color.lerp(tintColor, conditionPose.gumTint.amount)
+    }
+    if (conditionPose?.tongueTint) {
+      materials.tongue.color.lerp(tintColor.set(conditionPose.tongueTint.color), conditionPose.tongueTint.amount)
+    }
+
     const target = targetJawPose(elapsed)
     const current = pose.current
     current.upper = THREE.MathUtils.damp(current.upper, target.upper, 9, delta)
@@ -145,6 +156,7 @@ export function Mouth() {
   return (
     <group {...handlers}>
       <ConditionExtraTooth />
+      <IceCube />
       <group ref={upperHinge} position={[0, 0, HINGE_Z]} rotation={[UPPER_OPEN_ANGLE, 0, 0]}>
         <group ref={upperJaw} position={[0, JAW_OFFSET_Y, -HINGE_Z]} rotation={[0, 0, Math.PI]}>
           <JawContent layout={layouts.upper} materials={materials} />

@@ -6,7 +6,7 @@ import { getLayouts } from '@/lib/three/layout'
 import { sceneRegistry } from '@/lib/three/registry'
 import { severityOf, type SeverityLevel } from '@/components/ui/diseases/diseaseSeverity'
 
-export type HotspotTone = 'coral' | SeverityLevel
+export type HotspotTone = 'brand' | SeverityLevel
 
 export type HotspotAnchor = { kind: 'tooth'; toothId: string } | { kind: 'gum' } | { kind: 'tongue' }
 
@@ -32,7 +32,7 @@ export const ANATOMY_HOTSPOTS: HotspotSpec[] = [
     id: '11',
     label: 'Gigi seri',
     ariaLabel: 'Lihat gigi seri, gigi depan untuk menggigit',
-    tone: 'coral',
+    tone: 'brand',
     anchor: { kind: 'tooth', toothId: '11' },
     focus: { toothId: '11' },
   },
@@ -40,7 +40,7 @@ export const ANATOMY_HOTSPOTS: HotspotSpec[] = [
     id: '13',
     label: 'Gigi taring',
     ariaLabel: 'Lihat gigi taring, gigi runcing untuk merobek',
-    tone: 'coral',
+    tone: 'brand',
     anchor: { kind: 'tooth', toothId: '13' },
     focus: { toothId: '13' },
   },
@@ -48,7 +48,7 @@ export const ANATOMY_HOTSPOTS: HotspotSpec[] = [
     id: '24',
     label: 'Geraham kecil',
     ariaLabel: 'Lihat geraham kecil',
-    tone: 'coral',
+    tone: 'brand',
     anchor: { kind: 'tooth', toothId: '24' },
     focus: { toothId: '24' },
   },
@@ -56,7 +56,7 @@ export const ANATOMY_HOTSPOTS: HotspotSpec[] = [
     id: '36',
     label: 'Geraham besar',
     ariaLabel: 'Lihat geraham besar, gigi besar untuk mengunyah',
-    tone: 'coral',
+    tone: 'brand',
     anchor: { kind: 'tooth', toothId: '36' },
     focus: { toothId: '36' },
   },
@@ -64,7 +64,7 @@ export const ANATOMY_HOTSPOTS: HotspotSpec[] = [
     id: 'gingiva',
     label: 'Gusi',
     ariaLabel: 'Lihat gusi',
-    tone: 'coral',
+    tone: 'brand',
     anchor: { kind: 'gum' },
     focus: { objectId: 'gingiva', preset: 'front' },
   },
@@ -72,7 +72,7 @@ export const ANATOMY_HOTSPOTS: HotspotSpec[] = [
     id: 'tongue_dorsum',
     label: 'Lidah',
     ariaLabel: 'Lihat lidah',
-    tone: 'coral',
+    tone: 'brand',
     anchor: { kind: 'tongue' },
     focus: { objectId: 'tongue_dorsum', preset: 'top' },
   },

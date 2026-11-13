@@ -15,7 +15,7 @@ import { Pedestal } from './Pedestal'
 import { StudioLights } from './StudioLights'
 import { StructureThumbnails } from './useStructureThumbnails'
 
-const CANVAS_BACKGROUND = '#F6ECE1'
+const CANVAS_BACKGROUND = '#E6EFEE'
 const COMPACT_DPR_CAP = 1.25
 const DESKTOP_DPR_CAP = 2
 

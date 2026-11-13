@@ -21,7 +21,7 @@ const BREATH_DURATION = 2400
 const BREATH_EASING = 'cubic-bezier(0.23, 1, 0.32, 1)'
 
 const TONE_CLASS: Record<HotspotTone, { dot: string; ring: string }> = {
-  coral: { dot: 'bg-accent-mark', ring: 'border-accent-mark' },
+  brand: { dot: 'bg-accent-mark', ring: 'border-accent-mark' },
   mild: { dot: 'bg-success', ring: 'border-success' },
   moderate: { dot: 'bg-warning', ring: 'border-warning' },
   urgent: { dot: 'bg-danger', ring: 'border-danger' },
@@ -179,7 +179,7 @@ export function Hotspots({ overlay }: { overlay: RefObject<HTMLElement | null> }
             anchor={anchor}
             overlay={overlay}
             active={active}
-            breathing={spec.tone === 'coral' ? !touched : !active}
+            breathing={spec.tone === 'brand' ? !touched : !active}
           />
         )
       })}
