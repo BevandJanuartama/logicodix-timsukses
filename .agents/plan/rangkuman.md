@@ -5,24 +5,27 @@
 ---
 
 ## 1. Identitas Tim & Anggota
-* **Nama Tim:** Tim Sukses Logicodix
-* **Daftar Anggota:**
-  1. **Muhammad Bevand Januartama** (`BevandJanuartama`) - Lead & Fullstack 3D Developer
-  2. *[Nama Anggota 2]* - UI/UX Designer & Frontend Engineer
-  3. *[Nama Anggota 3]* - Medical Content & Knowledge Base Researcher
-  4. *[Nama Anggota 4]* - QA & Product Researcher
+* **Nama Tim:** Tim Sukses
+* **Institusi / Universitas:** Telkom University
+* **Fakultas / Departemen:** Fakultas Rekayasa Industri
+* **Ketua Tim / Penulis Utama:** Muhammad Ahnaf Isa Hammam Lisualla (Kontak: +6281257366106)
+* **Daftar Anggota Tim:**
+  1. **Muhammad Ahnaf Isa Hammam Lisualla** — Ketua Tim / Product & Strategy Lead
+  2. **Muhammad Hafizh Farsya** (NIM: `102022630036`) — UI/UX Designer & Frontend Engineer
+  3. **M Alief Ma'rifatullah Az Zikry** (NIM: `102022600457`) — Medical Content & Knowledge Base Researcher
+  4. **Muhammad Bevand Januartama** (NIM: `103022630014`, GitHub: `BevandJanuartama`) — Fullstack 3D Engine & AI Engineer
 
 ---
 
 ## 2. Profil & Konsep Solusi Aplikasi
 * **Kategori Aplikasi:** Web App (Interactive 3D Educational Platform)
 * **Subtema:** Pendidikan & Kesehatan (*Health & Medical Education*)
-* **Nama Aplikasi:** **Dental Explorer (DentaScope 3D)**
+* **Nama Aplikasi:** **DentaScope**
 * **Masalah yang Diangkat:**
   * **Pernyataan Masalah:** Pelajar, mahasiswa, dan masyarakat umum membutuhkan media edukasi kesehatan gigi yang menyajikan anatomi, penyakit, faktor risiko, dan pencegahan secara terstruktur serta mudah dieksplorasi, tetapi materi konvensional berupa teks dan gambar statis 2D menyulitkan pengguna memahami hubungan spasial antara struktur internal gigi (email, dentin, pulpa, sementum, ligamen periodontal, tulang alveolar) dengan progresi penyakit.
   * **Bukti di Lapangan:** Berdasarkan rujukan WHO (*Oral Health Fact Sheet*) dan Survei Kesehatan Indonesia (SKI) 2023 Kemenkes RI (`SRC-001`, `SRC-010`), beban penyakit gigi dan mulut (khususnya karies dan penyakit periodontal) masih sangat tinggi akibat rendahnya literasi mengenai demineralisasi asam, area rawan plak interdental, serta anggapan keliru bahwa kerusakan gigi bersifat instan atau tidak dapat dicegah pada tahap awal (*white spot lesion*).
 * **Deskripsi Solusi:**
-  * **Dental Explorer (DentaScope 3D)** adalah platform edukasi kesehatan gigi berbasis web dengan pendekatan visual *hybrid*: menggabungkan model anatomi rongga mulut & gigi 3D prosedural interaktif (dari skala Makro lengkung rahang 32 gigi FDI, Meso fokus gigi, hingga Mikro penampang melintang/*cross-section*) dengan lapisan berwarna, kontrol visibilitas layer, katalog 10 penyakit gigi terverifikasi, *Damage Simulator* (simulasi tahapan klinis Karies `ST-CAR-0..3` & Periodontitis `ST-PER-0..2` serta kebiasaan buruk & Kurva pH Stephan), *Cleaning Simulator* (latihan menyikat gigi, flossing, dan pembersih lidah real-time), materi 5 pilar pencegahan, kuis interaktif, serta sistem tata kelola referensi ilmiah (`SRC-001` s/d `SRC-012`).
+  * **DentaScope** adalah platform edukasi kesehatan gigi berbasis web dengan pendekatan visual *hybrid*: menggabungkan model anatomi rongga mulut & gigi 3D prosedural interaktif (dari skala Makro lengkung rahang 32 gigi FDI, Meso fokus gigi, hingga Mikro penampang melintang/*cross-section*) dengan lapisan berwarna, kontrol visibilitas layer, katalog 10 penyakit gigi terverifikasi, *Damage Simulator* (simulasi tahapan klinis Karies `ST-CAR-0..3` & Periodontitis `ST-PER-0..2` serta kebiasaan buruk & Kurva pH Stephan), *Cleaning Simulator* (latihan menyikat gigi, flossing, dan pembersih lidah real-time), materi 5 pilar pencegahan, kuis interaktif, serta sistem tata kelola referensi ilmiah (`SRC-001` s/d `SRC-012`).
 * **Target Pengguna:**
   * **Pengguna Primer:** Pelajar, mahasiswa kedokteran gigi/kesehatan, dan masyarakat umum yang ingin mempelajari anatomi serta pencegahan penyakit gigi secara visual.
   * **Pengguna Sekunder:** Tenaga pendidik, penyuluh kesehatan gigi, dan reviewer medis (dokter gigi) yang meninjau akurasi materi edukasi (`Draft | Under Review | Approved`).
@@ -333,3 +336,6 @@ Sesuai kebutuhan `FR-014` dan `FR-015` pada PRD, aplikasi menyertakan fitur **Co
 | `v2.2.0` | 13/11/2026 | Fase 18: Visual 3D kondisi dengan deformasi model | Pose per kondisi di `lib/data/conditionPoses.ts` (geser/miring/sembunyikan gigi, rahang menutup, rahang bawah maju, warna & kilap email, gigi tambahan). Resolver `lib/three/conditionPose.ts` aktif hanya di tab Kondisi; animasi transform + warna material per frame di `components/three/useToothPose.ts` (dipasang di `Tooth.tsx`), rahang di `Mouth.tsx`, gigi tambahan hasil klon di `ConditionExtraTooth.tsx`. Tombol "Tahan untuk bandingkan dengan normal" (`PoseCompareHold.tsx`, state `showNormalPose` di `lib/store.ts`). Fokus kamera `overview` di `lib/sceneFocus.ts` untuk kondisi gigitan. Pose adalah ilustrasi, bukan ukuran klinis; fluorosis hanya tampil sebagai email kusam, belum berupa bercak. Typecheck lulus, diuji visual di 1440px. Tanpa dependensi baru |
 | `v2.3.0` | 13/11/2026 | Fase 19: Data kondisi dari CSV via URL | Variabel baru `CONDITIONS_CSV_URL` (dan `GEMINI_API_KEY` untuk Fase 20) di `.env.example`. Pemuat server `lib/data/conditionsCsv.ts` (cache 24 jam, batas waktu 5 detik, kembali ke data bawaan bila URL kosong/gagal), parser CSV tanpa dependensi `lib/data/csv.ts`, validasi & pemetaan baris `lib/data/conditionRows.ts` (id, nama_tampil, kelompok, ringkasan wajib; daftar dipisah `|`; teks dipotong 400 karakter; baris tidak valid dilewati), penggabungan ke data lokal `components/ui/diseases/registerConditions.ts` (id sama menimpa data bawaan). `app/page.tsx` menjadi server component async dengan `revalidate = 86400`. Judul kelompok dipindah ke `lib/data/conditionGroups.ts`. Template `docs/conditions-template.csv`. Diuji dengan CSV lokal sementara (baris valid tampil, baris salah dilewati, koma & kutip terbaca). Tanpa dependensi baru |
 | `v2.4.0` | 13/11/2026 | Fase 20: Asisten chat Gemini | Dependensi baru `@google/genai@3.3.0` (diverifikasi via context7). Route server `app/api/chat/route.ts`: kunci `GEMINI_API_KEY` hanya di server, mode Vertex AI express otomatis untuk kunci berawalan `AQ.` (bisa diatur `GEMINI_VERTEX_EXPRESS`), model `GEMINI_MODEL` (bawaan `gemini-3.8-flash`), keluaran JSON terstruktur `{ reply, conditionId }`, maksimal 12 pesan × 1000 karakter, batas 20 permintaan per 10 menit per klien, konteks = data kondisi lokal + CSV (`lib/chat/systemPrompt.ts`), menolak diagnosis pribadi & arahkan ke layanan darurat. UI `components/ui/chat/*`: tombol bulat kanan bawah kanvas, jendela mengambang (portal ke body, Esc menutup & mengembalikan fokus, layar penuh di atas tab bar di mobile, riwayat tetap selama sesi), tombol "Lihat di model 3D" membuka tab Kondisi + pose. Diuji tanpa kunci (pesan ramah), dengan kunci palsu (permintaan sampai ke aiplatform.googleapis.com, 401 ditangani), 1440px & 375px. Belum diuji dengan kunci asli |
+| `v2.4.1` | 14/11/2026 | Sinkronisasi Identitas Tim Resmi | Pembaruan data resmi tim dari Surat Pernyataan Orisinalitas Karya Logicodix 2026: Telkom University (Fakultas Rekayasa Industri), Ketua Tim Muhammad Ahnaf Isa Hammam Lisualla, Anggota: Muhammad Hafizh Farsya, M Alief Ma'rifatullah Az Zikry, Muhammad Bevand Januartama. |
+| `v2.4.2` | 14/11/2026 | Dokumen Penyerahan | `README.md` ditulis ulang mengikuti 9 poin Guidebook Logicodix 2026 (hal. 20) dengan `rangkuman.md` sebagai acuan. Tanpa perubahan kode, dependensi, atau aset |
+| `v2.4.3` | 14/11/2026 | Penyelarasan Nama Karya | Penyelarasan nama resmi karya menjadi **DentaScope** di seluruh antarmuka (`app/layout.tsx`, `components/ui/shell/TopBar.tsx`, `package.json`, `.env.example`, `README.md`, `rangkuman.md`). Audit dependensi dan integrasi API (seluruh pemanggilan jaringan terparameterisasi via variabel lingkungan). |
