@@ -66,16 +66,26 @@ export interface ToothType {
   notes: string
 }
 
+export interface PlainCopy {
+  summary: string
+  signs: string[]
+  prevention: string[]
+}
+
+export type ConditionGroup = 'penyakit' | 'gigitan' | 'tumbuh' | 'struktur' | 'kebiasaan'
+
 export interface Disease {
   id: string
   name: string
   displayName: string
   category: string
+  group: ConditionGroup
   definition: string
   riskFactors: string
   symptoms: string
   affectedStructures: string
   prevention: string
+  plain?: PlainCopy
   sourceIds: string[]
   safetyNote: string
   status: ReviewStatus

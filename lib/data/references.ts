@@ -120,5 +120,45 @@ export const references: Reference[] = [
     url: "https://www.qmul.ac.uk/dentistry/",
     accessNote: "Find atlas through university dentistry resources",
     sourceType: "Academic resource"
+  },
+  {
+    id: "SRC-013",
+    institution: "American Association of Orthodontists",
+    title: "Orthodontic problems: bite and alignment",
+    publication: "Patient education resources",
+    relevantContent: "Overbite, underbite, open bite, crossbite and crowding",
+    url: "https://aaoinfo.org/",
+    accessNote: "Website",
+    sourceType: "Professional association"
+  },
+  {
+    id: "SRC-014",
+    institution: "U.S. National Library of Medicine",
+    title: "MedlinePlus: Malocclusion of teeth; Impacted tooth",
+    publication: "Medical encyclopedia",
+    relevantContent: "Malocclusion types and impacted teeth",
+    url: "https://medlineplus.gov/",
+    accessNote: "Search MedlinePlus by title",
+    sourceType: "Government health information"
+  },
+  {
+    id: "SRC-015",
+    institution: "NIH Genetic and Rare Diseases Information Center",
+    title: "Amelogenesis imperfecta; Dentinogenesis imperfecta; Hypodontia; Hyperdontia",
+    publication: "Rare disease information pages",
+    relevantContent: "Inherited enamel and dentin conditions, missing and extra teeth",
+    url: "https://rarediseases.info.nih.gov/",
+    accessNote: "Search GARD by condition name",
+    sourceType: "Government health information"
+  },
+  {
+    id: "SRC-016",
+    institution: "Centers for Disease Control and Prevention",
+    title: "Community water fluoridation: dental fluorosis",
+    publication: "Public health guidance",
+    relevantContent: "Cause and appearance of dental fluorosis",
+    url: "https://www.cdc.gov/fluoridation/",
+    accessNote: "Website",
+    sourceType: "Government public health agency"
   }
 ]

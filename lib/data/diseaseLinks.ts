@@ -23,6 +23,17 @@ export const diseaseLinks: Record<string, DiseaseLink> = {
   },
   'DIS-009': { structures: ['enamel'], focus: { toothId: '16', objectId: 'enamel' } },
   'DIS-010': { structures: [], focus: { preset: 'front' } },
+  'DIS-011': { structures: [], focus: { toothId: '11', preset: 'right', overview: true } },
+  'DIS-012': { structures: [], focus: { toothId: '41', preset: 'right', overview: true } },
+  'DIS-013': { structures: [], focus: { toothId: '11', preset: 'front', overview: true } },
+  'DIS-014': { structures: [], focus: { toothId: '16', preset: 'left', overview: true } },
+  'DIS-015': { structures: [], focus: { toothId: '31', preset: 'front', overview: true } },
+  'DIS-016': { structures: ['gingiva'], focus: { toothId: '38', objectId: 'enamel' } },
+  'DIS-017': { structures: [], focus: { toothId: '12', preset: 'front', overview: true } },
+  'DIS-018': { structures: [], focus: { toothId: '11', preset: 'front', overview: true } },
+  'DIS-019': { structures: ['enamel'], focus: { toothId: '11', objectId: 'enamel' } },
+  'DIS-020': { structures: ['dentin'], focus: { toothId: '11', objectId: 'enamel' } },
+  'DIS-021': { structures: ['enamel'], focus: { toothId: '21', objectId: 'enamel' } },
 }
 
 export const diseaseIdsForStructure = (objectId: AnatomyObjectId) =>

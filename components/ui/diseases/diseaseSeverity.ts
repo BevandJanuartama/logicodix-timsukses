@@ -4,34 +4,28 @@ export type SeverityLevel = 'mild' | 'moderate' | 'urgent'
 
 export interface SeverityStyle {
   label: string
-  groupTitle: string
   Icon: LucideIcon
   iconClassName: string
   dotClassName: string
 }
-
-export const SEVERITY_ORDER: SeverityLevel[] = ['urgent', 'moderate', 'mild']
 
 export const SEVERITY_NOTE = 'Tingkat perhatian adalah perkiraan, belum ditinjau dokter gigi.'
 
 export const SEVERITY_STYLES: Record<SeverityLevel, SeverityStyle> = {
   mild: {
     label: 'Ringan',
-    groupTitle: 'Ringan',
     Icon: CircleCheck,
     iconClassName: 'text-success',
     dotClassName: 'bg-success',
   },
   moderate: {
     label: 'Sedang',
-    groupTitle: 'Perlu perhatian',
     Icon: TriangleAlert,
     iconClassName: 'text-warning',
     dotClassName: 'bg-warning',
   },
   urgent: {
     label: 'Segera',
-    groupTitle: 'Perlu segera ke dokter gigi',
     Icon: OctagonAlert,
     iconClassName: 'text-danger',
     dotClassName: 'bg-danger',
@@ -49,6 +43,21 @@ const SEVERITY_BY_DISEASE: Record<string, SeverityLevel> = {
   'DIS-008': 'urgent',
   'DIS-009': 'mild',
   'DIS-010': 'mild',
+  'DIS-011': 'mild',
+  'DIS-012': 'mild',
+  'DIS-013': 'mild',
+  'DIS-014': 'mild',
+  'DIS-015': 'mild',
+  'DIS-016': 'moderate',
+  'DIS-017': 'mild',
+  'DIS-018': 'mild',
+  'DIS-019': 'moderate',
+  'DIS-020': 'moderate',
+  'DIS-021': 'mild',
 }
 
 export const severityOf = (diseaseId: string): SeverityLevel => SEVERITY_BY_DISEASE[diseaseId] ?? 'moderate'
+
+export const setSeverity = (diseaseId: string, level: SeverityLevel) => {
+  SEVERITY_BY_DISEASE[diseaseId] = level
+}
