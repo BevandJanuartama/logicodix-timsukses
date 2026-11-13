@@ -10,6 +10,10 @@ export interface SceneFocus {
 }
 
 const OVERVIEW_DISTANCE = 7.5
+const NARROW_OVERVIEW_FACTOR = 1.5
+const NARROW_QUERY = '(max-width: 767px)'
+
+const overviewDistance = () => OVERVIEW_DISTANCE * (window.matchMedia(NARROW_QUERY).matches ? NARROW_OVERVIEW_FACTOR : 1)
 
 export function focusScene(focus: SceneFocus) {
   const state = useAppStore.getState()
@@ -21,5 +25,5 @@ export function focusScene(focus: SceneFocus) {
     state.requestCamera({ kind: 'tooth', toothId, section: focus.section })
     return
   }
-  state.requestCamera({ kind: 'preset', preset: focus.preset ?? 'front', distance: OVERVIEW_DISTANCE })
+  state.requestCamera({ kind: 'preset', preset: focus.preset ?? 'front', distance: overviewDistance() })
 }

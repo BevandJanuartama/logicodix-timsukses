@@ -11,7 +11,6 @@ import type {
 
 export type LayerVisibility = Record<AnatomyObjectId, boolean>
 
-export type ModalKind = 'references' | 'governance' | null
 
 const allLayersVisible: LayerVisibility = {
   enamel: true,
@@ -33,8 +32,6 @@ interface AppState {
   selectedToothId: string | null
   selectedDiseaseId: string | null
   layers: LayerVisibility
-  modal: ModalKind
-  focusedReferenceId: string | null
   hover: HoverTarget | null
   lod: Lod
   zoomLevel: number
@@ -54,8 +51,6 @@ interface AppState {
   setShowNormalPose: (showNormalPose: boolean) => void
   toggleLayer: (objectId: AnatomyObjectId) => void
   resetLayers: () => void
-  openModal: (modal: Exclude<ModalKind, null>, referenceId?: string) => void
-  closeModal: () => void
   setHover: (hover: HoverTarget | null) => void
   setLod: (lod: Lod) => void
   setZoomLevel: (zoomLevel: number) => void
@@ -77,8 +72,6 @@ export const useAppStore = create<AppState>((set) => ({
   selectedToothId: null,
   selectedDiseaseId: null,
   layers: allLayersVisible,
-  modal: null,
-  focusedReferenceId: null,
   hover: null,
   lod: 'macro',
   zoomLevel: 0,
@@ -99,8 +92,6 @@ export const useAppStore = create<AppState>((set) => ({
   setShowNormalPose: (showNormalPose) => set({ showNormalPose }),
   toggleLayer: (objectId) => set((state) => ({ layers: { ...state.layers, [objectId]: !state.layers[objectId] } })),
   resetLayers: () => set({ layers: allLayersVisible }),
-  openModal: (modal, focusedReferenceId) => set({ modal, focusedReferenceId: focusedReferenceId ?? null }),
-  closeModal: () => set({ modal: null, focusedReferenceId: null }),
   setHover: (hover) => set({ hover }),
   setLod: (lod) => set({ lod }),
   setZoomLevel: (zoomLevel) => set({ zoomLevel }),

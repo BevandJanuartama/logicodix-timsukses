@@ -1,18 +1,22 @@
 import { ChevronDown } from 'lucide-react'
 import type { Disease } from '@/lib/types'
-import { SourceLinks } from '@/components/ui/shell/PanelParts'
 import { plainSentence } from './plainLanguage'
 
 export function DiseaseExtra({ disease }: { disease: Disease }) {
+  const { details } = disease
   const facts = [
     { label: 'Faktor risiko', text: disease.riskFactors },
     { label: 'Bagian terdampak', text: disease.affectedStructures },
-  ]
+    { label: 'Penanganan medis', text: details?.treatment ?? '' },
+    { label: 'Perawatan di rumah', text: details?.homeCare ?? '' },
+    { label: 'Kapan ke dokter gigi', text: details?.whenToSeeDentist ?? '' },
+    { label: 'Dokter yang dituju', text: details?.specialist ?? '' },
+  ].filter((fact) => fact.text)
 
   return (
     <details className="group mt-5">
       <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-[var(--radius-control)] bg-surface-sunken px-3 text-caption font-semibold text-fg-secondary hover:text-fg [&::-webkit-details-marker]:hidden">
-        Detail lain dan sumber
+        Detail lain
         <ChevronDown className="size-4 transition-transform duration-[var(--duration-state)] ease-[var(--ease-out)] group-open:rotate-180" aria-hidden />
       </summary>
       <div className="px-1 pt-3">
@@ -25,9 +29,6 @@ export function DiseaseExtra({ disease }: { disease: Disease }) {
           ))}
         </dl>
         <p className="mt-3 text-caption text-fg-secondary">{plainSentence(disease.safetyNote)}</p>
-        <div className="mt-3">
-          <SourceLinks sourceIds={disease.sourceIds} />
-        </div>
       </div>
     </details>
   )

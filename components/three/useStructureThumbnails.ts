@@ -8,7 +8,7 @@ import { ANATOMY_HOTSPOTS, resolveAnchor, type HotspotSpec } from './hotspotAnch
 const THUMB_PIXELS = 112
 const SETTLE_SECONDS = 1.6
 const FRAME_STRIDE = 4
-const BACKGROUND = '#F6ECE1'
+const BACKGROUND = '#E6EFEE'
 const THUMB_FOV = 28
 const SIDE_REACH = 2.6
 const TOOTH_DISTANCE = 4.2

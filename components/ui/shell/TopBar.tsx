@@ -1,7 +1,6 @@
 'use client'
 
 import { useAppStore } from '@/lib/store'
-import { LibraryMenu } from './LibraryMenu'
 import { ModeTabs } from './ModeTabs'
 import { ToothMark } from './ToothMark'
 
@@ -30,9 +29,6 @@ export function TopBar() {
         </button>
         <div className="hidden md:block">
           <ModeTabs />
-        </div>
-        <div className="flex justify-end">
-          <LibraryMenu />
         </div>
       </header>
       <nav aria-label="Modul seluler" className="pointer-events-none fixed inset-x-0 bottom-0 z-30 md:hidden">

@@ -72,7 +72,15 @@ export interface PlainCopy {
   prevention: string[]
 }
 
-export type ConditionGroup = 'penyakit' | 'gigitan' | 'tumbuh' | 'struktur' | 'kebiasaan'
+export type ConditionGroup = 'penyakit' | 'mulut' | 'gigitan' | 'tumbuh' | 'struktur' | 'kebiasaan'
+
+export interface DiseaseDetails {
+  causes: string
+  treatment: string
+  homeCare: string
+  whenToSeeDentist: string
+  specialist: string
+}
 
 export interface Disease {
   id: string
@@ -86,6 +94,7 @@ export interface Disease {
   affectedStructures: string
   prevention: string
   plain?: PlainCopy
+  details?: DiseaseDetails
   sourceIds: string[]
   safetyNote: string
   status: ReviewStatus

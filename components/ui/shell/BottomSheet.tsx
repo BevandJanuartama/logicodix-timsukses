@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, type KeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { useEffect, useRef, type KeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import { motion, useDragControls } from 'framer-motion'
 import { useSheetSnap, type SheetPosition } from './useSheetSnap'
 
@@ -15,15 +15,20 @@ const HANDLE_LABEL = {
 interface BottomSheetProps {
   label: string
   initialPosition?: SheetPosition
+  openSignal?: string | null
   children: ReactNode
 }
 
-export function BottomSheet({ label, initialPosition = 'peek', children }: BottomSheetProps) {
+export function BottomSheet({ label, initialPosition = 'peek', openSignal = null, children }: BottomSheetProps) {
   const sheet = useRef<HTMLElement>(null)
   const dragControls = useDragControls()
   const wasDragged = useRef(false)
   const { y, position, peekY, open, cycle, step, stopAnimation, settle } = useSheetSnap(sheet, initialPosition)
   const scrollable = position !== 'peek'
+
+  useEffect(() => {
+    if (openSignal) open()
+  }, [openSignal])
 
   const beginDrag = (event: ReactPointerEvent) => {
     stopAnimation()

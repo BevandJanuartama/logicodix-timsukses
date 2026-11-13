@@ -1,6 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Search } from 'lucide-react'
 import { diseases } from '@/lib/knowledgeBase'
 import { CONDITION_GROUPS } from '@/lib/data/conditionGroups'
 import { SEVERITY_NOTE, SEVERITY_STYLES, severityOf } from './diseaseSeverity'
@@ -57,11 +59,31 @@ function DiseaseEntry({ diseaseId, active, highlight, onSelect }: DiseaseEntryPr
   )
 }
 
+const normalize = (text: string) => text.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '')
+
 export function DiseaseList({ activeId, onSelect, highlight = false }: DiseaseListProps) {
+  const [query, setQuery] = useState('')
+  const needle = normalize(query.trim())
+  const visible = needle
+    ? diseases.filter((disease) => normalize(`${disease.displayName} ${disease.name} ${disease.category}`).includes(needle))
+    : diseases
+
   return (
     <div>
+      <label className="relative mb-3 block">
+        <span className="sr-only">Cari kondisi gigi</span>
+        <Search aria-hidden className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-fg-muted" />
+        <input
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Cari kondisi, mis. sariawan"
+          className="min-h-11 w-full rounded-[var(--radius-control)] bg-surface-sunken pr-3 pl-9 text-body text-fg outline-none placeholder:text-fg-muted focus-visible:ring-2 focus-visible:ring-accent"
+        />
+      </label>
       {CONDITION_GROUPS.map(({ id: group, title }) => {
-        const ids = diseases.filter((disease) => disease.group === group).map((disease) => disease.id)
+        const ids = visible.filter((disease) => disease.group === group).map((disease) => disease.id)
+        if (!ids.length) return null
         return (
           <section key={group} aria-label={title} className="mt-4 first:mt-0">
             <h3 className="px-3 pb-1 text-caption font-semibold text-fg-muted">{title}</h3>
@@ -73,6 +95,7 @@ export function DiseaseList({ activeId, onSelect, highlight = false }: DiseaseLi
           </section>
         )
       })}
+      {!visible.length && <p className="px-3 text-body text-fg-secondary">Tidak ada kondisi yang cocok dengan &ldquo;{query.trim()}&rdquo;.</p>}
       <p className="mt-4 px-3 text-caption text-fg-muted">{SEVERITY_NOTE}</p>
     </div>
   )

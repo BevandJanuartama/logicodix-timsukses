@@ -5,7 +5,7 @@ import { ContactShadows } from '@react-three/drei'
 import * as THREE from 'three'
 import { sceneRegistry } from '@/lib/three/registry'
 
-const PEDESTAL_COLOR = '#EADBCB'
+const PEDESTAL_COLOR = '#CFDEDC'
 const SHADOW_COLOR = '#7A4E3A'
 const PEDESTAL_THICKNESS = 0.3
 const GAP_BELOW_JAW = 0.12

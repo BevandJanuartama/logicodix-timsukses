@@ -1,6 +1,13 @@
 type Vec3 = [number, number, number]
 
+export interface Tint {
+  color: string
+  amount: number
+  roughness: number
+}
+
 export interface ToothPose {
+  tint?: Tint
   shift?: Vec3
   tilt?: Vec3
   hidden?: boolean
@@ -10,7 +17,9 @@ export interface ConditionPose {
   closeBite?: boolean
   lowerJawForward?: number
   teeth?: Record<string, ToothPose>
-  tint?: { color: string; amount: number; roughness: number }
+  tint?: Tint
+  gumTint?: { color: string; amount: number }
+  tongueTint?: { color: string; amount: number }
   extraToothBeside?: string
 }
 

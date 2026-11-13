@@ -5,7 +5,7 @@ import { findDisease, stagesForDisease } from '@/lib/knowledgeBase'
 import { clinicalFocusTooth } from '@/lib/simulatorActions'
 import { useSimulatorStore, type ClinicalTrackId } from '@/lib/simulatorStore'
 import { ExploreDisclosure } from '@/components/ui/explore/ExploreDisclosure'
-import { SectionTitle, SourceLinks } from '@/components/ui/shell/PanelParts'
+import { SectionTitle } from '@/components/ui/shell/PanelParts'
 import { CompareHold } from './CompareHold'
 import { CLINICAL_TIMELINES, getPlainStage } from './plainStages'
 import { SectionToggle } from './SectionToggle'
@@ -68,10 +68,9 @@ export function ClinicalStages({ track }: { track: ClinicalTrackId }) {
       <SectionToggle toothId={clinicalFocusTooth[track]} label={SECTION_LABELS[track]} />
 
       {disease && (
-        <ExploreDisclosure label="Catatan & rujukan">
+        <ExploreDisclosure label="Catatan">
           <div className="space-y-2 text-caption text-fg-secondary">
             <p>{stage.limitation}</p>
-            <SourceLinks sourceIds={disease.sourceIds} />
           </div>
         </ExploreDisclosure>
       )}

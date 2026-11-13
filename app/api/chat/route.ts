@@ -5,7 +5,15 @@ import { loadRemoteConditions } from '@/lib/data/conditionsCsv'
 import { diseases } from '@/lib/data/diseases'
 import type { Disease } from '@/lib/types'
 
-const DEFAULT_MODEL = 'gemini-3.8-flash' // Pastikan model ini aktif di project GCP Anda
+const FALLBACK_MODELS = ['gemini-3.5-flash-lite', 'gemini-3.8-flash']
+const RETRYABLE_STATUS = new Set([404, 429, 500, 503])
+
+function candidateModels() {
+  const preferred = process.env.GEMINI_MODEL?.trim()
+  return preferred ? [preferred, ...FALLBACK_MODELS.filter((model) => model !== preferred)] : FALLBACK_MODELS
+}
+
+const usesVertexExpress = () => process.env.GEMINI_VERTEX_EXPRESS?.trim().toLowerCase() === 'true'
 const RATE_WINDOW_MS = 10 * 60 * 1000
 const RATE_MAX_REQUESTS = 20
 const RATE_LOG_MAX_CLIENTS = 5000
@@ -43,7 +51,7 @@ function parseMessages(body: unknown): ChatMessage[] | null {
 }
 
 async function knownConditions(): Promise<Disease[]> {
-  const remote = (await loadRemoteConditions()).map(({ disease }) => disease)
+  const remote = (await loadRemoteConditions()).filter(({ mergeInto }) => !mergeInto.length).map(({ disease }) => disease)
   const remoteIds = new Set(remote.map((disease) => disease.id))
   return [...diseases.filter((disease) => !remoteIds.has(disease.id)), ...remote]
 }
@@ -63,16 +71,9 @@ export async function POST(request: Request) {
   const conditions = await knownConditions()
 
   try {
-    // Karena pakai kunci AQ., kita aktifkan flag vertexai: true
-    const vertexai =
-      process.env.GEMINI_VERTEX_EXPRESS?.trim().toLowerCase() === 'true'
-
-    const ai = new GoogleGenAI({
-      apiKey,
-      vertexai,
-    })
-    const response = await ai.models.generateContent({
-      model: process.env.GEMINI_MODEL?.trim() || DEFAULT_MODEL,
+    const vertexai = usesVertexExpress()
+    const ai = new GoogleGenAI({ apiKey, vertexai, ...(vertexai ? {} : { httpOptions: { apiVersion: 'v1beta' } }) })
+    const payload = {
       contents: messages.map(({ role, text }) => ({ role, parts: [{ text }] })),
       config: {
         systemInstruction: buildSystemPrompt(conditions),
@@ -81,7 +82,18 @@ export async function POST(request: Request) {
         responseMimeType: 'application/json',
         responseJsonSchema: REPLY_SCHEMA,
       },
-    })
+    }
+    let response: Awaited<ReturnType<typeof ai.models.generateContent>> | null = null
+    for (const model of candidateModels()) {
+      try {
+        response = await ai.models.generateContent({ ...payload, model })
+        break
+      } catch (error) {
+        if (!RETRYABLE_STATUS.has((error as { status?: number }).status ?? 0)) throw error
+        console.warn(`Model ${model} sibuk atau tidak tersedia, mencoba model berikutnya`)
+      }
+    }
+    if (!response) return errorResponse('upstream_failed', 502)
     const parsed = JSON.parse(response.text ?? '{}') as Partial<ChatReply>
     const conditionId = conditions.some((disease) => disease.id === parsed.conditionId) ? parsed.conditionId! : null
     if (!parsed.reply) return errorResponse('empty_reply', 502)

@@ -26,7 +26,7 @@ export function ExploreIntro() {
     <div className="space-y-4">
       <div>
         <h2 className="font-display text-title font-semibold tracking-tight text-fg">Pilih satu gigi</h2>
-        <p className="mt-1 text-body text-fg-secondary">Ketuk titik oranye di model atau pilih dari daftar.</p>
+        <p className="mt-1 text-body text-fg-secondary">Ketuk titik hijau di model atau pilih dari daftar.</p>
       </div>
 
       {!hasRail && (

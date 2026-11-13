@@ -35,7 +35,7 @@ export function useToothPose(toothId: string, materials: ToothMaterials) {
     node.scale.setScalar(THREE.MathUtils.damp(node.scale.x, scale, POSE_EASE, delta))
     node.visible = node.scale.x > HIDDEN_SCALE * 2
 
-    const tint = pose?.tint
+    const tint = toothPose?.tint ?? pose?.tint
     const outer = materials.outer
     tintTarget.copy(base.color)
     if (tint) tintTarget.lerp(tintColor.set(tint.color), tint.amount)
