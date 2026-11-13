@@ -11,7 +11,7 @@ const PILLAR_ICONS: Record<string, LucideIcon> = {
 
 export function PreventionPillars() {
   return (
-    <div className="divide-y divide-line">
+    <div className="space-y-0.5">
       {preventionTopics.map((topic) => {
         const Icon = PILLAR_ICONS[topic.id] ?? Sparkles
         return (
@@ -23,7 +23,7 @@ export function PreventionPillars() {
             </summary>
             <div className="pb-3 pl-6.5">
               <p className="text-caption text-fg-secondary">{topic.message}</p>
-              <p className="mt-1 text-caption text-fg-muted">{topic.sourceLabel}</p>
+              <p className="mt-1 text-caption text-fg-muted">Sumber: {topic.sourceLabel.replace(/;/g, ',')}</p>
             </div>
           </details>
         )

@@ -24,14 +24,14 @@ export const TOOTH_KINDS: readonly ToothKind[] = [
 ]
 
 export const TOOTH_NAMES: readonly string[] = [
-  'Gigi Seri Sentral',
-  'Gigi Seri Lateral',
-  'Gigi Taring',
-  'Premolar Pertama',
-  'Premolar Kedua',
-  'Molar Pertama',
-  'Molar Kedua',
-  'Molar Ketiga (Bungsu)',
+  'Gigi seri tengah',
+  'Gigi seri samping',
+  'Gigi taring',
+  'Geraham kecil pertama',
+  'Geraham kecil kedua',
+  'Geraham besar pertama',
+  'Geraham besar kedua',
+  'Geraham bungsu',
 ]
 
 const QUADRANT_NAMES: Record<Quadrant, string> = {
@@ -55,4 +55,4 @@ export const toothIdentities: ToothIdentity[] = ([1, 2, 3, 4] as const).flatMap(
 
 export const toothById = new Map(toothIdentities.map((tooth) => [tooth.id, tooth]))
 
-export const toothLabel = (tooth: ToothIdentity) => `${tooth.name} ${QUADRANT_NAMES[tooth.quadrant]}`
+export const toothSide = (tooth: { quadrant: Quadrant }) => QUADRANT_NAMES[tooth.quadrant]

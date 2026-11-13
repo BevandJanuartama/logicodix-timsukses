@@ -22,6 +22,8 @@
   --p-danger-tint: #fbe3df;
   --p-info: #2f5f8a;
   --p-white: #ffffff;
+  --p-note: #fff1c9;
+  --p-stage: #f6ece1;
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -130,6 +132,7 @@
   --color-line: var(--border-subtle);
   --color-line-strong: var(--border-strong);
   --color-ink: var(--p-ink);
+  --color-note: var(--p-note);
   --text-display: var(--type-display-size);
   --text-display--line-height: var(--type-display-line);
   --text-title: var(--type-title-size);

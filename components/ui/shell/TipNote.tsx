@@ -63,15 +63,15 @@ export function TipNote() {
       <motion.aside
         key={`clean-tip-${activeTool.id}`}
         aria-label="Tips teknik menyikat"
-        className="absolute inset-x-3 top-3 z-10 max-w-[280px] rounded-[var(--radius-control)] bg-[#FFF1C9] p-4 pr-12 text-ink shadow-[var(--shadow-float)] md:inset-x-auto md:top-4 md:right-4"
+        className="absolute inset-x-3 top-3 z-10 max-w-[280px] rounded-[var(--radius-control)] bg-note p-4 pr-12 text-ink shadow-[var(--shadow-float)] md:inset-x-auto md:top-4 md:right-4"
         style={{ rotate: '-1.5deg' }}
         initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.18, ease: 'easeOut' }}
       >
-        <h2 className="font-display text-[17px] font-bold">Tips {activeTool.name}</h2>
+        <h2 className="font-display text-[17px] font-semibold">Tips {activeTool.name}</h2>
         <p className="mt-1.5 text-[15px] leading-snug">{activeTool.hint}</p>
-        <p className="mt-1.5 text-[13px] leading-snug opacity-80">
+        <p className="mt-1.5 text-[15px] leading-snug opacity-80">
           Seret pada gigi untuk menggosok · Klik kanan atau 2 jari untuk memutar
         </p>
         <button
@@ -96,13 +96,13 @@ export function TipNote() {
   return (
     <motion.aside
       aria-label="Tips"
-      className="absolute inset-x-3 top-3 z-10 max-w-[260px] rounded-[var(--radius-control)] bg-[#FFF1C9] p-4 pr-14 text-ink shadow-[var(--shadow-float)] md:inset-x-auto md:top-4 md:right-4"
+      className="absolute inset-x-3 top-3 z-10 max-w-[260px] rounded-[var(--radius-control)] bg-note p-4 pr-14 text-ink shadow-[var(--shadow-float)] md:inset-x-auto md:top-4 md:right-4"
       style={{ rotate: '-1.5deg' }}
       initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.18, ease: 'easeOut' }}
     >
-      <h2 className="font-display text-[17px] font-bold">Tips</h2>
+      <h2 className="font-display text-[17px] font-semibold">Tips</h2>
       <ul className="mt-2 space-y-1 text-[15px] leading-snug">
         {TIPS.map((tip) => (
           <li key={tip}>{tip}</li>

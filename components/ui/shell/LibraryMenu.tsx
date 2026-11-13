@@ -6,8 +6,8 @@ import { BookOpen, LibraryBig, ShieldCheck } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
 
 const MENU_ITEMS = [
-  { modal: 'references', label: 'Referensi ilmiah', Icon: BookOpen },
-  { modal: 'governance', label: 'Tata kelola konten', Icon: ShieldCheck },
+  { modal: 'references', label: 'Sumber', Icon: BookOpen },
+  { modal: 'governance', label: 'Tentang konten ini', Icon: ShieldCheck },
 ] as const
 
 export function LibraryMenu() {
@@ -80,7 +80,7 @@ export function LibraryMenu() {
                   role="menuitem"
                   autoFocus={index === 0}
                   onClick={() => choose(modal)}
-                  className="flex min-h-10 w-full cursor-pointer items-center gap-2.5 rounded-[var(--radius-control)] px-3 text-left text-caption font-semibold text-fg-secondary transition-colors duration-[var(--duration-press)] hover:bg-[var(--button-ghost-bg-hover)] hover:text-fg"
+                  className="flex min-h-11 w-full cursor-pointer items-center gap-2.5 rounded-[var(--radius-control)] px-3 text-left text-caption font-semibold text-fg-secondary transition-colors duration-[var(--duration-press)] hover:bg-[var(--button-ghost-bg-hover)] hover:text-fg"
                 >
                   <Icon className="size-4 text-accent" aria-hidden />
                   {label}

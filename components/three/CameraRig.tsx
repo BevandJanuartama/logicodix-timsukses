@@ -26,7 +26,7 @@ const DEFAULT_TARGET: Vec3 = [0, -0.6, -0.2]
 
 const PRESETS: Record<CameraPreset, { direction: Vec3; target: Vec3 }> = {
   front: { direction: [0, 0.24, 1], target: DEFAULT_TARGET },
-  top: { direction: [0, 1, 0.3], target: [0, -0.5, -0.2] },
+  top: { direction: [0, 0.62, 0.78], target: [0, -1.7, -0.9] },
   bottom: { direction: [0, -0.7, 0.75], target: [0, 0.6, -0.2] },
   left: { direction: [-1, 0.15, 0.25], target: [0, -0.1, -0.4] },
   right: { direction: [1, 0.15, 0.25], target: [0, -0.1, -0.4] },
@@ -89,6 +89,7 @@ export function CameraRig() {
   const size = useThree((state) => state.size)
   const aspectRef = useRef(1)
   aspectRef.current = size.width / Math.max(1, size.height)
+  const framedAspect = useRef<number | null>(null)
   const lastZoom = useRef(-1)
   const reduceMotion = useMemo(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches, [])
 
@@ -118,6 +119,17 @@ export function CameraRig() {
       }),
     [reduceMotion],
   )
+
+  const aspect = size.width / Math.max(1, size.height)
+  useEffect(() => {
+    const previous = framedAspect.current
+    framedAspect.current = aspect
+    const controls = controlsRef.current
+    if (previous === null || !controls || Math.abs(previous - aspect) < 0.05) return
+    const state = useAppStore.getState()
+    if (state.selectedToothId || state.selectedObjectId) return
+    lookAtPreset(controls, 'front', fitDistance(aspect), !reduceMotion)
+  }, [aspect, reduceMotion])
 
   const mode = useAppStore((state) => state.mode)
   useEffect(() => {

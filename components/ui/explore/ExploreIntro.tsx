@@ -10,10 +10,10 @@ import { KeyFigures } from './KeyFigures'
 import { ToothTypeTable } from './ToothTypeTable'
 
 export const QUICK_TARGETS: { label: string; focus: SceneFocus }[] = [
-  { label: 'Geraham 36', focus: { toothId: '36' } },
-  { label: 'Gigi seri 11', focus: { toothId: '11' } },
-  { label: 'Taring 13', focus: { toothId: '13' } },
-  { label: 'Premolar 24', focus: { toothId: '24' } },
+  { label: 'Geraham besar', focus: { toothId: '36' } },
+  { label: 'Gigi seri', focus: { toothId: '11' } },
+  { label: 'Gigi taring', focus: { toothId: '13' } },
+  { label: 'Geraham kecil', focus: { toothId: '24' } },
   { label: 'Gusi', focus: { objectId: 'gingiva', preset: 'front' } },
   { label: 'Lidah', focus: { objectId: 'tongue_dorsum', preset: 'top' } },
 ]

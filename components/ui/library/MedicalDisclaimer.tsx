@@ -1,13 +1,20 @@
+'use client'
+
 import { ShieldAlert } from 'lucide-react'
+import { reviewSummary, useContentReview } from './useContentReview'
 
 export function MedicalDisclaimer() {
+  const { reviewed, total } = useContentReview()
   return (
-    <p className="mb-3 flex items-start gap-2 rounded-[var(--radius-control)] border border-warning/30 bg-warning/10 px-3 py-2 text-caption text-fg-secondary">
-      <ShieldAlert className="mt-0.5 size-4 shrink-0 text-warning" aria-hidden />
-      <span>
-        <span className="mr-1.5 text-caption font-semibold text-warning">FR-015</span>
-        Media edukasi, bukan diagnosis atau pengganti pemeriksaan tenaga kesehatan gigi.
-      </span>
-    </p>
+    <div className="rounded-[var(--radius-control)] bg-warning/10 px-4 py-3">
+      <p className="flex items-start gap-3 text-body text-fg">
+        <ShieldAlert className="mt-1 size-5 shrink-0 text-warning" aria-hidden />
+        <span>
+          Aplikasi ini untuk belajar, bukan untuk diagnosis.
+          {reviewed < total && ' Konten belum selesai ditinjau dokter gigi.'}
+        </span>
+      </p>
+      <p className="mt-1.5 pl-8 text-caption text-fg-secondary">{reviewSummary(reviewed, total)}</p>
+    </div>
   )
 }

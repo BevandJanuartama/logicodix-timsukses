@@ -22,8 +22,8 @@ export function ReferencesDialog() {
     <Dialog
       open={open}
       onClose={closeModal}
-      title="Referensi ilmiah"
-      description={`${references.length} sumber institusional.`}
+      title="Sumber"
+      description="Semua penjelasan di aplikasi ini merujuk pada sumber berikut."
     >
       <ul ref={list}>
         {references.map((reference) => (
@@ -33,28 +33,24 @@ export function ReferencesDialog() {
             current={reference.id === focusedReferenceId}
             summary={
               <>
-                <p className="flex items-baseline gap-2 text-caption">
-                  <span className="shrink-0 whitespace-nowrap font-semibold text-accent">{reference.id}</span>
-                  <span className="truncate text-fg-muted">{reference.institution}</span>
-                </p>
-                <p className="line-clamp-2 text-body font-semibold text-fg">{reference.title}</p>
+                <p className="text-caption text-fg-secondary">{reference.institution}</p>
+                <p className="text-body font-semibold text-fg">{reference.title}</p>
               </>
             }
-            trailing={
+            footer={
               <a
                 href={reference.url}
                 target="_blank"
-                rel="noreferrer"
-                aria-label={`Buka ${reference.id} di tab baru`}
-                className="mt-1 grid size-10 shrink-0 place-items-center rounded-[var(--radius-control)] text-fg-muted transition-colors duration-[var(--duration-press)] hover:bg-[var(--button-ghost-bg-hover)] hover:text-accent"
+                rel="noopener noreferrer"
+                aria-label={`Buka sumber: ${reference.title} (tab baru)`}
+                className="-ml-2 mb-1 inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-control)] px-2 text-caption font-semibold text-accent transition-colors duration-[var(--duration-press)] hover:bg-surface-raised"
               >
                 <ExternalLink className="size-4" aria-hidden />
+                Buka sumber
               </a>
             }
           >
-            <p>{reference.publication} · {reference.sourceType}</p>
-            <p className="text-fg">{reference.relevantContent}</p>
-            <p className="text-caption text-fg-muted">{reference.accessNote}</p>
+            <p>{reference.publication}</p>
           </LibraryRow>
         ))}
       </ul>

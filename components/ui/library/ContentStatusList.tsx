@@ -10,7 +10,7 @@ import { ExploreDisclosure } from '@/components/ui/explore/ExploreDisclosure'
 type StatusFilter = ReviewStatus | 'all'
 
 const STATUS_LABELS: Record<ReviewStatus, string> = {
-  Draft: 'Draf',
+  Draft: 'Belum ditinjau',
   'Under Review': 'Ditinjau',
   Approved: 'Disetujui',
 }
@@ -39,7 +39,7 @@ export function ContentStatusList() {
             type="button"
             aria-pressed={filter === status}
             onClick={() => setFilter(filter === status ? 'all' : status)}
-            className="cursor-pointer rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] px-3 py-2 text-left transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)] aria-pressed:border-line-strong aria-pressed:bg-accent-fill/30"
+            className="cursor-pointer rounded-[var(--radius-control)] bg-surface-raised px-3 py-2 text-left transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)] aria-pressed:bg-accent-tint"
           >
             <span className="font-display tabular-nums block text-title font-semibold text-fg">{counts[status]}</span>
             <StatusPill status={status} />
@@ -60,7 +60,7 @@ export function ContentStatusList() {
         </div>
         <ul>
           {visible.map((entry) => (
-            <li key={entry.id} className="flex items-center gap-2 border-t border-line py-2 first:border-t-0">
+            <li key={entry.id} className="flex items-center gap-2 py-2">
               <span className="w-16 shrink-0 text-caption font-semibold text-fg-muted">{entry.id}</span>
               <span className="min-w-0 flex-1">
                 <span className="line-clamp-1 text-caption font-semibold text-fg">{entry.title}</span>
@@ -70,7 +70,7 @@ export function ContentStatusList() {
                 aria-label={`Ubah status ${entry.id}`}
                 value={entry.status}
                 onChange={(event) => setStatus(entry.id, event.target.value as ReviewStatus)}
-                className="min-h-10 rounded-[var(--radius-control)] border border-line bg-surface-raised px-1.5 text-caption text-fg"
+                className="min-h-10 rounded-[var(--radius-control)] bg-surface-raised px-1.5 text-caption text-fg"
               >
                 {REVIEW_STATUSES.map((status) => (
                   <option key={status} value={status}>

@@ -30,7 +30,7 @@ export const toothTypes: ToothType[] = [
   },
   {
     id: "TT-004",
-    name: "Molar / Geraham",
+    name: "Molar / Geraham besar",
     region: "Posterior",
     function: "Menggiling makanan",
     primaryCount: 8,

@@ -1,7 +1,7 @@
 'use client'
 
 import { Crosshair } from 'lucide-react'
-import type { ToothIdentity, ToothKind } from '@/lib/data/dentition'
+import { toothSide, type ToothIdentity, type ToothKind } from '@/lib/data/dentition'
 import { layerSwatches } from '@/lib/data/sceneLabels'
 import { toothTypes } from '@/lib/knowledgeBase'
 import { focusScene } from '@/lib/sceneFocus'
@@ -38,13 +38,11 @@ export function ToothSummary({ tooth }: { tooth: ToothIdentity }) {
   const requestCamera = useAppStore((state) => state.requestCamera)
   const toothType = toothTypes.find((type) => type.id === TOOTH_TYPE_BY_KIND[tooth.kind])
 
+  const region = toothType ? `${plainRegion[toothType.region] ?? toothType.region}, ` : ''
   const facts = [
-    { label: 'Nomor gigi', value: String(tooth.fdi) },
+    { label: 'Letak', value: `${region}${toothSide(tooth)}` },
     ...(toothType
-      ? [
-          { label: 'Letak', value: plainRegion[toothType.region] ?? toothType.region },
-          { label: 'Jumlah gigi sejenis', value: `${toothType.permanentCount} dewasa, ${toothType.primaryCount} susu` },
-        ]
+      ? [{ label: 'Jumlah gigi sejenis', value: `${toothType.permanentCount} dewasa, ${toothType.primaryCount} susu` }]
       : []),
   ]
 

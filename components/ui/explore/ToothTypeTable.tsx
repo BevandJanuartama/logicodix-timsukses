@@ -29,7 +29,7 @@ export function ToothTypeTable({ dentition, activeId }: ToothTypeTableProps) {
             >
               <div className="flex items-baseline gap-2 text-caption">
                 <span className="flex-1 truncate font-semibold text-fg">{type.name.split(' / ')[1] ?? type.name}</span>
-                <span className="tabular-nums text-body font-semibold text-fg">{count}</span>
+                <span className="font-display tabular-nums text-body font-semibold text-fg">{count}</span>
               </div>
               <div aria-hidden className="mt-1.5 h-1 overflow-hidden rounded-full bg-accent-tint">
                 <div
@@ -42,7 +42,7 @@ export function ToothTypeTable({ dentition, activeId }: ToothTypeTableProps) {
           )
         })}
       </ul>
-      <p className="tabular-nums mt-1 px-2.5 text-caption text-fg-secondary">Total {total} gigi</p>
+      <p className="mt-1 px-2.5 text-caption text-fg-secondary">Total <span className="font-display tabular-nums">{total}</span> gigi</p>
     </div>
   )
 }

@@ -17,7 +17,7 @@ export interface ContentEntry {
 
 export const contentEntries: ContentEntry[] = [
   ...anatomyStructures.map((item) => ({ id: item.id, group: 'Anatomi', title: item.name, status: item.status })),
-  ...diseases.map((item) => ({ id: item.id, group: 'Penyakit', title: item.displayName, status: item.status })),
+  ...diseases.map((item) => ({ id: item.id, group: 'Kondisi', title: item.displayName, status: item.status })),
   ...diseaseStages.map((item) => ({ id: item.id, group: 'Tahap', title: item.title, status: item.status })),
   ...preventionTopics.map((item) => ({ id: item.id, group: 'Pencegahan', title: item.topic, status: item.status })),
   ...quizQuestions.map((item) => ({ id: item.id, group: 'Kuis', title: item.question, status: item.status })),

@@ -6,6 +6,10 @@ import { useQuizStore } from '@/lib/quizStore'
 import { QuestionCard } from './QuestionCard'
 import { QuizResult } from './QuizResult'
 
+const NUMBER_WORDS = ['satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan', 'sepuluh']
+
+const toWord = (value: number) => NUMBER_WORDS[value - 1] ?? String(value)
+
 export function QuizPanel() {
   const index = useQuizStore((state) => state.index)
   const checked = useQuizStore((state) => state.checked)
@@ -17,18 +21,17 @@ export function QuizPanel() {
   const stepKey = finished || !question ? 'result' : question.id
 
   return (
-    <div className="px-3 pb-3">
-      <div className="tabular-nums mb-1.5 flex justify-between text-caption font-semibold text-fg-muted">
-        <span>{finished ? 'Selesai' : `Soal ${index + 1}/${total}`}</span>
-        <span className="tabular-nums">{Math.round((answeredCount / total) * 100)}%</span>
-      </div>
+    <div className="px-4 pb-4">
+      <p className="text-body font-semibold text-fg-secondary">
+        {finished ? 'Kuis selesai' : `Soal ${toWord(index + 1)} dari ${toWord(total)}`}
+      </p>
       <div
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={total}
         aria-valuenow={answeredCount}
         aria-label="Progres kuis"
-        className="h-1 overflow-hidden rounded-full bg-[var(--chip-bg)]"
+        className="mt-2 h-1.5 overflow-hidden rounded-full bg-surface-sunken"
       >
         <div
           className="h-full origin-left rounded-full bg-accent-fill transition-transform duration-[var(--duration-state)] ease-[var(--ease-out)]"
@@ -36,7 +39,7 @@ export function QuizPanel() {
         />
       </div>
 
-      <div className="mt-4">
+      <div className="mt-5">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={stepKey}

@@ -6,6 +6,7 @@ export interface SceneFocus {
   objectId?: SceneTargetId
   section?: boolean
   preset?: CameraPreset
+  overview?: boolean
 }
 
 const OVERVIEW_DISTANCE = 7.5
@@ -13,10 +14,11 @@ const OVERVIEW_DISTANCE = 7.5
 export function focusScene(focus: SceneFocus) {
   const state = useAppStore.getState()
   state.setIntro(false)
-  state.selectTarget(focus.toothId ?? null, focus.objectId ?? null)
-  if (focus.toothId) {
+  const toothId = focus.overview ? null : (focus.toothId ?? null)
+  state.selectTarget(toothId, focus.objectId ?? null)
+  if (toothId) {
     state.setCutaway(Boolean(focus.section))
-    state.requestCamera({ kind: 'tooth', toothId: focus.toothId, section: focus.section })
+    state.requestCamera({ kind: 'tooth', toothId, section: focus.section })
     return
   }
   state.requestCamera({ kind: 'preset', preset: focus.preset ?? 'front', distance: OVERVIEW_DISTANCE })

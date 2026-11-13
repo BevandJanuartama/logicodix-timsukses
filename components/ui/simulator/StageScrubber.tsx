@@ -52,7 +52,7 @@ export function StageScrubber({ label, items, activeIndex, indicatorId, timeline
         role="tablist"
         aria-label={label}
         onKeyDown={handleKeyDown}
-        className="flex gap-1 rounded-[var(--radius-control)] border border-line bg-surface-sunken p-1"
+        className="flex gap-1 rounded-[var(--radius-control)] bg-surface-sunken p-1"
       >
         {items.map((item, index) => {
           const active = index === activeIndex
@@ -79,8 +79,7 @@ export function StageScrubber({ label, items, activeIndex, indicatorId, timeline
                   transition={reduceMotion ? { duration: 0 } : INDICATOR_SPRING}
                 />
               )}
-              <span className="relative block truncate text-caption font-semibold leading-tight">{wordLabel}</span>
-              <span className="relative mt-0.5 block text-[11px] opacity-80 tabular-nums">Tahap {index + 1}</span>
+              <span className="relative block text-caption font-semibold leading-tight">{wordLabel}</span>
             </button>
           )
         })}

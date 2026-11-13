@@ -37,7 +37,7 @@ export function StephanCurve() {
   const criticalMinutes = minutesBelowCriticalPh(scenario.exposures)
 
   return (
-    <figure className="rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] p-3">
+    <figure className="rounded-[var(--radius-control)] bg-surface-raised p-3">
       <figcaption className="font-display text-body font-semibold text-fg">Kurva pH plak</figcaption>
       <div role="group" aria-label="Pola minum" className="mt-2 flex flex-wrap gap-1.5">
         {stephanScenarios.map((item) => (
@@ -50,19 +50,19 @@ export function StephanCurve() {
         <rect x={PADDING.left} y={PADDING.top} width={PLOT_WIDTH} height={criticalY - PADDING.top} fill="var(--color-success)" fillOpacity={0.08} />
         <rect x={PADDING.left} y={criticalY} width={PLOT_WIDTH} height={yAt(MIN_PH) - criticalY} fill="var(--color-danger)" fillOpacity={0.14} />
         <line x1={PADDING.left} x2={WIDTH - PADDING.right} y1={criticalY} y2={criticalY} stroke="var(--color-danger)" strokeDasharray="4 3" />
-        <text x={WIDTH - PADDING.right - 2} y={criticalY + 11} textAnchor="end" fontSize={9} fill="var(--color-danger)" fontWeight={700}>
+        <text x={WIDTH - PADDING.right - 2} y={criticalY + 14} textAnchor="end" fontSize={12} fill="var(--color-danger)" fontWeight={600}>
           pH &lt; 5,5 · mineral larut
         </text>
-        <text x={WIDTH - PADDING.right - 2} y={criticalY - 4} textAnchor="end" fontSize={9} fill="var(--color-success)" fontWeight={700}>
-          pulih (remineralisasi)
+        <text x={WIDTH - PADDING.right - 2} y={criticalY - 4} textAnchor="end" fontSize={12} fill="var(--color-success)" fontWeight={600}>
+          mineral kembali
         </text>
         {AXIS_PH.map((ph) => (
-          <text key={ph} x={PADDING.left - 6} y={yAt(ph) + 3} textAnchor="end" fontSize={9} fill="currentColor" opacity={0.5}>
+          <text key={ph} x={PADDING.left - 6} y={yAt(ph) + 3} textAnchor="end" fontSize={11} fill="currentColor" opacity={0.5}>
             {ph}
           </text>
         ))}
         {AXIS_MINUTES.map((minute) => (
-          <text key={minute} x={xAt(minute)} y={HEIGHT - 6} textAnchor="middle" fontSize={9} fill="currentColor" opacity={0.5}>
+          <text key={minute} x={xAt(minute)} y={HEIGHT - 6} textAnchor="middle" fontSize={11} fill="currentColor" opacity={0.5}>
             {minute}&prime;
           </text>
         ))}
@@ -81,7 +81,7 @@ export function StephanCurve() {
       <p className="mt-1 flex items-baseline justify-between gap-2 text-caption text-fg-secondary" aria-live="polite">
         <span>{scenario.caption}</span>
         <span className={criticalMinutes ? 'font-semibold text-danger' : 'font-semibold text-success'}>
-          <span className="tabular-nums">±{criticalMinutes}</span> menit kritis
+          <span className="font-display tabular-nums">±{criticalMinutes}</span> menit kritis
         </span>
       </p>
       <p className="mt-1 text-caption text-fg-muted">Ilustrasi edukatif yang disederhanakan.</p>

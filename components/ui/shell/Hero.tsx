@@ -19,7 +19,7 @@ export function Hero() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
     >
-      <h1 className="font-display text-[26px] font-extrabold leading-tight tracking-tight text-fg md:text-title xl:text-[30px]">
+      <h1 className="font-display text-[26px] font-semibold leading-tight tracking-tight text-fg md:text-title xl:text-[30px]">
         Kenali gigimu, dari luar sampai akar.
       </h1>
       <p className="text-[15px] leading-relaxed text-fg-secondary">
@@ -41,7 +41,7 @@ export function Hero() {
           Lihat masalah gigi
         </button>
       </div>
-      <p className="border-t border-line pt-3 text-[15px] text-fg-muted">Untuk belajar, bukan diagnosis.</p>
+      <p className="pt-1 text-[15px] text-fg-muted">Untuk belajar, bukan diagnosis.</p>
     </motion.section>
   )
 }

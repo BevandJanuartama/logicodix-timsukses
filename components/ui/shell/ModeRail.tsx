@@ -6,7 +6,7 @@ import { CleanRail } from '@/components/ui/clean/CleanRail'
 import { DiseaseRail } from '@/components/ui/diseases/DiseaseRail'
 import { QUICK_TARGETS } from '@/components/ui/explore/ExploreIntro'
 import { SimulatorRail } from '@/components/ui/simulator/SimulatorRail'
-import { toothById, toothLabel } from '@/lib/data/dentition'
+import { toothById, toothSide } from '@/lib/data/dentition'
 import { focusScene } from '@/lib/sceneFocus'
 import { useAppStore } from '@/lib/store'
 import { LibraryRail, RailThumbnail, type RailItem } from './LibraryRail'
@@ -15,7 +15,8 @@ const targetId = ({ toothId, objectId }: { toothId?: string; objectId?: string }
 
 const anatomyItems: RailItem[] = QUICK_TARGETS.map(({ label, focus }) => {
   const tooth = focus.toothId ? toothById.get(focus.toothId) : undefined
-  return { id: targetId(focus), title: label, subtitle: tooth ? toothLabel(tooth) : 'Jaringan lunak' }
+  const side = tooth ? toothSide(tooth) : ''
+  return { id: targetId(focus), title: label, subtitle: tooth ? side.charAt(0).toUpperCase() + side.slice(1) : 'Bagian lunak mulut' }
 })
 
 function AnatomyRail() {

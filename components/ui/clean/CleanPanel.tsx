@@ -39,7 +39,7 @@ export function CleanPanel() {
           type="button"
           onClick={useMouthwash}
           disabled={rinsed}
-          className="flex min-h-11 flex-1 cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-control)] bg-accent-fill text-caption font-semibold text-on-accent transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)] disabled:cursor-default disabled:opacity-45 disabled:active:scale-100"
+          className={`flex min-h-11 flex-1 cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-control)] text-caption font-semibold transition-transform ${finished ? 'bg-accent-fill text-on-accent' : 'bg-surface-sunken text-fg hover:bg-surface-sand'} duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)] disabled:cursor-default disabled:opacity-45 disabled:active:scale-100`}
         >
           <Droplets className="size-4" aria-hidden />
           {rinsed ? 'Sudah berkumur' : 'Kumur'}
@@ -47,7 +47,7 @@ export function CleanPanel() {
         <button
           type="button"
           onClick={reset}
-          className="flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] px-4 text-caption font-semibold text-fg-secondary transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] hover:text-fg active:scale-[var(--scale-press)]"
+          className="flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-control)] bg-surface-sunken px-4 text-caption font-semibold text-fg-secondary transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] hover:text-fg active:scale-[var(--scale-press)]"
         >
           <RotateCcw className="size-4" aria-hidden />
           Ulangi

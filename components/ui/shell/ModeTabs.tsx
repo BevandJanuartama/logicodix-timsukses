@@ -9,7 +9,7 @@ import type { AppMode } from '@/lib/types'
 
 const MODE_TABS: { id: AppMode; label: string; icon: typeof ScanSearch }[] = [
   { id: 'explore', label: 'Anatomi', icon: ScanSearch },
-  { id: 'diseases', label: 'Penyakit', icon: Stethoscope },
+  { id: 'diseases', label: 'Kondisi', icon: Stethoscope },
   { id: 'destroy', label: 'Simulasi', icon: FlaskConical },
   { id: 'clean', label: 'Bersihkan', icon: Sparkles },
   { id: 'quiz', label: 'Kuis', icon: ListChecks },

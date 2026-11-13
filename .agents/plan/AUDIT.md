@@ -417,18 +417,18 @@ Aturan pemeliharaan:
 
 | # | Langkah | Dampak | Usaha |
 |---|---|---|---|
-| 1 | Commit Fase 13–15 yang masih di working tree | Mengamankan ±3 fase kerja | 5 menit |
+| 1 | Commit Fase 13–15 yang masih di working tree ✅ selesai | Mengamankan ±3 fase kerja | 5 menit |
 | 2 | Perbaiki "plak plak" (aturan regex) ✅ selesai | Menghapus teks salah yang tampil | 5 menit |
 | 3 | `adjustFontFallback: false` di `app/layout.tsx` ✅ selesai | Build bersih dari pesan error font | 5 menit |
 | 4 | Pindahkan `select-none` dari `<main>` ke kanvas ✅ selesai | Teks bisa diseleksi | 5 menit |
 | 5 | Pisahkan `lib/data/dentition.ts` dari three ✅ selesai | First Load ±290 → ±190 kB | 1 jam |
 | 6 | Sheet setengah terbuka di Kuis & Simulasi; Tips hanya di Anatomi ✅ selesai | Isi utama terlihat di mobile | 1 jam |
-| 7 | Loader sampai scene siap + animasi "mendarat" | Kesan pertama | 2 jam |
-| 8 | Error boundary kanvas + `app/error.tsx` | Tidak ada layar kosong | 1 jam |
-| 9 | Selesaikan Fase 16 (Kuis 2 kolom, hapus `Q-001 · Draf`, dialog, audit bahasa) | Menutup redesign | ½–1 hari |
+| 7 | Loader sampai scene siap + animasi "mendarat" ✅ selesai | Kesan pertama | 2 jam |
+| 8 | Error boundary kanvas + `app/error.tsx` ✅ selesai | Tidak ada layar kosong | 1 jam |
+| 9 | Selesaikan Fase 16 (Kuis 2 kolom, hapus `Q-001 · Draf`, dialog, audit bahasa) ✅ selesai | Menutup redesign | ½–1 hari |
 | 10 | Ukur FPS di ponsel nyata (`<Stats />` mode dev) | Membuktikan target 60 FPS | 1 jam |
 | 11 | ESLint + 3 file tes unit | Mencegah regresi | ½ hari |
-| 12 | Salinan awam ke data (`plain`) + kamus istilah; hapus tiga lapisan `plain*` | Mutu konten, bisa ditinjau | 1–2 hari |
+| 12 | Salinan awam ke data (`plain`) + kamus istilah; hapus tiga lapisan `plain*` ✅ sebagian selesai (`Disease.plain` untuk 10 penyakit) | Mutu konten, bisa ditinjau | 1–2 hari |
 | 13 | Konten baru: "Kapan ke dokter gigi", `visualChange`, mitos/fakta, angka kunci bersumber | Nilai edukasi | 2–3 hari |
 | 14 | Rapikan folder (`primitives/`, `layout/`, `lib/actions/`), gabung file kecil | Pemeliharaan | 1 hari |
 | 15 | Font lokal (`next/font/local`) | Build tanpa jaringan | 1 jam + unduh font |

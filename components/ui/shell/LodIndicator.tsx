@@ -1,7 +1,7 @@
 'use client'
 
 import { Focus, Layers, Smile } from 'lucide-react'
-import { useAppStore } from '@/lib/store'
+import { sectionedToothOf, useAppStore } from '@/lib/store'
 import type { Lod } from '@/lib/types'
 import { ToolbarButton } from './ToolbarButton'
 
@@ -11,8 +11,14 @@ const LEVELS = [
   { id: 'micro', label: 'Lapisan dalam', Icon: Layers },
 ] as const
 
+const activeLevelOf = (state: ReturnType<typeof useAppStore.getState>): Lod => {
+  if (!state.selectedToothId) return 'macro'
+  if (sectionedToothOf(state)) return 'micro'
+  return state.lod === 'macro' ? 'macro' : 'meso'
+}
+
 export function LodButtons() {
-  const lod = useAppStore((state) => state.lod)
+  const activeLevel = useAppStore(activeLevelOf)
   const selectedToothId = useAppStore((state) => state.selectedToothId)
   const cleaning = useAppStore((state) => state.mode === 'clean')
   const requestCamera = useAppStore((state) => state.requestCamera)
@@ -39,7 +45,7 @@ export function LodButtons() {
           <ToolbarButton
             key={id}
             label={label}
-            pressed={lod === id}
+            pressed={activeLevel === id}
             disabled={needsTooth}
             hint={needsTooth ? 'Pilih satu gigi dulu' : label}
             onClick={() => choose(id)}
@@ -51,8 +57,4 @@ export function LodButtons() {
       <div aria-hidden className="mx-2 my-1 h-px bg-line-strong" />
     </div>
   )
-}
-
-export function LodIndicator() {
-  return null
 }

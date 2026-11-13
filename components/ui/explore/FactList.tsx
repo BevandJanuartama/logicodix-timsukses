@@ -6,7 +6,7 @@ export function FactList({ facts }: { facts: { label: string; value: string }[] 
         {facts.map((fact) => (
           <div key={fact.label} className="col-span-2 grid grid-cols-subgrid">
             <dt className="text-fg-secondary">{fact.label}</dt>
-            <dd className="font-semibold tabular-nums text-fg">{fact.value}</dd>
+            <dd className="font-display font-semibold tabular-nums text-fg">{fact.value}</dd>
           </div>
         ))}
       </dl>

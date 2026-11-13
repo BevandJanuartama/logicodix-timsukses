@@ -7,7 +7,7 @@ import type { SceneTargetId } from '@/lib/types'
 
 const HOVER_GLOW = 0.3
 const VESSEL_BASE_GLOW = 0.25
-const SELECTED_RIM_GLOW = 1.4
+const SELECTED_RIM_GLOW = 1.8
 const EPSILON = 0.001
 
 const approach = (current: number, target: number, rate: number) =>

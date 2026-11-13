@@ -5,7 +5,7 @@ export const anatomyStructures: AnatomyStructure[] = [
     id: "AN-001",
     name: "Enamel",
     tissueType: "Jaringan keras",
-    description: "Lapisan terluar mahkota gigi; sangat termineralisasi dan melindungi jaringan di bawahnya.",
+    description: "Lapisan terluar mahkota gigi; sangat kaya mineral dan melindungi jaringan di bawahnya.",
     location: "Mahkota gigi",
     relatedConditions: [
       "Karies awal",
@@ -21,7 +21,7 @@ export const anatomyStructures: AnatomyStructure[] = [
     id: "AN-002",
     name: "Dentin",
     tissueType: "Jaringan keras",
-    description: "Membentuk sebagian besar struktur gigi; berada di bawah enamel pada mahkota dan di bawah cementum pada akar.",
+    description: "Membentuk sebagian besar gigi; berada di bawah email pada mahkota dan di bawah sementum pada akar.",
     location: "Mahkota dan akar",
     relatedConditions: [
       "Karies",
@@ -38,7 +38,7 @@ export const anatomyStructures: AnatomyStructure[] = [
     name: "Pulp",
     tissueType: "Jaringan lunak",
     description: "Jaringan ikat di bagian dalam gigi yang mengandung pembuluh darah dan saraf.",
-    location: "Pulp chamber dan root canal",
+    location: "Ruang pulpa dan saluran akar",
     relatedConditions: [
       "Pulpitis",
       "nekrosis pulpa"
@@ -52,7 +52,7 @@ export const anatomyStructures: AnatomyStructure[] = [
     id: "AN-004",
     name: "Cementum",
     tissueType: "Jaringan keras",
-    description: "Menutupi permukaan akar dan menjadi tempat perlekatan serat periodontal.",
+    description: "Menutupi permukaan akar dan menjadi tempat menempelnya serat pengikat gigi.",
     location: "Permukaan akar",
     relatedConditions: [
       "Karies akar",
@@ -67,7 +67,7 @@ export const anatomyStructures: AnatomyStructure[] = [
     id: "AN-005",
     name: "Gingiva",
     tissueType: "Jaringan lunak",
-    description: "Jaringan gusi yang mengelilingi gigi dan menutupi bagian tulang alveolar.",
+    description: "Jaringan gusi yang mengelilingi gigi dan menutupi sebagian tulang penyangga gigi.",
     location: "Sekitar leher gigi",
     relatedConditions: [
       "Gingivitis",
@@ -82,8 +82,8 @@ export const anatomyStructures: AnatomyStructure[] = [
     id: "AN-006",
     name: "Periodontal Ligament",
     tissueType: "Jaringan ikat",
-    description: "Menghubungkan cementum akar dengan tulang alveolar; membantu menopang gigi dan meredam beban kunyah.",
-    location: "Antara akar dan soket tulang",
+    description: "Menghubungkan sementum akar dengan tulang penyangga gigi; membantu menopang gigi dan meredam beban kunyah.",
+    location: "Antara akar dan tulang di sekitarnya",
     relatedConditions: [
       "Periodontitis",
       "trauma oklusi"
@@ -97,7 +97,7 @@ export const anatomyStructures: AnatomyStructure[] = [
     id: "AN-007",
     name: "Alveolar Bone",
     tissueType: "Tulang",
-    description: "Bagian tulang rahang yang membentuk soket dan menopang akar gigi.",
+    description: "Bagian tulang rahang yang membentuk lubang tempat akar gigi tertanam dan menopangnya.",
     location: "Rahang di sekitar akar",
     relatedConditions: [
       "Kehilangan tulang pada periodontitis"
@@ -110,7 +110,7 @@ export const anatomyStructures: AnatomyStructure[] = [
   {
     id: "AN-008",
     name: "Pulp Chamber",
-    tissueType: "Ruang anatomis",
+    tissueType: "Ruang di dalam gigi",
     description: "Ruang di bagian mahkota yang berisi jaringan pulpa.",
     location: "Bagian dalam mahkota",
     relatedConditions: [
@@ -124,8 +124,8 @@ export const anatomyStructures: AnatomyStructure[] = [
   {
     id: "AN-009",
     name: "Root Canal",
-    tissueType: "Ruang anatomis",
-    description: "Saluran di dalam akar yang berisi jaringan pulpa dan berlanjut menuju foramen apikal.",
+    tissueType: "Ruang di dalam gigi",
+    description: "Saluran di dalam akar yang berisi jaringan pulpa dan berlanjut menuju lubang di ujung akar.",
     location: "Akar gigi",
     relatedConditions: [
       "Pulpitis/nekrosis dan perawatan saluran akar"
@@ -138,8 +138,8 @@ export const anatomyStructures: AnatomyStructure[] = [
   {
     id: "AN-010",
     name: "Cementoenamel Junction (CEJ)",
-    tissueType: "Landmark anatomi",
-    description: "Batas pertemuan enamel mahkota dengan cementum akar.",
+    tissueType: "Garis batas",
+    description: "Batas pertemuan email mahkota dengan sementum akar.",
     location: "Leher gigi",
     relatedConditions: [
       "Resesi",

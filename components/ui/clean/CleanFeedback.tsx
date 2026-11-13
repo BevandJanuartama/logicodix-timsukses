@@ -40,7 +40,7 @@ export function CleanSuccessToast() {
           <div className="flex items-center gap-3">
             <CheckCircle2 className="size-6 shrink-0 text-success" aria-hidden />
             <div className="flex-1">
-              <p className="tabular-nums text-body font-semibold text-fg">
+              <p className="font-display tabular-nums text-body font-semibold text-fg">
                 {Math.round(overall)}% · {formatDuration(elapsed)}
               </p>
               <p className="text-caption text-fg-secondary">

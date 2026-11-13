@@ -6,7 +6,7 @@ import type { AppMode } from '@/lib/types'
 
 const STORY_ORDER: { mode: AppMode; label: string }[] = [
   { mode: 'explore', label: 'Anatomi' },
-  { mode: 'diseases', label: 'Penyakit' },
+  { mode: 'diseases', label: 'Kondisi' },
   { mode: 'destroy', label: 'Simulasi' },
   { mode: 'clean', label: 'Bersihkan' },
   { mode: 'quiz', label: 'Kuis' },

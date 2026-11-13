@@ -41,13 +41,17 @@ interface AppState {
   cutaway: boolean
   cameraCommand: CameraCommand | null
   hotspotTouched: boolean
+  showNormalPose: boolean
   thumbnails: Record<string, string>
+  sceneReady: boolean
+  sceneFailed: boolean
   setMode: (mode: AppMode) => void
   setIntro: (intro: boolean) => void
   selectObject: (objectId: SceneTargetId | null) => void
   selectTooth: (toothId: string | null) => void
   selectTarget: (toothId: string | null, objectId: SceneTargetId | null) => void
   selectDisease: (diseaseId: string | null) => void
+  setShowNormalPose: (showNormalPose: boolean) => void
   toggleLayer: (objectId: AnatomyObjectId) => void
   resetLayers: () => void
   openModal: (modal: Exclude<ModalKind, null>, referenceId?: string) => void
@@ -59,6 +63,9 @@ interface AppState {
   requestCamera: (request: CameraRequest) => void
   markHotspotTouched: () => void
   setThumbnail: (id: string, dataUrl: string) => void
+  markSceneReady: () => void
+  markSceneFailed: () => void
+  resetScene: () => void
 }
 
 let cameraNonce = 0
@@ -78,14 +85,18 @@ export const useAppStore = create<AppState>((set) => ({
   cutaway: false,
   cameraCommand: null,
   hotspotTouched: false,
+  showNormalPose: false,
   thumbnails: {},
+  sceneReady: false,
+  sceneFailed: false,
   setMode: (mode) => set({ mode, intro: false, hover: null, ...(mode === 'clean' ? { selectedToothId: null, selectedObjectId: null, cutaway: false } : {}) }),
   setIntro: (intro) => set({ intro }),
   selectObject: (selectedObjectId) => set({ selectedObjectId }),
   selectTooth: (selectedToothId) => set(selectedToothId ? { selectedToothId } : { selectedToothId, cutaway: false }),
   selectTarget: (selectedToothId, selectedObjectId) =>
     set(selectedToothId ? { selectedToothId, selectedObjectId } : { selectedToothId, selectedObjectId, cutaway: false }),
-  selectDisease: (selectedDiseaseId) => set({ selectedDiseaseId }),
+  selectDisease: (selectedDiseaseId) => set({ selectedDiseaseId, showNormalPose: false }),
+  setShowNormalPose: (showNormalPose) => set({ showNormalPose }),
   toggleLayer: (objectId) => set((state) => ({ layers: { ...state.layers, [objectId]: !state.layers[objectId] } })),
   resetLayers: () => set({ layers: allLayersVisible }),
   openModal: (modal, focusedReferenceId) => set({ modal, focusedReferenceId: focusedReferenceId ?? null }),
@@ -97,6 +108,9 @@ export const useAppStore = create<AppState>((set) => ({
   requestCamera: (request) => set({ cameraCommand: { ...request, nonce: ++cameraNonce } }),
   markHotspotTouched: () => set({ hotspotTouched: true }),
   setThumbnail: (id, dataUrl) => set((state) => ({ thumbnails: { ...state.thumbnails, [id]: dataUrl } })),
+  markSceneReady: () => set({ sceneReady: true }),
+  markSceneFailed: () => set({ sceneFailed: true }),
+  resetScene: () => set({ sceneReady: false, sceneFailed: false }),
 }))
 
 export const sectionedToothOf = (state: AppState) =>

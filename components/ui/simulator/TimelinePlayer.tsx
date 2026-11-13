@@ -23,7 +23,7 @@ export function TimelinePlayer({ timeline, activeStageLabel }: TimelinePlayerPro
   const stageReadout = activeStageLabel ?? `${percent}%`
 
   return (
-    <div className="rounded-[var(--radius-control)] border border-line bg-[var(--chip-bg)] p-3">
+    <div className="rounded-[var(--radius-control)] bg-[var(--chip-bg)] p-3">
       <div className="flex items-center gap-3">
         <button
           type="button"

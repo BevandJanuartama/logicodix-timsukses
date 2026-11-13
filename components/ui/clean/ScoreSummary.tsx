@@ -11,7 +11,7 @@ function Meter({ label, value }: { label: string; value: number }) {
     <div>
       <div className="mb-1.5 flex justify-between text-caption font-semibold text-fg-secondary">
         <span>{label}</span>
-        <span className="tabular-nums text-fg">{rounded}%</span>
+        <span className="font-display tabular-nums text-fg">{rounded}%</span>
       </div>
       <div className="h-2.5 overflow-hidden rounded-full bg-surface-sunken">
         <div
@@ -27,9 +27,6 @@ export function ScoreSummary() {
   const stats = useCleaningStore((state) => state.stats)
   const elapsed = useCleaningTimer()
   const score = Math.round(stats.overall)
-  const surface = Math.round(stats.surface)
-  const interdental = Math.round(stats.interdental)
-  const tongue = Math.round(stats.tongue)
 
   return (
     <div className="mt-4 rounded-[var(--radius-control)] bg-surface-sunken p-4">
@@ -41,9 +38,10 @@ export function ScoreSummary() {
             <span className="ml-0.5 font-display text-title text-fg-muted">%</span>
           </p>
         </div>
-        <p className="flex items-center gap-1.5 pb-1 text-caption font-semibold text-fg-secondary tabular-nums">
+        <p className="flex items-center gap-1.5 pb-1 text-caption font-semibold text-fg-secondary">
           <Timer className="size-4 text-accent" aria-hidden />
-          {formatDuration(elapsed)} / 2:00
+          <span className="font-display tabular-nums text-body">{formatDuration(elapsed)}</span> dari{' '}
+          <span className="font-display tabular-nums text-body">{formatDuration(RECOMMENDED_SECONDS)}</span>
         </p>
       </div>
       <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-surface-sand">
@@ -52,10 +50,7 @@ export function ScoreSummary() {
           style={{ transform: `scaleX(${Math.min(1, elapsed / RECOMMENDED_SECONDS)})` }}
         />
       </div>
-      <p className="mt-3 text-caption font-semibold text-fg-secondary tabular-nums">
-        Gigi {surface}% · Sela {interdental}% · Lidah {tongue}%
-      </p>
-      <div className="mt-2.5 grid grid-cols-3 gap-3 bg-surface-raised p-3 rounded-[var(--radius-thumb)]">
+      <div className="mt-3 grid grid-cols-3 gap-3 bg-surface-raised p-3 rounded-[var(--radius-thumb)]">
         <Meter label="Gigi" value={stats.surface} />
         <Meter label="Sela" value={stats.interdental} />
         <Meter label="Lidah" value={stats.tongue} />

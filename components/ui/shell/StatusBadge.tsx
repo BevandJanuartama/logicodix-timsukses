@@ -6,7 +6,7 @@ import type { ReviewStatus } from '@/lib/types'
 import { Badge, type BadgeTone } from './Badge'
 
 const STATUS_STYLES: Record<ReviewStatus, { label: string; tone: BadgeTone; Icon: typeof Clock }> = {
-  Draft: { label: 'Draf', tone: 'neutral', Icon: CircleDashed },
+  Draft: { label: 'Belum ditinjau', tone: 'neutral', Icon: CircleDashed },
   'Under Review': { label: 'Ditinjau', tone: 'warning', Icon: Clock },
   Approved: { label: 'Disetujui', tone: 'success', Icon: CircleCheck },
 }

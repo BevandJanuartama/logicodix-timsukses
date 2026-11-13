@@ -38,7 +38,7 @@ export const ANATOMY_HOTSPOTS: HotspotSpec[] = [
   },
   {
     id: '13',
-    label: 'Taring',
+    label: 'Gigi taring',
     ariaLabel: 'Lihat gigi taring, gigi runcing untuk merobek',
     tone: 'coral',
     anchor: { kind: 'tooth', toothId: '13' },
@@ -54,8 +54,8 @@ export const ANATOMY_HOTSPOTS: HotspotSpec[] = [
   },
   {
     id: '36',
-    label: 'Geraham',
-    ariaLabel: 'Lihat geraham, gigi besar untuk mengunyah',
+    label: 'Geraham besar',
+    ariaLabel: 'Lihat geraham besar, gigi besar untuk mengunyah',
     tone: 'coral',
     anchor: { kind: 'tooth', toothId: '36' },
     focus: { toothId: '36' },

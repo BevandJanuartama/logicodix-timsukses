@@ -27,36 +27,36 @@ export const habitCamera: Record<HabitId, { preset: CameraPreset; distance: numb
 export const habitScenarios: HabitScenario[] = [
   {
     id: 'ice',
-    title: 'Makan Es Batu & Makanan Keras',
+    title: 'Mengunyah es batu dan makanan keras',
     timeline: ['Hari ini', '± 3 tahun'],
     stages: [
       {
         startsAt: 0,
         title: 'Gigi sehat',
-        description: 'Email utuh dan halus. Email memang sangat keras, tetapi juga getas — tidak lentur saat menerima beban mendadak.',
+        description: 'Email utuh dan halus. Email memang sangat keras, tetapi juga rapuh — tidak lentur saat menerima beban mendadak.',
       },
       {
         startsAt: 0.2,
-        title: 'Stres termal & mekanis',
-        description: 'Es membuat email mendingin dan menyusut, lalu memuai lagi saat hangat. Ditambah tekanan gigitan pada benda sangat keras, timbul tegangan di dalam email.',
+        title: 'Tekanan suhu dan gigitan',
+        description: 'Es membuat email menyusut, lalu memuai lagi saat hangat. Ditambah gigitan pada benda sangat keras, timbul tegangan di dalam email.',
       },
       {
         startsAt: 0.4,
-        title: 'Retak rambut (craze lines)',
+        title: 'Retak rambut',
         description: 'Muncul garis retak halus vertikal di email. Umumnya belum terasa sakit, tetapi menjadi titik lemah.',
       },
       {
         startsAt: 0.65,
-        title: 'Retakan menjalar & gigi gompal',
+        title: 'Retakan menjalar dan gigi gompal',
         description: 'Retakan memanjang dan tepi gigi seri bisa patah (gompal), terutama bila email sudah menipis atau ada tambalan.',
       },
       {
         startsAt: 0.85,
-        title: 'Cracked tooth',
+        title: 'Gigi retak',
         description: 'Retak dapat mencapai dentin: ngilu saat menggigit atau minum dingin. Retak dalam bisa berujung perawatan saluran akar atau pencabutan.',
       },
     ],
-    impacts: ['Retak rambut pada email', 'Gigi gompal / patah', 'Tambalan retak atau lepas', 'Ngilu saat menggigit'],
+    impacts: ['Retak rambut pada email', 'Gigi gompal atau patah', 'Tambalan retak atau lepas', 'Ngilu saat menggigit'],
     prevention: [
       'Biarkan es mencair di mulut, atau minum tanpa es batu',
       'Hindari menggigit benda keras (es, tulang, pulpen, tutup botol)',
@@ -65,13 +65,13 @@ export const habitScenarios: HabitScenario[] = [
   },
   {
     id: 'bruxism',
-    title: 'Bruxism (Menggertakkan Gigi)',
+    title: 'Menggertakkan gigi (bruksisme)',
     timeline: ['Bulan 1', '± 10 tahun'],
     stages: [
       {
         startsAt: 0,
         title: 'Permukaan kunyah utuh',
-        description: 'Tonjol (cusp) gigi geraham masih tinggi dan tajam sehingga efektif menggiling makanan.',
+        description: 'Tonjolan gigi geraham masih tinggi dan tajam sehingga efektif menggiling makanan.',
       },
       {
         startsAt: 0.2,
@@ -80,8 +80,8 @@ export const habitScenarios: HabitScenario[] = [
       },
       {
         startsAt: 0.45,
-        title: 'Atrisi (aus)',
-        description: 'Ujung tonjol mulai mendatar dan tampak mengilap. Ujung taring ikut tumpul.',
+        title: 'Gigi mulai aus',
+        description: 'Ujung tonjolan mulai mendatar dan tampak mengilap. Ujung taring ikut tumpul.',
       },
       {
         startsAt: 0.7,
@@ -95,66 +95,66 @@ export const habitScenarios: HabitScenario[] = [
       },
     ],
     impacts: [
-      'Permukaan kunyah datar & aus',
+      'Permukaan kunyah datar dan aus',
       'Dentin terbuka → ngilu',
-      'Nyeri sendi rahang (TMJ) & sakit kepala',
+      'Nyeri sendi rahang dan sakit kepala',
       'Risiko gigi retak dan tambalan patah',
     ],
     prevention: [
-      'Konsultasi ke dokter gigi untuk night guard (pelindung gigi malam)',
+      'Konsultasi ke dokter gigi untuk pelindung gigi malam (night guard)',
       'Kelola stres dan perbaiki kualitas tidur',
-      'Kurangi kafein & alkohol menjelang tidur',
+      'Kurangi kafein dan alkohol menjelang tidur',
       'Posisi rahang istirahat: bibir rapat, gigi atas-bawah tidak bersentuhan',
     ],
   },
   {
     id: 'boba',
-    title: 'Minuman Manis & Boba',
+    title: 'Minuman manis dan boba',
     timeline: ['Minggu 1', '± 2 tahun'],
     inspectToothId: '36',
     stages: [
       {
         startsAt: 0,
         title: 'Gula masuk',
-        description: 'Bakteri plak (misalnya Streptococcus mutans) memfermentasi gula dari minuman manis dan menghasilkan asam.',
+        description: 'Bakteri plak mengubah gula dari minuman manis menjadi asam.',
       },
       {
         startsAt: 0.15,
-        title: 'Demineralisasi — bercak putih',
-        description: 'pH plak turun di bawah ±5,5 dan mineral email mulai larut. Muncul bercak putih kapur — tahap ini masih bisa pulih dengan fluoride.',
+        title: 'Mineral larut, muncul bercak putih',
+        description: 'Plak makin asam (pH di bawah ±5,5) dan mineral email mulai larut. Muncul bercak putih kapur yang masih bisa pulih dengan fluoride.',
       },
       {
         startsAt: 0.38,
-        title: 'Karies email',
-        description: 'Serangan asam berulang meruntuhkan permukaan menjadi lubang kecoklatan, sering berawal di fisura geraham dan sela gigi.',
+        title: 'Lubang di email',
+        description: 'Serangan asam berulang meruntuhkan permukaan menjadi lubang kecoklatan, sering berawal di celah kunyah geraham dan sela gigi.',
       },
       {
         startsAt: 0.6,
-        title: 'Karies dentin',
+        title: 'Lubang sampai dentin',
         description: 'Lubang menembus dentin yang lebih lunak sehingga menyebar lebih cepat. Mulai ngilu saat makan manis atau dingin.',
       },
       {
         startsAt: 0.82,
-        title: 'Pulpitis',
-        description: 'Bakteri mendekati pulpa: peradangan menimbulkan nyeri berdenyut. Tanpa perawatan, pulpa dapat mati dan terbentuk abses.',
+        title: 'Radang pulpa',
+        description: 'Bakteri mendekati pulpa: radang menimbulkan nyeri berdenyut. Tanpa perawatan, pulpa dapat mati dan terbentuk kantong nanah (abses).',
       },
     ],
     impacts: [
       'Bercak putih → lubang coklat-hitam',
       'Ngilu dan nyeri berdenyut',
-      'Infeksi pulpa & abses',
+      'Infeksi pulpa dan abses',
       'Perlu tambal, perawatan saluran akar, atau cabut',
     ],
     prevention: [
       'Frekuensi lebih berbahaya daripada jumlah: hindari menyeruput minuman manis sedikit-sedikit sepanjang hari',
       'Pilih gula lebih sedikit dan kumur air putih setelahnya',
       'Sikat gigi dengan pasta berfluoride 2× sehari',
-      'Periksa gigi tiap 6 bulan; tanyakan sealant fisura',
+      'Periksa gigi tiap 6 bulan; tanyakan pelapis celah gigi (sealant)',
     ],
   },
   {
     id: 'neglect',
-    title: 'Malas Sikat Gigi & Merokok',
+    title: 'Malas sikat gigi dan merokok',
     timeline: ['Hari 1', '± 5 tahun'],
     stages: [
       {
@@ -164,18 +164,18 @@ export const habitScenarios: HabitScenario[] = [
       },
       {
         startsAt: 0.2,
-        title: 'Karang gigi (kalkulus)',
-        description: 'Dalam hitungan hari, plak yang tidak dibersihkan mulai mengeras oleh mineral ludah. Karang gigi tidak bisa hilang dengan sikat gigi — harus di-scaling.',
+        title: 'Karang gigi',
+        description: 'Dalam hitungan hari, plak yang tidak dibersihkan mulai mengeras oleh mineral ludah. Karang gigi tidak bisa hilang dengan sikat gigi, harus dibersihkan dokter gigi.',
       },
       {
         startsAt: 0.4,
-        title: 'Noda & gingivitis',
+        title: 'Noda dan radang gusi',
         description: 'Tar dan nikotin menodai gigi menjadi kuning-coklat. Gusi merah, bengkak, mudah berdarah — meski pada perokok perdarahan bisa tersamarkan.',
       },
       {
         startsAt: 0.65,
-        title: 'Periodontitis',
-        description: 'Peradangan merusak perlekatan gusi dan tulang. Gusi turun (resesi) sehingga akar mulai terlihat.',
+        title: 'Radang jaringan penyangga',
+        description: 'Radang merusak ikatan gusi dan tulang. Gusi turun sehingga akar mulai terlihat.',
       },
       {
         startsAt: 0.85,
@@ -184,14 +184,14 @@ export const habitScenarios: HabitScenario[] = [
       },
     ],
     impacts: [
-      'Karang gigi & bau mulut',
+      'Karang gigi dan bau mulut',
       'Noda kuning-coklat',
       'Gusi meradang, turun, akar terbuka',
-      'Kehilangan tulang & gigi goyang',
+      'Kehilangan tulang dan gigi goyang',
     ],
     prevention: [
       'Sikat gigi 2× sehari selama 2 menit + benang gigi',
-      'Scaling di dokter gigi tiap 6 bulan',
+      'Pembersihan karang gigi di dokter gigi tiap 6 bulan',
       'Berhenti merokok — gusi mulai membaik dalam beberapa minggu',
       'Kenali tanda awal: gusi berdarah saat sikat gigi',
     ],

@@ -13,7 +13,7 @@ export const preventionTopics: PreventionTopic[] = [
   {
     id: "PRE-002",
     topic: "Membersihkan sela gigi",
-    message: "Membersihkan sela gigi secara teratur dengan alat yang sesuai, seperti floss atau interdental brush.",
+    message: "Membersihkan sela gigi secara teratur dengan alat yang sesuai, seperti benang gigi (floss) atau sikat sela gigi (interdental brush).",
     audience: "Remaja dan dewasa; alat sesuai kondisi",
     sourceLabel: "ADA",
     implementationNote: "Hindari klaim satu alat cocok untuk semua.",

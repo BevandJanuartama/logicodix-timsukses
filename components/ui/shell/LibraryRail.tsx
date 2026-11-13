@@ -73,16 +73,16 @@ function RailEntry({ item, active, onSelect }: { item: RailItem; active: boolean
         </span>
         <span className="relative min-w-0 flex-1">
           <span
-            className={`block truncate font-display text-body font-semibold transition-colors duration-[var(--duration-hover)] ${
+            className={`line-clamp-2 font-display text-body font-semibold transition-colors duration-[var(--duration-hover)] ${
               active ? 'text-accent' : 'text-fg group-hover:text-accent'
             }`}
           >
             {item.title}
           </span>
           {item.subtitle && (
-            <span className="mt-0.5 flex items-center gap-1.5 text-caption text-fg-secondary">
-              {item.status && <span aria-hidden className={`size-2 shrink-0 rounded-full ${STATUS_DOT[item.status]}`} />}
-              <span className="truncate">{item.subtitle}</span>
+            <span className="mt-0.5 flex items-start gap-1.5 text-caption text-fg-secondary">
+              {item.status && <span aria-hidden className={`mt-2 size-2 shrink-0 rounded-full ${STATUS_DOT[item.status]}`} />}
+              <span className="line-clamp-2">{item.subtitle}</span>
             </span>
           )}
         </span>

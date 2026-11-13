@@ -15,7 +15,7 @@ export const oralRegions: Record<OralRegionId, OralRegion> = {
     summary:
       'Gusi berbentuk segitiga yang mengisi ruang di antara dua gigi bertetangga. Area ini sulit dijangkau bulu sikat sehingga mudah menjadi tempat plak.',
     functions: ['Menutup celah agar makanan tidak mudah terselip', 'Titik kontak antargigi menjaga susunan gigi tetap rapat'],
-    care: ['Bersihkan sela gigi dengan benang gigi atau sikat interdental 1× sehari'],
+    care: ['Bersihkan sela gigi dengan benang gigi atau sikat sela gigi 1× sehari'],
   },
   palate: {
     id: 'palate',
@@ -32,7 +32,7 @@ export const oralRegions: Record<OralRegionId, OralRegion> = {
   mouth_floor: {
     id: 'mouth_floor',
     clinicalName: 'Regio sublingualis',
-    summary: 'Area di bawah lidah tempat bermuaranya saluran kelenjar ludah submandibula dan sublingual.',
+    summary: 'Area di bawah lidah, tempat keluarnya saluran dua jenis kelenjar ludah.',
     functions: ['Mengalirkan air ludah yang membantu membilas sisa makanan', 'Menopang pergerakan lidah'],
     care: ['Cukupi minum air putih agar produksi ludah lancar'],
   },
@@ -47,22 +47,22 @@ export const oralRegions: Record<OralRegionId, OralRegion> = {
     id: 'tongue_dorsum',
     clinicalName: 'Dorsum linguae',
     summary:
-      'Permukaan atas lidah yang dipenuhi papila. Teksturnya yang kasar menjadi tempat menempelnya bakteri dan sisa makanan.',
-    functions: ['Mengaduk makanan dan membantu menelan', 'Papila fungiformis berisi kuncup pengecap'],
+      'Permukaan atas lidah yang dipenuhi tonjolan (papila). Teksturnya kasar sehingga bakteri dan sisa makanan mudah menempel.',
+    functions: ['Mengaduk makanan dan membantu menelan', 'Sebagian tonjolannya berisi kuncup pengecap'],
     care: ['Bersihkan lidah dari belakang ke depan setiap hari'],
   },
   tongue_lateral: {
     id: 'tongue_lateral',
     clinicalName: 'Margo lateralis linguae',
-    summary: 'Sisi kiri dan kanan lidah yang bersentuhan dengan gigi premolar dan geraham.',
-    functions: ['Menjaga makanan tetap di atas permukaan kunyah', 'Memiliki papila foliata dengan kuncup pengecap'],
+    summary: 'Sisi kiri dan kanan lidah yang bersentuhan dengan geraham kecil dan geraham besar.',
+    functions: ['Menjaga makanan tetap di atas permukaan kunyah', 'Memiliki tonjolan (papila) berisi kuncup pengecap'],
     care: ['Periksakan sariawan atau bercak yang tidak sembuh lebih dari 2 minggu'],
   },
   tongue_base: {
     id: 'tongue_base',
     clinicalName: 'Radix linguae',
-    summary: 'Bagian belakang lidah yang mengarah ke tenggorokan, ditandai deretan papila sirkumvalata berbentuk huruf V.',
-    functions: ['Mendorong makanan ke kerongkongan saat menelan', 'Berisi tonsil lingual sebagai bagian sistem imun'],
+    summary: 'Bagian belakang lidah yang mengarah ke tenggorokan, ditandai deretan tonjolan (papila) berbentuk huruf V.',
+    functions: ['Mendorong makanan ke kerongkongan saat menelan', 'Berisi amandel lidah (tonsil lingual), bagian dari sistem kekebalan tubuh'],
     care: ['Saat membersihkan lidah, mulai dari bagian belakang secara perlahan'],
   },
 }

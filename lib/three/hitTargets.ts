@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { toothSide } from '@/lib/data/dentition'
 import { sceneTargetLabels } from '@/lib/data/sceneLabels'
 import type { LayerVisibility } from '@/lib/store'
 import { getLayouts } from '@/lib/three/layout'
@@ -89,7 +90,7 @@ export function resolveHit(
     const isSelected = selectedToothId === info.id
     return {
       key: `${info.id}-${isSelected ? layer : 'tooth'}`,
-      label: isSelected ? `${sceneTargetLabels[layer]} · gigi ${info.fdi}` : `${info.name} · ${info.fdi}`,
+      label: isSelected ? `${sceneTargetLabels[layer]} · ${info.name.toLowerCase()}` : `${info.name} ${toothSide(info)}`,
       toothId: info.id,
       objectId: layer,
       kind: tag.kind,

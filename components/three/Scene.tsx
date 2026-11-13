@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
 import { ACESFilmicToneMapping } from 'three'
 import { PerformanceMonitor } from '@react-three/drei'
 import { useAppStore } from '@/lib/store'
@@ -28,15 +28,27 @@ const computeMaxDpr = () => {
   return Math.min(ratio, isCompactDevice() ? COMPACT_DPR_CAP : DESKTOP_DPR_CAP)
 }
 
+function SceneReadySignal() {
+  const signaled = useRef(false)
+  useFrame(() => {
+    if (signaled.current) return
+    signaled.current = true
+    useAppStore.getState().markSceneReady()
+  })
+  return null
+}
+
 export default function Scene() {
   const [maxDpr, setMaxDpr] = useState(COMPACT_DPR_CAP)
   const [minDpr, setMinDpr] = useState(1)
   const hotspotLayer = useRef<HTMLDivElement>(null)
+  const detachContextLoss = useRef<(() => void) | null>(null)
 
   useEffect(() => {
     const compact = isCompactDevice()
     setMinDpr(compact ? 0.85 : 1)
     setMaxDpr(computeMaxDpr())
+    return () => detachContextLoss.current?.()
   }, [])
 
   return (
@@ -48,6 +60,13 @@ export default function Scene() {
         gl={{ antialias: true, powerPreference: 'high-performance', alpha: true, toneMapping: ACESFilmicToneMapping, toneMappingExposure: 1.05 }}
         onCreated={({ gl }) => {
           gl.localClippingEnabled = true
+          const canvas = gl.domElement
+          const handleContextLost = (event: Event) => {
+            event.preventDefault()
+            useAppStore.getState().markSceneFailed()
+          }
+          canvas.addEventListener('webglcontextlost', handleContextLost)
+          detachContextLoss.current = () => canvas.removeEventListener('webglcontextlost', handleContextLost)
         }}
         onPointerMissed={() => {
           const state = useAppStore.getState()
@@ -61,6 +80,7 @@ export default function Scene() {
         />
         <StudioLights />
         <Mouth />
+        <SceneReadySignal />
         <Pedestal />
         <CleaningController />
         <ToolCursor />

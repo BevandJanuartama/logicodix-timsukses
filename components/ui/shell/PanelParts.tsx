@@ -34,7 +34,7 @@ const SHORT_INSTITUTIONS: Record<string, string> = {
   'International Caries Classification and Management System': 'ICCMS',
 }
 
-const YEAR_PATTERN = /(?:19|20)\d{2}/
+const YEAR_PATTERN = /\b(?:19|20)\d{2}\b/
 
 function sourceLabel({ institution, publication, title }: Reference) {
   const year = publication.match(YEAR_PATTERN)?.[0] ?? title.match(YEAR_PATTERN)?.[0]

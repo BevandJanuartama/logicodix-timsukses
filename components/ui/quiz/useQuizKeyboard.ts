@@ -8,23 +8,34 @@ interface QuizKeyboardHandlers {
   onConfirm: () => void
 }
 
-const INTERACTIVE_TAGS = new Set(['INPUT', 'TEXTAREA', 'SELECT', 'SUMMARY', 'A'])
+const LETTERS = 'abcd'
+const TEXT_ENTRY_TAGS = new Set(['INPUT', 'TEXTAREA', 'SELECT'])
+const ACTIVATABLE_TAGS = new Set(['SUMMARY', 'A', 'BUTTON'])
 
-function isForeignInteractive(target: EventTarget | null) {
-  if (!(target instanceof HTMLElement)) return false
-  if (target.isContentEditable || INTERACTIVE_TAGS.has(target.tagName)) return true
-  return target.tagName === 'BUTTON' && !target.hasAttribute('data-quiz-option')
+function isTextEntry(target: EventTarget | null) {
+  return target instanceof HTMLElement && (target.isContentEditable || TEXT_ENTRY_TAGS.has(target.tagName))
+}
+
+function focusOption(optionIndex: number) {
+  document.querySelectorAll<HTMLElement>('[data-quiz-option]')[optionIndex]?.focus()
+}
+
+function ownsEnterKey(target: EventTarget | null) {
+  return target instanceof HTMLElement && ACTIVATABLE_TAGS.has(target.tagName) && !target.hasAttribute('data-quiz-option')
 }
 
 export function useQuizKeyboard({ optionCount, selected, checked, onSelect, onConfirm }: QuizKeyboardHandlers) {
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.ctrlKey || event.metaKey || event.altKey || isForeignInteractive(event.target)) return
+      if (event.ctrlKey || event.metaKey || event.altKey || isTextEntry(event.target)) return
 
+      const letterIndex = LETTERS.indexOf(event.key.toLowerCase())
       const digit = Number(event.key)
-      if (Number.isInteger(digit) && digit >= 1 && digit <= optionCount) {
+      const optionIndex = letterIndex >= 0 ? letterIndex : Number.isInteger(digit) ? digit - 1 : -1
+      if (event.key.length === 1 && optionIndex >= 0 && optionIndex < optionCount) {
         event.preventDefault()
-        onSelect(digit - 1)
+        onSelect(optionIndex)
+        focusOption(optionIndex)
         return
       }
 
@@ -36,7 +47,7 @@ export function useQuizKeyboard({ optionCount, selected, checked, onSelect, onCo
         return
       }
 
-      if (event.key === 'Enter') {
+      if (event.key === 'Enter' && !ownsEnterKey(event.target)) {
         event.preventDefault()
         onConfirm()
       }

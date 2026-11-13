@@ -35,7 +35,7 @@ export function CompareHold({ activeIndex, onSelect }: CompareHoldProps) {
       onPointerLeave={release}
       onPointerCancel={release}
       disabled={activeIndex === 0}
-      className="flex min-h-10 w-full cursor-pointer touch-none items-center justify-center gap-1.5 rounded-[var(--radius-control)] border border-line px-2.5 text-caption font-semibold text-fg-secondary transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] select-none hover:text-fg active:scale-[var(--scale-press)] disabled:cursor-default disabled:opacity-40"
+      className="flex min-h-10 w-full cursor-pointer touch-none items-center justify-center gap-1.5 rounded-[var(--radius-control)] bg-surface-sunken px-2.5 text-caption font-semibold text-fg-secondary transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] select-none hover:text-fg active:scale-[var(--scale-press)] disabled:cursor-default disabled:opacity-40"
     >
       <Eye className="size-3.5" aria-hidden />
       Tahan untuk bandingkan dengan sehat
