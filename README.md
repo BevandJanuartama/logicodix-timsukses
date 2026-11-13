@@ -31,7 +31,7 @@ DentaScope adalah platform edukasi kesehatan gigi berbasis web. Pengguna dapat m
 
 | No | Nama | NIM | Peran |
 |:--:|---|---|---|
-| 1 | Muhammad Ahnaf Isa Hammam Lisualla | n/a | Ketua Tim / Product & Strategy Lead |
+| 1 | Muhammad Ahnaf Isa Hammam Lisualla | 102022630035 | Ketua Tim / Product & Strategy Lead |
 | 2 | Muhammad Hafizh Farsya | 102022630036 | UI/UX & Frontend Engineer |
 | 3 | M Alief Ma'rifatullah Az Zikry | 102022600457 | Medical Content Researcher |
 | 4 | Muhammad Bevand Januartama | 103022630014 | Fullstack 3D Engine & AI Engineer |
