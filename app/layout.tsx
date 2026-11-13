@@ -19,7 +19,7 @@ const bodyFont = Atkinson_Hyperlegible_Next({
 })
 
 export const metadata: Metadata = {
-  title: 'Dental Explorer 3D — Jelajahi Anatomi Gigi Interaktif',
+  title: 'DentaScope — Jelajahi Anatomi Gigi Interaktif',
   description:
     'Platform edukasi gigi 3D: jelajahi anatomi, pelajari penyakit gigi dan mulut, simulasikan tahap kerusakan, dan uji pemahaman lewat kuis.',
 }

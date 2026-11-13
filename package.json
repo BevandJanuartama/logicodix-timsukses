@@ -1,8 +1,8 @@
 {
-  "name": "dental-explorer-3d",
+  "name": "dentascope",
   "version": "0.1.0",
   "private": true,
-  "description": "Dental Explorer — platform edukasi gigi 3D interaktif (Next.js + React Three Fiber)",
+  "description": "DentaScope — platform edukasi gigi 3D interaktif (Next.js + React Three Fiber)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

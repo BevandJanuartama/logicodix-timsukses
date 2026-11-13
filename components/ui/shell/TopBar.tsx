@@ -22,11 +22,11 @@ export function TopBar() {
         <button
           type="button"
           onClick={goHome}
-          aria-label="Dental Explorer, kembali ke beranda"
+          aria-label="DentaScope, kembali ke beranda"
           className="pointer-events-auto flex min-h-11 w-fit cursor-pointer items-center gap-2 rounded-[var(--radius-control)] text-fg transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--scale-press)]"
         >
           <ToothMark className="text-accent-mark" />
-          <span className="font-display text-subtitle font-semibold tracking-tight">Dental Explorer</span>
+          <span className="font-display text-subtitle font-semibold tracking-tight">DentaScope</span>
         </button>
         <div className="hidden md:block">
           <ModeTabs />
