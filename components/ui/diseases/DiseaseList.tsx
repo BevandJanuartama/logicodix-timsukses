@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion'
 import { diseases } from '@/lib/knowledgeBase'
-import { SEVERITY_NOTE, SEVERITY_ORDER, SEVERITY_STYLES, severityOf } from './diseaseSeverity'
+import { CONDITION_GROUPS } from '@/lib/data/conditionGroups'
+import { SEVERITY_NOTE, SEVERITY_STYLES, severityOf } from './diseaseSeverity'
 
 interface DiseaseListProps {
   activeId: string | null
@@ -59,11 +60,11 @@ function DiseaseEntry({ diseaseId, active, highlight, onSelect }: DiseaseEntryPr
 export function DiseaseList({ activeId, onSelect, highlight = false }: DiseaseListProps) {
   return (
     <div>
-      {SEVERITY_ORDER.map((level) => {
-        const ids = diseases.filter((disease) => severityOf(disease.id) === level).map((disease) => disease.id)
+      {CONDITION_GROUPS.map(({ id: group, title }) => {
+        const ids = diseases.filter((disease) => disease.group === group).map((disease) => disease.id)
         return (
-          <section key={level} aria-label={SEVERITY_STYLES[level].groupTitle} className="mt-4 first:mt-0">
-            <h3 className="px-3 pb-1 text-caption font-semibold text-fg-muted">{SEVERITY_STYLES[level].groupTitle}</h3>
+          <section key={group} aria-label={title} className="mt-4 first:mt-0">
+            <h3 className="px-3 pb-1 text-caption font-semibold text-fg-muted">{title}</h3>
             <ul>
               {ids.map((id) => (
                 <DiseaseEntry key={id} diseaseId={id} active={id === activeId} highlight={highlight} onSelect={onSelect} />

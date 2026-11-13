@@ -13,6 +13,7 @@ import { crackMaterial, createToothMaterials } from '@/lib/three/toothMaterial'
 import type { CrownMetrics } from '@/lib/three/toothEffects'
 import { useToothEffects } from './useToothEffects'
 import { useToothHighlight } from './useToothHighlight'
+import { useToothPose } from './useToothPose'
 
 const pickable = (enabled: boolean) => (enabled ? (clipRaycast as never) : (noRaycast as never))
 
@@ -61,9 +62,11 @@ export function Tooth({ info }: { info: ToothInfo }) {
 
   const animateHighlight = useToothHighlight(id, materials)
   const effects = useToothEffects(info, materials, outer.userData as CrownMetrics)
+  const { poseGroup, animatePose } = useToothPose(id, materials)
   useFrame((state, delta) => {
     animateHighlight(state.clock.elapsedTime, delta)
     effects.animate(state.clock.elapsedTime)
+    animatePose(delta)
     const cutaway = materials.anatomy.uCutaway
     if (Math.abs(cutaway.value - cutawayTarget) > CUTAWAY_EPSILON) {
       cutaway.value = MathUtils.damp(cutaway.value, cutawayTarget, CUTAWAY_EASE, delta)
@@ -77,59 +80,61 @@ export function Tooth({ info }: { info: ToothInfo }) {
 
   return (
     <group ref={group} position={info.position} quaternion={info.quaternion}>
-      <mesh
-        geometry={outer}
-        material={materials.outer}
-        visible={showOuter}
-        raycast={pickable(showOuter)}
-        userData={{ kind: 'tooth', toothId: id }}
-      />
-      {inner && (
-        <>
-          <mesh
-            geometry={inner.dentin}
-            material={materials.dentin}
-            visible={layers.dentin}
-            raycast={pickable(layers.dentin)}
-            userData={{ kind: 'dentin', toothId: id }}
-          />
-          <mesh
-            geometry={inner.pulp}
-            material={materials.pulp}
-            visible={showPulp}
-            raycast={pickable(showPulp)}
-            userData={{ kind: 'pulp', toothId: id }}
-          />
-          {inner.vessels.map((geometry, index) => (
-            <mesh
-              key={index}
-              geometry={geometry}
-              material={materials.vessels[index]}
-              visible={layers.pulp}
-              raycast={pickable(layers.pulp)}
-              userData={{ kind: 'vessel', toothId: id }}
-            />
-          ))}
-        </>
-      )}
-      {support && showLigament && (
-        <mesh geometry={support.ligament} material={materials.ligament} raycast={pickable(true)} userData={{ kind: 'ligament', toothId: id }} />
-      )}
-      {effects.cracks?.map((geometry, index) => (
+      <group ref={poseGroup}>
         <mesh
-          key={index}
-          ref={(mesh) => {
-            effects.crackMeshes.current[index] = mesh
-          }}
-          geometry={geometry}
-          material={crackMaterial}
-          raycast={noRaycast as never}
-          visible={false}
+          geometry={outer}
+          material={materials.outer}
+          visible={showOuter}
+          raycast={pickable(showOuter)}
+          userData={{ kind: 'tooth', toothId: id }}
         />
-      ))}
-      {support && showJunction && (
-        <mesh geometry={support.junction} material={materials.junction} raycast={pickable(true)} userData={{ kind: 'junction', toothId: id }} />
-      )}
+        {inner && (
+          <>
+            <mesh
+              geometry={inner.dentin}
+              material={materials.dentin}
+              visible={layers.dentin}
+              raycast={pickable(layers.dentin)}
+              userData={{ kind: 'dentin', toothId: id }}
+            />
+            <mesh
+              geometry={inner.pulp}
+              material={materials.pulp}
+              visible={showPulp}
+              raycast={pickable(showPulp)}
+              userData={{ kind: 'pulp', toothId: id }}
+            />
+            {inner.vessels.map((geometry, index) => (
+              <mesh
+                key={index}
+                geometry={geometry}
+                material={materials.vessels[index]}
+                visible={layers.pulp}
+                raycast={pickable(layers.pulp)}
+                userData={{ kind: 'vessel', toothId: id }}
+              />
+            ))}
+          </>
+        )}
+        {support && showLigament && (
+          <mesh geometry={support.ligament} material={materials.ligament} raycast={pickable(true)} userData={{ kind: 'ligament', toothId: id }} />
+        )}
+        {effects.cracks?.map((geometry, index) => (
+          <mesh
+            key={index}
+            ref={(mesh) => {
+              effects.crackMeshes.current[index] = mesh
+            }}
+            geometry={geometry}
+            material={crackMaterial}
+            raycast={noRaycast as never}
+            visible={false}
+          />
+        ))}
+        {support && showJunction && (
+          <mesh geometry={support.junction} material={materials.junction} raycast={pickable(true)} userData={{ kind: 'junction', toothId: id }} />
+        )}
+      </group>
     </group>
   )
 }

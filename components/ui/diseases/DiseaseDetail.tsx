@@ -2,16 +2,30 @@
 
 import { ArrowLeft, Eye, FlaskConical } from 'lucide-react'
 import { diseaseLinks } from '@/lib/data/diseaseLinks'
+import { hasConditionPose } from '@/lib/data/conditionPoses'
 import { focusScene } from '@/lib/sceneFocus'
 import { openSimulatorTrack } from '@/lib/simulatorActions'
 import { CLINICAL_TRACKS, type ClinicalTrackId } from '@/lib/simulatorStore'
 import { useAppStore } from '@/lib/store'
-import type { Disease } from '@/lib/types'
+import type { Disease, PlainCopy } from '@/lib/types'
 import { SectionTitle } from '@/components/ui/shell/PanelParts'
 import { DiseaseExtra } from './DiseaseExtra'
+import { PoseCompareHold } from './PoseCompareHold'
 import { SEVERITY_NOTE } from './diseaseSeverity'
-import { plainPoints, plainSentence } from './plainLanguage'
 import { SeverityBadge } from './SeverityBadge'
+
+const plainCopyOf = (disease: Disease): PlainCopy =>
+  disease.plain ?? { summary: disease.definition, signs: [disease.symptoms], prevention: [disease.prevention] }
+
+function PlainList({ items }: { items: string[] }) {
+  return (
+    <ul className="list-disc space-y-1 pl-5 text-body text-fg-secondary marker:text-fg-muted">
+      {items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
+  )
+}
 
 interface DiseaseDetailProps {
   disease: Disease
@@ -27,7 +41,7 @@ const isClinicalDisease = (diseaseId: string): diseaseId is ClinicalTrackId =>
 export function DiseaseDetail({ disease, showBackToList }: DiseaseDetailProps) {
   const selectDisease = useAppStore((state) => state.selectDisease)
   const link = diseaseLinks[disease.id]
-  const signs = plainPoints(disease.symptoms, 3)
+  const copy = plainCopyOf(disease)
   const diseaseId = disease.id
 
   return (
@@ -39,7 +53,7 @@ export function DiseaseDetail({ disease, showBackToList }: DiseaseDetailProps) {
           className="-ml-2 mb-2 flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[var(--radius-control)] px-2 text-caption font-semibold text-fg-secondary hover:text-fg"
         >
           <ArrowLeft className="size-4" aria-hidden />
-          Semua masalah gigi
+          Semua kondisi gigi
         </button>
       )}
       <h2 className="font-display text-title font-semibold tracking-tight text-fg">{disease.displayName}</h2>
@@ -49,17 +63,13 @@ export function DiseaseDetail({ disease, showBackToList }: DiseaseDetailProps) {
       {showBackToList && <p className="mt-1 text-caption text-fg-muted">{SEVERITY_NOTE}</p>}
 
       <SectionTitle>Apa itu</SectionTitle>
-      <p className="text-body text-fg-secondary">{plainSentence(disease.definition)}</p>
+      <p className="text-body text-fg-secondary">{copy.summary}</p>
 
       <SectionTitle>Tanda-tandanya</SectionTitle>
-      <ul className="list-disc space-y-1 pl-5 text-body text-fg-secondary marker:text-fg-muted">
-        {signs.map((sign) => (
-          <li key={sign}>{sign}</li>
-        ))}
-      </ul>
+      <PlainList items={copy.signs} />
 
       <SectionTitle>Cara mencegah</SectionTitle>
-      <p className="text-body text-fg-secondary">{plainSentence(disease.prevention)}</p>
+      <PlainList items={copy.prevention} />
 
       <div className="mt-6 space-y-2">
         {isClinicalDisease(diseaseId) && (
@@ -82,6 +92,7 @@ export function DiseaseDetail({ disease, showBackToList }: DiseaseDetailProps) {
             Lihat di 3D
           </button>
         )}
+        {hasConditionPose(diseaseId) && <PoseCompareHold />}
       </div>
 
       <DiseaseExtra disease={disease} />

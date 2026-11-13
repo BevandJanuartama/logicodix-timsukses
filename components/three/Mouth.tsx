@@ -12,6 +12,8 @@ import { applyClipping, clipState } from '@/lib/three/clip'
 import { applyGingivaSurface, createGingivaUniforms } from '@/lib/three/gingivaShader'
 import { getLayouts } from '@/lib/three/layout'
 import { sceneRegistry } from '@/lib/three/registry'
+import { activeConditionPose } from '@/lib/three/conditionPose'
+import { ConditionExtraTooth } from './ConditionExtraTooth'
 import { JawContent } from './JawContent'
 import { periodontalFrame } from './periodontalFrame'
 import { bindGlobalToolRelease, useMouthHandlers } from './useMouthHandlers'
@@ -21,6 +23,8 @@ const JAW_OFFSET_Y = 0.78
 const HINGE_Z = -3.0
 const UPPER_OPEN_ANGLE = -0.32
 const LOWER_OPEN_ANGLE = 0.18
+const CLOSED_UPPER_ANGLE = -0.05
+const CLOSED_LOWER_ANGLE = 0.04
 const SECTION_SPLIT_SPEED = 3.2
 const GUM_HEALTHY = new THREE.Color('#ec8f9b')
 const GUM_INFLAMED = new THREE.Color('#c63d4f')
@@ -31,17 +35,23 @@ interface JawPose {
   upper: number
   lower: number
   shift: number
+  forward: number
 }
 
 function targetJawPose(elapsed: number): JawPose {
-  const neutral = { upper: UPPER_OPEN_ANGLE, lower: LOWER_OPEN_ANGLE, shift: 0 }
+  const neutral = { upper: UPPER_OPEN_ANGLE, lower: LOWER_OPEN_ANGLE, shift: 0, forward: 0 }
+  const condition = activeConditionPose()
+  if (condition) {
+    const forward = condition.lowerJawForward ?? 0
+    return condition.closeBite ? { upper: CLOSED_UPPER_ANGLE, lower: CLOSED_LOWER_ANGLE, shift: 0, forward } : { ...neutral, forward }
+  }
   const { track, playing } = useSimulatorStore.getState()
   if (useAppStore.getState().mode !== 'destroy' || !playing) return neutral
   if (track === 'ice') {
     const bite = iceBiteCycle(elapsed)
-    return { upper: UPPER_OPEN_ANGLE + 0.25 * bite, lower: LOWER_OPEN_ANGLE - 0.15 * bite, shift: 0 }
+    return { upper: UPPER_OPEN_ANGLE + 0.25 * bite, lower: LOWER_OPEN_ANGLE - 0.15 * bite, shift: 0, forward: 0 }
   }
-  if (track === 'bruxism' && elapsed % 4.5 < 3) return { upper: -0.05, lower: 0.04, shift: Math.sin(elapsed * 7) * 0.07 }
+  if (track === 'bruxism' && elapsed % 4.5 < 3) return { upper: CLOSED_UPPER_ANGLE, lower: CLOSED_LOWER_ANGLE, shift: Math.sin(elapsed * 7) * 0.07, forward: 0 }
   return neutral
 }
 
@@ -80,7 +90,7 @@ export function Mouth() {
   const lowerHinge = useRef<THREE.Group>(null!)
   const upperJaw = useRef<THREE.Group>(null!)
   const lowerJaw = useRef<THREE.Group>(null!)
-  const pose = useRef<JawPose>({ upper: UPPER_OPEN_ANGLE, lower: LOWER_OPEN_ANGLE, shift: 0 })
+  const pose = useRef<JawPose>({ upper: UPPER_OPEN_ANGLE, lower: LOWER_OPEN_ANGLE, shift: 0, forward: 0 })
 
   useLayoutEffect(() => {
     sceneRegistry.jaws.upper = upperJaw.current
@@ -127,11 +137,14 @@ export function Mouth() {
     current.shift = THREE.MathUtils.damp(current.shift, target.shift, 14, delta)
     upperHinge.current.rotation.x = current.upper
     lowerHinge.current.rotation.x = current.lower
+    current.forward = THREE.MathUtils.damp(current.forward, target.forward, 5, delta)
     lowerJaw.current.position.x = current.shift
+    lowerJaw.current.position.z = -HINGE_Z + current.forward
   })
 
   return (
     <group {...handlers}>
+      <ConditionExtraTooth />
       <group ref={upperHinge} position={[0, 0, HINGE_Z]} rotation={[UPPER_OPEN_ANGLE, 0, 0]}>
         <group ref={upperJaw} position={[0, JAW_OFFSET_Y, -HINGE_Z]} rotation={[0, 0, Math.PI]}>
           <JawContent layout={layouts.upper} materials={materials} />

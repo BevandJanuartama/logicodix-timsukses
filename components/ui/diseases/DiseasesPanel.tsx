@@ -18,7 +18,7 @@ export function DiseasesPanel() {
         <DiseaseDetail disease={selected} showBackToList={!hasRail} />
       ) : (
         <>
-          <h2 className="font-display text-title font-semibold tracking-tight text-fg">Masalah gigi yang sering terjadi</h2>
+          <h2 className="font-display text-title font-semibold tracking-tight text-fg">Kondisi gigi yang perlu dikenali</h2>
           <p className="mt-2 text-body text-fg-secondary">
             Pilih salah satu untuk melihat tanda, cara mencegah, dan letaknya di model.
           </p>
@@ -32,7 +32,7 @@ export function DiseasesPanel() {
           )}
         </>
       )}
-      <p className="mt-6 text-caption text-fg-muted">Edukatif, status draf; bukan pengganti pemeriksaan tenaga kesehatan.</p>
+      <p className="mt-6 text-caption text-fg-muted">Untuk belajar, bukan pengganti pemeriksaan tenaga kesehatan.</p>
     </div>
   )
 }
