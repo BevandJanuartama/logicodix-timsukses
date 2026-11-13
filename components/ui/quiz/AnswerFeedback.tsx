@@ -1,7 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { CheckCircle2, Eye, XCircle } from 'lucide-react'
-import { ExploreDisclosure } from '@/components/ui/explore/ExploreDisclosure'
-import { SourceLinks } from '@/components/ui/shell/PanelParts'
 import type { QuizQuestion } from '@/lib/types'
 import { showQuestionInScene } from './quizScene'
 
@@ -38,9 +36,6 @@ export function AnswerFeedback({ question, correct, hasFocus }: AnswerFeedbackPr
           Lihat lagi di 3D
         </button>
       )}
-      <ExploreDisclosure label="Sumber">
-        <SourceLinks sourceIds={question.sourceIds} />
-      </ExploreDisclosure>
     </motion.div>
   )
 }
