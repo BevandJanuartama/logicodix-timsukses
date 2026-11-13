@@ -238,3 +238,6 @@ Gunakan perintah `/model <nama>` di Claude Code untuk beralih model sebelum meng
 - [x] **20.2** [🔵 Sonnet] `ChatButton` + `FloatingChat` (fokus terkunci, Esc, mobile di atas tab bar, streaming) — `components/ui/chat/*`
 - [x] **20.3** [🟣 Opus] Keluaran terstruktur `{ reply, show?: { conditionId, toothId? } }` → tombol "Lihat di model 3D" yang memanggil `chooseDisease` + pose
 - [x] **20.4** [🟢 Haiku] Verifikasi tanpa kunci (pesan ramah), dengan kunci, mobile; `rangkuman.md`
+
+### Fase 21: Penyempurnaan
+- [x] **21.1** Tema hijau selaras ikon, hapus menu Sumber, CSV spreadsheet baru + visual 3D, kubus es, pencarian & sheet mobile, perbaikan kunci chat

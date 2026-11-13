@@ -3,17 +3,17 @@
 :root {
   --sheet-peek-h: 120px;
   --mobile-tabbar-h: 0px;
-  --p-cream: #fbf5ee;
-  --p-paper: #fffcf8;
-  --p-sunken: #f3e8dc;
-  --p-sand: #eadbcb;
-  --p-ink: #2a201b;
-  --p-ink-2: #5c4a3f;
-  --p-ink-3: #76645a;
-  --p-coral: #e2643f;
-  --p-coral-deep: #a93e1f;
-  --p-coral-deep-hover: #8f3217;
-  --p-coral-tint: #fce6dc;
+  --p-cream: #eef4f3;
+  --p-paper: #fafcfc;
+  --p-sunken: #e1ebea;
+  --p-sand: #cfdedc;
+  --p-ink: #10231f;
+  --p-ink-2: #3a504c;
+  --p-ink-3: #567069;
+  --p-brand: #0b8f8c;
+  --p-brand-deep: #0a7a77;
+  --p-brand-deep-hover: #08605e;
+  --p-brand-tint: #dcefed;
   --p-ok: #2e7048;
   --p-ok-tint: #e3f0e6;
   --p-warn: #8f5300;
@@ -23,7 +23,7 @@
   --p-info: #2f5f8a;
   --p-white: #ffffff;
   --p-note: #fff1c9;
-  --p-stage: #f6ece1;
+  --p-stage: #e6efee;
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -62,16 +62,16 @@
   --surface-raised: var(--p-paper);
   --surface-overlay: var(--p-paper);
   --surface-sand: var(--p-sand);
-  --surface-scrim: rgb(42 32 27 / 0.4);
+  --surface-scrim: rgb(16 35 31 / 0.4);
   --text-primary: var(--p-ink);
   --text-secondary: var(--p-ink-2);
   --text-muted: var(--p-ink-3);
   --text-on-accent: var(--p-white);
-  --accent: var(--p-coral-deep);
-  --accent-mark: var(--p-coral);
-  --accent-tint: var(--p-coral-tint);
-  --accent-fill: var(--p-coral-deep);
-  --accent-fill-hover: var(--p-coral-deep-hover);
+  --accent: var(--p-brand-deep);
+  --accent-mark: var(--p-brand);
+  --accent-tint: var(--p-brand-tint);
+  --accent-fill: var(--p-brand-deep);
+  --accent-fill-hover: var(--p-brand-deep-hover);
   --accent-institutional: var(--p-ink-2);
   --status-danger: var(--p-danger);
   --status-danger-tint: var(--p-danger-tint);
@@ -80,11 +80,11 @@
   --status-success: var(--p-ok);
   --status-success-tint: var(--p-ok-tint);
   --status-info: var(--p-info);
-  --border-subtle: rgb(92 74 63 / 0.14);
-  --border-strong: rgb(92 74 63 / 0.32);
-  --focus-ring: var(--p-coral);
+  --border-subtle: rgb(16 60 56 / 0.14);
+  --border-strong: rgb(16 60 56 / 0.32);
+  --focus-ring: var(--p-brand);
 
-  --shadow-float: 0 12px 32px -12px rgb(122 78 58 / 0.28), 0 2px 8px -2px rgb(122 78 58 / 0.14);
+  --shadow-float: 0 12px 32px -12px rgb(10 70 66 / 0.26), 0 2px 8px -2px rgb(10 70 66 / 0.14);
 
   --panel-bg: var(--p-paper);
   --panel-fg: var(--text-primary);

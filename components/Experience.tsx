@@ -11,8 +11,6 @@ import { CleanSuccessToast, MouthwashOverlay } from '@/components/ui/clean/Clean
 import { DiseasesPanel } from '@/components/ui/diseases/DiseasesPanel'
 import { registerConditions } from '@/components/ui/diseases/registerConditions'
 import { ExplorePanel } from '@/components/ui/explore/ExplorePanel'
-import { GovernanceDialog } from '@/components/ui/library/GovernanceDialog'
-import { ReferencesDialog } from '@/components/ui/library/ReferencesDialog'
 import { CanvasStage } from '@/components/ui/shell/CanvasStage'
 import { Hero } from '@/components/ui/shell/Hero'
 import { HoverTip } from '@/components/ui/shell/HoverTip'
@@ -35,7 +33,7 @@ function useEscapeToDeselect() {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const state = useAppStore.getState()
-      if (event.key === 'Escape' && !state.modal) state.selectTarget(null, null)
+      if (event.key === 'Escape') state.selectTarget(null, null)
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
@@ -88,8 +86,6 @@ export function Experience({ remoteConditions }: { remoteConditions: RemoteCondi
           <Hero />
         </div>
       )}
-      <ReferencesDialog />
-      <GovernanceDialog />
     </main>
   )
 }

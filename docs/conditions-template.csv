@@ -1,2 +1,5 @@
-id,nama_tampil,nama_inggris,kelompok,tingkat,ringkasan,tanda,pencegahan,gigi_fokus,sumber
-CSV-001,Contoh kondisi,Example condition,kebiasaan,ringan,"Ringkasan singkat dalam bahasa awam, maksimal 25 kata.",Tanda pertama|Tanda kedua,Saran pertama|Saran kedua,11,SRC-011
+DATABASE MASALAH GIGI & MULUT,,,,,,,,,,,
+Informasi ini bersifat edukasi umum dan bukan pengganti pemeriksaan dokter gigi.,,,,,,,,,,,
+,,,,,,,,,,,
+No,Kategori,Masalah,Ciri / Gejala,Penyebab,Faktor Risiko,Penanganan Medis,Perawatan di Rumah,Pencegahan,Tingkat Keparahan,Kapan ke Dokter Gigi,Spesialis / Dokter yang Dituju
+47,Mukosa & Lidah,Contoh kondisi,"Tanda pertama, tanda kedua",Penyebab singkat dalam bahasa awam,Faktor risiko,Penanganan oleh dokter,Perawatan di rumah,"Saran pertama, saran kedua",Ringan,Bila tidak membaik dalam 2 minggu,Dokter gigi umum
