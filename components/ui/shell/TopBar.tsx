@@ -1,6 +1,8 @@
 'use client'
 
+import { CircleHelp } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
+import { useUiStore } from '@/lib/uiStore'
 import { ModeTabs } from './ModeTabs'
 import { ToothMark } from './ToothMark'
 
@@ -8,6 +10,8 @@ export function TopBar() {
   const setIntro = useAppStore((state) => state.setIntro)
   const requestCamera = useAppStore((state) => state.requestCamera)
   const selectTarget = useAppStore((state) => state.selectTarget)
+  const intro = useAppStore((state) => state.intro)
+  const openTutorial = useUiStore((state) => state.openTutorial)
 
   const goHome = () => {
     selectTarget(null, null)
@@ -30,6 +34,17 @@ export function TopBar() {
         <div className="hidden md:block">
           <ModeTabs />
         </div>
+        {!intro && (
+          <button
+            type="button"
+            onClick={openTutorial}
+            aria-label="Cara pakai"
+            title="Cara pakai"
+            className="pointer-events-auto grid size-11 cursor-pointer place-items-center justify-self-end rounded-full text-fg-secondary transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] hover:bg-surface-sunken hover:text-fg active:scale-[var(--scale-press)]"
+          >
+            <CircleHelp className="size-[22px]" aria-hidden />
+          </button>
+        )}
       </header>
       <nav aria-label="Modul seluler" className="pointer-events-none fixed inset-x-0 bottom-0 z-30 md:hidden">
         <ModeTabs variant="bottom" />

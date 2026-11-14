@@ -4,8 +4,8 @@ import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { MathUtils } from 'three'
 import type * as THREE from 'three'
-import { sectionedToothOf, useAppStore } from '@/lib/store'
-import { applyClipping, clipRaycast, noRaycast } from '@/lib/three/clip'
+import { jawSectionOn, sectionedToothOf, useAppStore } from '@/lib/store'
+import { clipPlanesFor, clipRaycast, noRaycast, setClipPlanes } from '@/lib/three/clip'
 import type { ToothInfo } from '@/lib/three/layout'
 import { sceneRegistry } from '@/lib/three/registry'
 import { getInnerGeometry, getOuterGeometry, getSupportGeometry } from '@/lib/three/toothGeometry'
@@ -22,24 +22,34 @@ const PEELED_CUTAWAY = 0.4
 const CUTAWAY_EASE = 6
 const CUTAWAY_EPSILON = 0.0005
 
-export function Tooth({ info }: { info: ToothInfo }) {
+interface ToothProps {
+  info: ToothInfo
+  /** Comparison overlay: translucent, depth-write off, never pickable. */
+  ghostOpacity?: number
+}
+
+export function Tooth({ info, ghostOpacity }: ToothProps) {
   const id = info.id
+  const ghost = ghostOpacity !== undefined
   const group = useRef<THREE.Group>(null!)
   const layers = useAppStore((state) => state.layers)
   const highDetail = useAppStore((state) => state.selectedToothId === id && state.lod !== 'macro')
   const sectioned = useAppStore((state) => sectionedToothOf(state) === id)
+  // Whole-jaw cut: every tooth shows its inner layers so the cut face reads enamel → dentin → pulp.
+  const jawCut = useAppStore(jawSectionOn)
+  const opened = sectioned || jawCut
 
   const peeled = !layers.enamel || !layers.cementum
-  const showInner = sectioned || peeled
-  const rootsExposed = sectioned || (!layers.gingiva && !layers.alveolar_bone)
+  const showInner = opened || peeled
+  const rootsExposed = opened || (!layers.gingiva && !layers.alveolar_bone)
   const showLigament = layers.pd_ligament && rootsExposed
-  const showJunction = layers.cej && (sectioned || !layers.gingiva)
+  const showJunction = layers.cej && (opened || !layers.gingiva)
 
   const outer = useMemo(() => getOuterGeometry(info, highDetail ? 'high' : 'low'), [info, highDetail])
   const inner = useMemo(() => (showInner ? getInnerGeometry(info) : null), [info, showInner])
   const support = useMemo(() => (showLigament || showJunction ? getSupportGeometry(info) : null), [info, showLigament, showJunction])
   const materials = useMemo(() => createToothMaterials(info.params), [info])
-  const cutawayTarget = sectioned ? SECTIONED_CUTAWAY : peeled ? PEELED_CUTAWAY : 0
+  const cutawayTarget = opened ? SECTIONED_CUTAWAY : peeled ? PEELED_CUTAWAY : 0
 
   useEffect(() => () => materials.clippable.forEach((material) => material.dispose()), [materials])
 
@@ -53,7 +63,21 @@ export function Tooth({ info }: { info: ToothInfo }) {
     }
   }, [id, info])
 
-  useEffect(() => applyClipping(materials.clippable, sectioned), [sectioned, materials])
+  useEffect(() => setClipPlanes(materials.clippable, clipPlanesFor(sectioned, jawCut)), [sectioned, jawCut, materials])
+
+  useEffect(() => {
+    if (!ghost) return
+    for (const material of [materials.outer, materials.dentin, materials.pulp]) {
+      material.transparent = true
+      material.depthWrite = false
+      material.needsUpdate = true
+    }
+  }, [ghost, materials])
+
+  useEffect(() => {
+    if (ghostOpacity === undefined) return
+    for (const material of [materials.outer, materials.dentin, materials.pulp]) material.opacity = ghostOpacity
+  }, [ghostOpacity, materials])
 
   useEffect(() => {
     materials.uniforms.outer.uShowBand.value.set(Number(layers.enamel), Number(layers.cementum))
@@ -85,7 +109,7 @@ export function Tooth({ info }: { info: ToothInfo }) {
           geometry={outer}
           material={materials.outer}
           visible={showOuter}
-          raycast={pickable(showOuter)}
+          raycast={pickable(showOuter && !ghost)}
           userData={{ kind: 'tooth', toothId: id }}
         />
         {inner && (

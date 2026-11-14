@@ -1,9 +1,14 @@
 import { create } from 'zustand'
+import { toDentitionToothId } from '@/lib/data/dentition'
 import type {
   AnatomyObjectId,
   AppMode,
   CameraCommand,
   CameraRequest,
+  ComparisonMode,
+  Dentition,
+  JawSection,
+  SectionAxis,
   HoverTarget,
   Lod,
   SceneTargetId,
@@ -27,6 +32,13 @@ const allLayersVisible: LayerVisibility = {
 
 interface AppState {
   mode: AppMode
+  /** The dentition the user picked; see `renderedDentition` for what the scene actually shows. */
+  dentition: Dentition
+  /** Explore-only: show primary and permanent jaws together (side by side, or primary as a translucent overlay). */
+  comparisonMode: ComparisonMode
+  overlayOpacity: number
+  /** Explore-only cross-section through every jaw on screen. */
+  jawSection: JawSection
   intro: boolean
   selectedObjectId: SceneTargetId | null
   selectedToothId: string | null
@@ -43,6 +55,11 @@ interface AppState {
   sceneReady: boolean
   sceneFailed: boolean
   setMode: (mode: AppMode) => void
+  setDentition: (dentition: Dentition) => void
+  setComparisonMode: (comparisonMode: ComparisonMode) => void
+  setOverlayOpacity: (overlayOpacity: number) => void
+  setJawSection: (patch: Partial<JawSection>) => void
+  closeJawSection: () => void
   setIntro: (intro: boolean) => void
   selectObject: (objectId: SceneTargetId | null) => void
   selectTooth: (toothId: string | null) => void
@@ -65,8 +82,36 @@ interface AppState {
 
 let cameraNonce = 0
 
+/**
+ * Default cut per axis: sagittal through the middle of the right central incisors (classic enamel/dentin/pulp
+ * profile), frontal through the premolar / first-molar region of both sides.
+ */
+export const SECTION_DEFAULT_POSITION: Record<SectionAxis, number> = { sagittal: 0.56, frontal: 0.45 }
+
+/** Modes whose content is generic enough to run on either dentition; the rest reference permanent teeth by id. */
+const DENTITION_AWARE_MODES: readonly AppMode[] = ['explore', 'clean']
+
+const comparing = (mode: AppMode, comparisonMode: ComparisonMode) => mode === 'explore' && comparisonMode !== 'off'
+
+/** While comparing, the interactive (main) jaws are always permanent; the primary set is the comparison layer. */
+export const renderedDentitionFor = (mode: AppMode, dentition: Dentition, comparisonMode: ComparisonMode = 'off'): Dentition =>
+  DENTITION_AWARE_MODES.includes(mode) && !comparing(mode, comparisonMode) ? dentition : 'permanent'
+
+const clearedSelection = { selectedToothId: null, selectedObjectId: null, cutaway: false, hover: null }
+
+/** When the rendered teeth change, keep the selection on the equivalent tooth instead of dropping it. */
+const carrySelection = (selectedToothId: string | null, next: Dentition) => ({
+  selectedToothId: selectedToothId && toDentitionToothId(selectedToothId, next),
+  cutaway: false,
+  hover: null,
+})
+
 export const useAppStore = create<AppState>((set) => ({
   mode: 'explore',
+  dentition: 'permanent',
+  comparisonMode: 'off',
+  overlayOpacity: 0.6,
+  jawSection: { active: false, axis: 'frontal', position: SECTION_DEFAULT_POSITION.frontal },
   intro: true,
   selectedObjectId: null,
   selectedToothId: null,
@@ -82,7 +127,32 @@ export const useAppStore = create<AppState>((set) => ({
   thumbnails: {},
   sceneReady: false,
   sceneFailed: false,
-  setMode: (mode) => set({ mode, intro: false, hover: null, ...(mode === 'clean' ? { selectedToothId: null, selectedObjectId: null, cutaway: false } : {}) }),
+  setMode: (mode) =>
+    set((state) => {
+      const next = renderedDentitionFor(mode, state.dentition, state.comparisonMode)
+      const swapsTeeth = next !== renderedDentitionFor(state.mode, state.dentition, state.comparisonMode)
+      if (mode === 'clean') return { mode, intro: false, ...clearedSelection }
+      return { mode, intro: false, hover: null, ...(swapsTeeth ? carrySelection(state.selectedToothId, next) : {}) }
+    }),
+  setDentition: (dentition) =>
+    set((state) => {
+      if (state.dentition === dentition) return {}
+      const before = renderedDentitionFor(state.mode, state.dentition, state.comparisonMode)
+      const after = renderedDentitionFor(state.mode, dentition, state.comparisonMode)
+      return { dentition, ...(before !== after ? carrySelection(state.selectedToothId, after) : {}) }
+    }),
+  setComparisonMode: (comparisonMode) =>
+    set((state) => (state.comparisonMode === comparisonMode ? {} : { comparisonMode, intro: false, ...clearedSelection })),
+  setOverlayOpacity: (overlayOpacity) => set({ overlayOpacity: Math.min(1, Math.max(0.1, overlayOpacity)) }),
+  setJawSection: (patch) =>
+    set((state) => {
+      const axisChanged = patch.axis !== undefined && patch.axis !== state.jawSection.axis
+      const position = patch.position ?? (axisChanged ? SECTION_DEFAULT_POSITION[patch.axis!] : state.jawSection.position)
+      const next = { ...state.jawSection, ...patch, position: Math.min(1, Math.max(0, position)) }
+      // Turning the jaw cut on yields the single-tooth cutaway so the whole-jaw cut actually takes effect.
+      return { jawSection: next, intro: false, ...(patch.active && !state.jawSection.active ? { cutaway: false, hover: null } : {}) }
+    }),
+  closeJawSection: () => set((state) => ({ jawSection: { ...state.jawSection, active: false } })),
   setIntro: (intro) => set({ intro }),
   selectObject: (selectedObjectId) => set({ selectedObjectId }),
   selectTooth: (selectedToothId) => set(selectedToothId ? { selectedToothId } : { selectedToothId, cutaway: false }),
@@ -106,3 +176,16 @@ export const useAppStore = create<AppState>((set) => ({
 
 export const sectionedToothOf = (state: AppState) =>
   state.mode !== 'clean' && state.selectedToothId && (state.cutaway || state.lod === 'micro') ? state.selectedToothId : null
+
+export const renderedDentition = (state: Pick<AppState, 'mode' | 'dentition' | 'comparisonMode'>) =>
+  renderedDentitionFor(state.mode, state.dentition, state.comparisonMode)
+
+/** The comparison layer actually on screen ('off' outside explore). */
+export const activeComparison = (state: Pick<AppState, 'mode' | 'comparisonMode'>): ComparisonMode =>
+  comparing(state.mode, state.comparisonMode) ? state.comparisonMode : 'off'
+
+/**
+ * Whole-jaw cut actually applied. A single-tooth section (sectionedToothOf) has priority: while it is open the jaw
+ * cut steps aside and comes back when the tooth section closes.
+ */
+export const jawSectionOn = (state: AppState) => state.mode === 'explore' && state.jawSection.active && !sectionedToothOf(state)

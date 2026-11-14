@@ -78,6 +78,7 @@ export function useSheetSnap(sheet: RefObject<HTMLElement | null>, initialPositi
     open: () => setIndex((current) => Math.max(current, 1)),
     cycle,
     step,
+    goTo: (position: SheetPosition) => setIndex(SHEET_POSITIONS.indexOf(position)),
     stopAnimation,
     settle,
   }

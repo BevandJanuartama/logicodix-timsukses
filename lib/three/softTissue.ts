@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import type { ArchSample, JawLayout } from '@/lib/three/layout'
+import type { ArchSample, Dentition, JawLayout } from '@/lib/three/layout'
 import { smoothstep } from '@/lib/three/math'
 
 const PROFILE_SEGMENTS = 40
@@ -33,6 +33,7 @@ function subdivideArch(arch: ArchSample[]) {
         point: from.point.clone().lerp(to.point, t),
         outward: from.outward.clone().lerp(to.outward, t).normalize(),
         halfDepth: from.halfDepth + (to.halfDepth - from.halfDepth) * t,
+        taper: from.taper + (to.taper - from.taper) * t,
       })
     }
   }
@@ -97,10 +98,13 @@ function sweepArch(arch: ContourSample[], options: SweepOptions) {
       const crestWeight = smoothstep(options.top - CREST_BAND, options.top, point.y)
       const innerWeight = 1 - smoothstep(0.5, 0.8, Math.abs(point.x) / options.halfWidth)
       const crest = crestOffset(options.crest, sample.interdental, crestWeight, innerWeight)
+      // Retromolar taper: shrink the ring toward the profile centre so the ridge ends in a rounded pad.
+      const y = options.centerY + (point.y + crest - options.centerY) * sample.taper
+      const across = u * sample.taper
       return new THREE.Vector3(
-        sample.point.x + sample.outward.x * u,
-        sample.point.y + point.y + crest,
-        sample.point.z + sample.outward.z * u,
+        sample.point.x + sample.outward.x * across,
+        sample.point.y + y,
+        sample.point.z + sample.outward.z * across,
       )
     }),
   )
@@ -128,25 +132,38 @@ function sweepArch(arch: ContourSample[], options: SweepOptions) {
   return geometry
 }
 
-export const gumGeometry = (layout: JawLayout) =>
-  sweepArch(contourSamples(layout), {
-    halfWidth: 0.66,
-    halfHeight: 1.0,
-    centerY: -0.86,
-    top: 0.14,
-    inset: 0,
-    crest: GINGIVAL_MARGIN,
+/**
+ * Primary jaws are slimmer and shallower (short roots): body width/height shrink ~22% while the crest stays at
+ * the same height relative to the CEJ, so the gum margin still hugs the small crowns.
+ */
+const TISSUE_SCALE: Record<Dentition, number> = { permanent: 1, primary: 0.78 }
+
+const scaledCrest = (shape: CrestShape, k: number): CrestShape => ({
+  papillaRise: shape.papillaRise * k,
+  midToothDip: shape.midToothDip * k,
+  socketDepth: shape.socketDepth * k,
+})
+
+function tissueSweep(layout: JawLayout, base: { halfWidth: number; halfHeight: number; top: number; inset: number; crest: CrestShape }) {
+  const k = TISSUE_SCALE[layout.dentition]
+  const halfHeight = base.halfHeight * k
+  return sweepArch(contourSamples(layout), {
+    halfWidth: base.halfWidth * k,
+    halfHeight,
+    centerY: base.top - halfHeight,
+    top: base.top,
+    inset: base.inset * k,
+    crest: scaledCrest(base.crest, k),
   })
+}
+
+export const gumGeometry = (layout: JawLayout) =>
+  tissueSweep(layout, { halfWidth: 0.66, halfHeight: 1.0, top: 0.14, inset: 0, crest: GINGIVAL_MARGIN })
 
 export const boneGeometry = (layout: JawLayout) =>
-  sweepArch(contourSamples(layout), {
-    halfWidth: 0.58,
-    halfHeight: 0.88,
-    centerY: -0.94,
-    top: -0.06,
-    inset: 0.06,
-    crest: ALVEOLAR_CREST,
-  })
+  tissueSweep(layout, { halfWidth: 0.58, halfHeight: 0.88, top: -0.06, inset: 0.06, crest: ALVEOLAR_CREST })
+
+export const papillaScale = (dentition: Dentition) => (dentition === 'primary' ? 0.65 : 1)
 
 const hash = (x: number, y: number, z: number) => {
   const h = Math.sin(x * 12.9898 + y * 78.233 + z * 37.719) * 43758.5453

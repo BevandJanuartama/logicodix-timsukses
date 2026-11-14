@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { CLEAN_TARGET, useCleaningStore } from '@/lib/cleaningStore'
-import { useAppStore } from '@/lib/store'
+import { renderedDentition, useAppStore } from '@/lib/store'
 import { cleaningState, computeCleanStats, generatePlaque, rinseWithMouthwash } from '@/lib/three/cleaning'
 import { getLayouts } from '@/lib/three/layout'
 import { CleaningSparkles } from './CleaningSparkles'
@@ -14,11 +14,12 @@ const SCRUB_DECAY = 0.9
 export function CleaningController() {
   const resetNonce = useCleaningStore((state) => state.resetNonce)
   const mouthwashNonce = useCleaningStore((state) => state.mouthwashNonce)
+  const dentition = useAppStore(renderedDentition)
   const lastSync = useRef(0)
 
   useEffect(() => {
-    generatePlaque(getLayouts())
-  }, [resetNonce])
+    generatePlaque(getLayouts(dentition))
+  }, [resetNonce, dentition])
 
   useEffect(() => {
     if (mouthwashNonce > 0) rinseWithMouthwash()

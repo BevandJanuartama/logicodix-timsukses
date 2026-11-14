@@ -2,7 +2,8 @@ import * as THREE from 'three'
 import { diseaseLinks } from '@/lib/data/diseaseLinks'
 import { diseases } from '@/lib/data/diseases'
 import type { SceneFocus } from '@/lib/sceneFocus'
-import { getLayouts } from '@/lib/three/layout'
+import { toDentitionToothId } from '@/lib/data/dentition'
+import { activeDentition, getLayouts } from '@/lib/three/layout'
 import { sceneRegistry } from '@/lib/three/registry'
 import { severityOf, type SeverityLevel } from '@/components/ui/diseases/diseaseSeverity'
 
@@ -107,8 +108,9 @@ function toothAnchor(
   offset: (crownHeight: number, depth: number) => [number, number],
   minCosine = -0.1,
 ): ResolvedAnchor | null {
-  const source = sceneRegistry.teeth.get(toothId)
-  const info = getLayouts().byId.get(toothId)
+  const id = toDentitionToothId(toothId, activeDentition())
+  const source = sceneRegistry.teeth.get(id)
+  const info = getLayouts().byId.get(id)
   if (!source || !info) return null
   const [rise, clearance] = offset(info.params.crownHeight, info.params.depth)
   return {

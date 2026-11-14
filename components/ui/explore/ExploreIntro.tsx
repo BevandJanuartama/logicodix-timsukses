@@ -1,12 +1,14 @@
 'use client'
 
-import { useState } from 'react'
 import { focusScene, type SceneFocus } from '@/lib/sceneFocus'
 import { useMediaQuery } from '@/lib/hooks/useMediaQuery'
-import { DentitionToggle, type Dentition } from './DentitionToggle'
+import { useAppStore } from '@/lib/store'
+import { ComparisonControls } from './ComparisonControls'
+import { DentitionToggle } from './DentitionToggle'
 import { ExploreChip } from './ExploreChip'
 import { ExploreDisclosure } from './ExploreDisclosure'
 import { KeyFigures } from './KeyFigures'
+import { SectionControls } from './SectionControls'
 import { ToothTypeTable } from './ToothTypeTable'
 
 export const QUICK_TARGETS: { label: string; focus: SceneFocus }[] = [
@@ -19,7 +21,7 @@ export const QUICK_TARGETS: { label: string; focus: SceneFocus }[] = [
 ]
 
 export function ExploreIntro() {
-  const [dentition, setDentition] = useState<Dentition>('permanent')
+  const dentition = useAppStore((state) => state.dentition)
   const hasRail = useMediaQuery('(min-width: 1280px)')
 
   return (
@@ -39,11 +41,18 @@ export function ExploreIntro() {
         </ul>
       )}
 
-      <DentitionToggle value={dentition} onChange={setDentition} />
+      <DentitionToggle />
       <KeyFigures />
 
+      <div className="rounded-[var(--radius-control)] bg-surface-sunken p-3">
+        <SectionControls />
+      </div>
+
       <ExploreDisclosure label="Bandingkan jenis gigi">
-        <ToothTypeTable dentition={dentition} />
+        <ComparisonControls />
+        <div className="mt-3">
+          <ToothTypeTable dentition={dentition} />
+        </div>
       </ExploreDisclosure>
     </div>
   )

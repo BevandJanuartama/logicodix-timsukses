@@ -27,11 +27,26 @@ export type SceneTargetId = AnatomyObjectId | OralRegionId
 
 export type Lod = 'macro' | 'meso' | 'micro'
 
-export type CameraPreset = 'front' | 'top' | 'bottom' | 'left' | 'right'
+export type Dentition = 'primary' | 'permanent'
+
+export type ComparisonMode = 'off' | 'side-by-side' | 'overlay'
+
+/** sagittal = cut left|right (plane ⟂ x), frontal = cut front|back (plane ⟂ z). */
+export type SectionAxis = 'sagittal' | 'frontal'
+
+export interface JawSection {
+  active: boolean
+  axis: SectionAxis
+  /** 0..1 across the jaws' bounding box along the axis (0 = patient's left / back, 1 = right / front). */
+  position: number
+}
+
+export type CameraPreset = 'front' | 'top' | 'bottom' | 'left' | 'right' | 'lingual'
 
 export type CameraRequest =
   | { kind: 'preset'; preset: CameraPreset; distance?: number }
   | { kind: 'tooth'; toothId: string; section?: boolean }
+  | { kind: 'gingiva'; toothId?: string }
   | { kind: 'zoom'; direction: 1 | -1 }
   | { kind: 'reset' }
 

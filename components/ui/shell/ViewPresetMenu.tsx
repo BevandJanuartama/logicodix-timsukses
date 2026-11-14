@@ -11,6 +11,7 @@ const VIEW_PRESETS: { id: CameraPreset; label: string }[] = [
   { id: 'bottom', label: 'Bawah' },
   { id: 'left', label: 'Kiri' },
   { id: 'right', label: 'Kanan' },
+  { id: 'lingual', label: 'Sisi lidah' },
 ]
 
 const MENU_WIDTH = 128

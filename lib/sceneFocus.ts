@@ -1,4 +1,5 @@
-import { useAppStore } from '@/lib/store'
+import { toDentitionToothId } from '@/lib/data/dentition'
+import { renderedDentition, useAppStore } from '@/lib/store'
 import type { CameraPreset, SceneTargetId } from '@/lib/types'
 
 export interface SceneFocus {
@@ -18,11 +19,17 @@ const overviewDistance = () => OVERVIEW_DISTANCE * (window.matchMedia(NARROW_QUE
 export function focusScene(focus: SceneFocus) {
   const state = useAppStore.getState()
   state.setIntro(false)
-  const toothId = focus.overview ? null : (focus.toothId ?? null)
+  // Focus targets are authored with permanent ids; land on the equivalent tooth when primary teeth are shown.
+  const toothId = focus.overview || !focus.toothId ? null : toDentitionToothId(focus.toothId, renderedDentition(state))
   state.selectTarget(toothId, focus.objectId ?? null)
+  const gingiva = focus.objectId === 'gingiva' && !focus.section && !focus.overview
   if (toothId) {
     state.setCutaway(Boolean(focus.section))
-    state.requestCamera({ kind: 'tooth', toothId, section: focus.section })
+    state.requestCamera(gingiva ? { kind: 'gingiva', toothId } : { kind: 'tooth', toothId, section: focus.section })
+    return
+  }
+  if (gingiva) {
+    state.requestCamera({ kind: 'gingiva' })
     return
   }
   state.requestCamera({ kind: 'preset', preset: focus.preset ?? 'front', distance: overviewDistance() })

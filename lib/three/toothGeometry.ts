@@ -42,6 +42,42 @@ const outerCache = new Map<string, THREE.BufferGeometry>()
 const innerCache = new Map<string, InnerGeometry>()
 const supportCache = new Map<string, SupportGeometry>()
 
+/** Free the cached GPU geometry of the given teeth (used when the rendered dentition is swapped out). */
+export function disposeToothGeometries(toothIds: Iterable<string>) {
+  for (const id of toothIds) {
+    for (const detail of Object.keys(DETAIL_LEVELS) as Detail[]) {
+      outerCache.get(`${id}-${detail}`)?.dispose()
+      outerCache.delete(`${id}-${detail}`)
+    }
+    const inner = innerCache.get(id)
+    if (inner) for (const geometry of [inner.dentin, inner.pulp, ...inner.vessels]) geometry.dispose()
+    innerCache.delete(id)
+    const support = supportCache.get(id)
+    support?.ligament.dispose()
+    support?.junction.dispose()
+    supportCache.delete(id)
+  }
+}
+
+const geometryUsers = new Map<object, number>()
+
+/**
+ * Ref-count a tooth set (the main jaws and the comparison layer can show the same dentition) and free its cached
+ * geometry once nobody renders it. Disposal is deferred a tick: in one commit React runs every effect cleanup before
+ * any new effect, so a set released by one jaw and adopted by another must not be torn down in between.
+ */
+export function retainToothGeometries(owner: object, toothIds: () => Iterable<string>) {
+  geometryUsers.set(owner, (geometryUsers.get(owner) ?? 0) + 1)
+  return () => {
+    geometryUsers.set(owner, (geometryUsers.get(owner) ?? 1) - 1)
+    setTimeout(() => {
+      if ((geometryUsers.get(owner) ?? 0) > 0) return
+      geometryUsers.delete(owner)
+      disposeToothGeometries(toothIds())
+    }, 0)
+  }
+}
+
 export function getOuterGeometry(info: ToothInfo, detail: Detail) {
   const key = `${info.id}-${detail}`
   const cached = outerCache.get(key)

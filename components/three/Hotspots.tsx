@@ -5,7 +5,7 @@ import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import * as THREE from 'three'
 import { focusScene, type SceneFocus } from '@/lib/sceneFocus'
-import { useAppStore } from '@/lib/store'
+import { activeComparison, jawSectionOn, renderedDentition, useAppStore } from '@/lib/store'
 import {
   ANATOMY_HOTSPOTS,
   diseaseHotspot,
@@ -141,14 +141,18 @@ function useHotspotSpecs(): HotspotSpec[] {
   const mode = useAppStore((state) => state.mode)
   const intro = useAppStore((state) => state.intro)
   const selectedDiseaseId = useAppStore((state) => state.selectedDiseaseId)
+  // Hotspots point at single permanent teeth; with two dentitions on screen they would be ambiguous.
+  const comparing = useAppStore((state) => activeComparison(state) !== 'off')
+  // A jaw cut removes the surfaces the markers sit on.
+  const cutOpen = useAppStore(jawSectionOn)
 
   return useMemo(() => {
-    if (intro) return []
+    if (intro || comparing || cutOpen) return []
     if (mode === 'explore') return ANATOMY_HOTSPOTS
     if (mode !== 'diseases' || !selectedDiseaseId) return []
     const spot = diseaseHotspot(selectedDiseaseId)
     return spot ? [spot] : []
-  }, [mode, intro, selectedDiseaseId])
+  }, [mode, intro, selectedDiseaseId, comparing, cutOpen])
 }
 
 export function Hotspots({ overlay }: { overlay: RefObject<HTMLElement | null> }) {
@@ -158,15 +162,22 @@ export function Hotspots({ overlay }: { overlay: RefObject<HTMLElement | null> }
   const selectedToothId = useAppStore((state) => state.selectedToothId)
   const selectedObjectId = useAppStore((state) => state.selectedObjectId)
 
+  const dentition = useAppStore(renderedDentition)
+
   useEffect(() => setSceneReady(true), [])
 
-  const placed = useMemo(() => {
-    if (!sceneReady) return []
-    return specs.slice(0, MAX_VISIBLE_HOTSPOTS).flatMap((spec) => {
-      const anchor = resolveAnchor(spec.anchor)
-      return anchor ? [{ spec, anchor }] : []
-    })
-  }, [specs, sceneReady])
+  // Resolve after commit: on a dentition swap the new Tooth groups register in sceneRegistry during their
+  // layout effects, so resolving during render would bind hotspots to the old, already-detached teeth.
+  const [placed, setPlaced] = useState<{ spec: HotspotSpec; anchor: ResolvedAnchor }[]>([])
+  useEffect(() => {
+    if (!sceneReady) return
+    setPlaced(
+      specs.slice(0, MAX_VISIBLE_HOTSPOTS).flatMap((spec) => {
+        const anchor = resolveAnchor(spec.anchor)
+        return anchor ? [{ spec, anchor }] : []
+      }),
+    )
+  }, [specs, sceneReady, dentition])
 
   return (
     <>

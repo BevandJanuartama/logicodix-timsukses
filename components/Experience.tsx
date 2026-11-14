@@ -14,8 +14,10 @@ import { ExplorePanel } from '@/components/ui/explore/ExplorePanel'
 import { CanvasStage } from '@/components/ui/shell/CanvasStage'
 import { Hero } from '@/components/ui/shell/Hero'
 import { HoverTip } from '@/components/ui/shell/HoverTip'
+import { MobileActionBar } from '@/components/ui/shell/MobileActionBar'
 import { ModeRail } from '@/components/ui/shell/ModeRail'
 import { NextStepLink } from '@/components/ui/shell/NextStepLink'
+import { OnboardingCoach } from '@/components/ui/shell/OnboardingCoach'
 import { Panel } from '@/components/ui/shell/Panel'
 import { QuizPanel } from '@/components/ui/quiz/QuizPanel'
 import { SimulatorPanel } from '@/components/ui/simulator/SimulatorPanel'
@@ -79,8 +81,10 @@ export function Experience({ remoteConditions }: { remoteConditions: RemoteCondi
           <HoverTip />
           <CleanSuccessToast />
           <MouthwashOverlay />
+          <MobileActionBar />
         </>
       )}
+      <OnboardingCoach />
       {intro && heroSlot === 'sheet' && (
         <div className="fixed inset-x-3 bottom-[calc(var(--mobile-tabbar-h,0px)+12px)] z-20">
           <Hero />

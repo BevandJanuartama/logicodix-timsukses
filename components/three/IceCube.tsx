@@ -35,7 +35,7 @@ function averagePosition(ids: string[], into: THREE.Vector3) {
 
 export function IceCube() {
   const mesh = useRef<THREE.Mesh>(null!)
-  const side = useMemo(() => (getLayouts().byId.get('11')?.params.width ?? 0.8) * SIZE_RATIO, [])
+  const side = useMemo(() => (getLayouts('permanent').byId.get('11')?.params.width ?? 0.8) * SIZE_RATIO, [])
 
   useFrame((state, delta) => {
     const node = mesh.current

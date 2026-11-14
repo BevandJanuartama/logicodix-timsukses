@@ -32,6 +32,7 @@ export function ViewControls() {
       className="panel absolute top-3 right-3 z-20 flex max-h-[calc(100%-1.5rem)] flex-col overflow-y-auto p-1 md:top-1/2 md:right-auto md:left-3 md:-translate-y-1/2"
     >
       <LodButtons />
+      {/* Phones pinch to zoom, and get Ulang / Sudut / Belah from the thumb-reach MobileActionBar instead. */}
       <div className="hidden md:contents">
         <ToolbarButton label="Perbesar" onClick={() => requestCamera({ kind: 'zoom', direction: 1 })}>
           <ZoomIn className="size-[18px]" aria-hidden />
@@ -39,34 +40,34 @@ export function ViewControls() {
         <ToolbarButton label="Perkecil" onClick={() => requestCamera({ kind: 'zoom', direction: -1 })}>
           <ZoomOut className="size-[18px]" aria-hidden />
         </ToolbarButton>
-      </div>
-      <ToolbarButton label="Ulang" hint="Kembalikan kamera" onClick={() => requestCamera({ kind: 'reset' })}>
-        <RotateCcw className="size-[18px]" aria-hidden />
-      </ToolbarButton>
-      <ToolbarButton
-        ref={presetTrigger}
-        label="Sudut"
-        hint="Pilih sudut pandang"
-        expanded={presetsOpen}
-        onClick={() => setPresetsOpen(!presetsOpen)}
-      >
-        <Camera className="size-[18px]" aria-hidden />
-      </ToolbarButton>
-      <ViewPresetMenu
-        open={presetsOpen}
-        anchor={presetTrigger}
-        onClose={() => setPresetsOpen(false)}
-        onChoose={(preset) => {
-          requestCamera({ kind: 'preset', preset, distance: PRESET_DISTANCE })
-          setPresetsOpen(false)
-          presetTrigger.current?.focus()
-        }}
-      />
-      {selectedToothId && !cleaning && (
-        <ToolbarButton label="Belah" hint="Belah penampang gigi" pressed={sectioned} onClick={toggleSection}>
-          <Scissors className="size-[18px]" aria-hidden />
+        <ToolbarButton label="Ulang" hint="Kembali ke tampilan awal" onClick={() => requestCamera({ kind: 'reset' })}>
+          <RotateCcw className="size-[18px]" aria-hidden />
         </ToolbarButton>
-      )}
+        <ToolbarButton
+          ref={presetTrigger}
+          label="Sudut"
+          hint="Lihat gigi dari arah lain"
+          expanded={presetsOpen}
+          onClick={() => setPresetsOpen(!presetsOpen)}
+        >
+          <Camera className="size-[18px]" aria-hidden />
+        </ToolbarButton>
+        <ViewPresetMenu
+          open={presetsOpen}
+          anchor={presetTrigger}
+          onClose={() => setPresetsOpen(false)}
+          onChoose={(preset) => {
+            requestCamera({ kind: 'preset', preset, distance: PRESET_DISTANCE })
+            setPresetsOpen(false)
+            presetTrigger.current?.focus()
+          }}
+        />
+        {selectedToothId && !cleaning && (
+          <ToolbarButton label="Belah" hint="Lihat isi gigi ini" pressed={sectioned} onClick={toggleSection}>
+            <Scissors className="size-[18px]" aria-hidden />
+          </ToolbarButton>
+        )}
+      </div>
     </div>
   )
 }

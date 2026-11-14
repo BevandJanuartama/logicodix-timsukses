@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import { toothTypes } from '@/lib/knowledgeBase'
+import { useAppStore } from '@/lib/store'
 import { DentitionToggle, type Dentition } from './DentitionToggle'
 
 const countOf = (type: (typeof toothTypes)[number], dentition: Dentition) =>
@@ -48,10 +48,10 @@ export function ToothTypeTable({ dentition, activeId }: ToothTypeTableProps) {
 }
 
 export function ToothComparison({ activeId }: { activeId?: string }) {
-  const [dentition, setDentition] = useState<Dentition>('permanent')
+  const dentition = useAppStore((state) => state.dentition)
   return (
     <div className="space-y-2">
-      <DentitionToggle value={dentition} onChange={setDentition} />
+      <DentitionToggle />
       <ToothTypeTable dentition={dentition} activeId={activeId} />
     </div>
   )

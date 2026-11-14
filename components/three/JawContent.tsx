@@ -6,7 +6,7 @@ import * as THREE from 'three'
 import { useAppStore } from '@/lib/store'
 import { clipRaycast, noRaycast } from '@/lib/three/clip'
 import { getLayouts, type JawLayout } from '@/lib/three/layout'
-import { boneGeometry, domeGeometry, gumGeometry, tongueGeometry } from '@/lib/three/softTissue'
+import { boneGeometry, domeGeometry, gumGeometry, papillaScale, tongueGeometry } from '@/lib/three/softTissue'
 import { PlaqueLayer } from './cleaning/PlaqueLayer'
 import { TartarLayer } from './simulation/TartarLayer'
 import { Tooth } from './Tooth'
@@ -14,6 +14,8 @@ import { periodontalFrame } from './periodontalFrame'
 import type { TissueMaterials } from './useTissueMaterials'
 
 const UP = new THREE.Vector3(0, 1, 0)
+const PAPILLA_SIZE = new THREE.Vector3(0.085, 0.13, 0.09)
+const PAPILLA_RISE = 0.17
 
 function Papillae({ layout, material, visible }: { layout: JawLayout; material: THREE.Material; visible: boolean }) {
   const mesh = useRef<THREE.InstancedMesh>(null!)
@@ -21,10 +23,11 @@ function Papillae({ layout, material, visible }: { layout: JawLayout; material: 
   const count = layout.contacts.length * 2
 
   useLayoutEffect(() => {
-    const { byId } = getLayouts()
+    const { byId } = getLayouts(layout.dentition)
+    const k = papillaScale(layout.dentition)
     const matrix = new THREE.Matrix4()
     const rotation = new THREE.Quaternion()
-    const scale = new THREE.Vector3(0.085, 0.13, 0.09)
+    const scale = PAPILLA_SIZE.clone().multiplyScalar(k)
     let index = 0
     for (const contact of layout.contacts) {
       const depth = Math.min(byId.get(contact.toothA)!.params.depth, byId.get(contact.toothB)!.params.depth)
@@ -32,7 +35,7 @@ function Papillae({ layout, material, visible }: { layout: JawLayout; material: 
       rotation.setFromRotationMatrix(new THREE.Matrix4().makeBasis(xAxis, UP, contact.outward))
       for (const side of [1, -1]) {
         const position = contact.position.clone().addScaledVector(contact.outward, side * depth * 0.36)
-        position.y += 0.17
+        position.y += PAPILLA_RISE * k
         matrix.compose(position, rotation, scale)
         mesh.current.setMatrixAt(index++, matrix)
       }
@@ -54,14 +57,24 @@ function Papillae({ layout, material, visible }: { layout: JawLayout; material: 
   )
 }
 
+/**
+ * main    – the interactive jaw (all tissue, plaque & tartar layers)
+ * compare – comparison jaw shown beside it (tissue, no cleaning/simulation layers)
+ * ghost   – comparison overlay: translucent teeth only
+ */
+export type JawVariant = 'main' | 'compare' | 'ghost'
+
 interface JawContentProps {
   layout: JawLayout
   materials: TissueMaterials
+  variant?: JawVariant
+  ghostOpacity?: number
 }
 
-export function JawContent({ layout, materials }: JawContentProps) {
-  const showGum = useAppStore((state) => state.layers.gingiva)
-  const showBone = useAppStore((state) => state.layers.alveolar_bone)
+export function JawContent({ layout, materials, variant = 'main', ghostOpacity }: JawContentProps) {
+  const ghost = variant === 'ghost'
+  const showGum = useAppStore((state) => state.layers.gingiva) && !ghost
+  const showBone = useAppStore((state) => state.layers.alveolar_bone) && !ghost
   const isUpper = layout.jaw === 'upper'
   const gum = useMemo(() => gumGeometry(layout), [layout])
   const bone = useMemo(() => boneGeometry(layout), [layout])
@@ -92,7 +105,7 @@ export function JawContent({ layout, materials }: JawContentProps) {
   return (
     <>
       {layout.teeth.map((tooth) => (
-        <Tooth key={tooth.id} info={tooth} />
+        <Tooth key={tooth.id} info={tooth} ghostOpacity={ghost ? ghostOpacity : undefined} />
       ))}
       <group ref={gumGroup}>
         <mesh
@@ -113,14 +126,19 @@ export function JawContent({ layout, materials }: JawContentProps) {
           userData={{ kind: 'bone' }}
         />
       </group>
-      <TartarLayer layout={layout} />
-      <PlaqueLayer jaw={layout.jaw} />
-      {isUpper ? (
+      {variant === 'main' && (
+        <>
+          <TartarLayer layout={layout} />
+          <PlaqueLayer jaw={layout.jaw} />
+        </>
+      )}
+      {ghost ? null : isUpper ? (
         <mesh
           geometry={dome}
           material={materials.palate}
           position={[0, 0.12, centerZ]}
           scale={[halfX + 0.28, -1.0, halfDepth]}
+          raycast={clipRaycast as never}
           userData={{ kind: 'palate' }}
         />
       ) : (
@@ -130,6 +148,7 @@ export function JawContent({ layout, materials }: JawContentProps) {
             material={materials.floor}
             position={[0, 0.02, centerZ]}
             scale={[halfX + 0.28, -0.6, halfDepth]}
+            raycast={clipRaycast as never}
             userData={{ kind: 'floor' }}
           />
           <mesh
@@ -137,6 +156,7 @@ export function JawContent({ layout, materials }: JawContentProps) {
             material={materials.tongue}
             position={[0, -0.1, centerZ - 0.12]}
             scale={[halfX * 0.92, 0.5, halfDepth * 0.98]}
+            raycast={clipRaycast as never}
             userData={{ kind: 'tongue' }}
           />
         </>

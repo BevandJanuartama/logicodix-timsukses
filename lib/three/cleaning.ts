@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import type { CleanStats, CleaningTool } from '@/lib/cleaningStore'
 import type { Jaw, Layouts } from '@/lib/three/layout'
 import { seededRandom } from '@/lib/three/math'
+import { getToolDimensions } from '@/lib/three/toolDimensions'
 import { surfaceNormal, surfacePoint } from '@/lib/three/toothGeometry'
 
 type PlaqueKind = 'surface' | 'interdental' | 'debris'
@@ -109,7 +110,8 @@ export function generatePlaque(layouts: Layouts) {
   cleaningState.sparkles.length = 0
 }
 
-const TOOL_RADIUS: Record<CleaningTool, number> = { brush: 0.3, floss: 0.2, scraper: 0.36 }
+// Brush reach follows the life-size head (per dentition) so the cleaned patch matches what the bristles cover.
+const toolRadius = (tool: CleaningTool) => (tool === 'brush' ? getToolDimensions().brush.reach : tool === 'floss' ? 0.2 : 0.36)
 
 function toolEfficacy(tool: CleaningTool, item: PlaqueItem) {
   if (tool === 'brush') {
@@ -135,7 +137,7 @@ export function applyTool(
     cleaningState.tongueCoat = Math.max(0, cleaningState.tongueCoat - power * (tool === 'scraper' ? 0.55 : 0.08))
   }
   if (tool === 'scraper') return
-  const radius = TOOL_RADIUS[tool]
+  const radius = toolRadius(tool)
   for (const jaw of ['upper', 'lower'] as const) {
     const group = jaws[jaw]
     if (!group) continue

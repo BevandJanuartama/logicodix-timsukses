@@ -13,10 +13,12 @@ const PROFILE_OVERSAMPLING = 10
 export function outerRadius(y: number, p: ToothParams): number {
   if (y <= 0) {
     const t = clamp01(-y / p.rootLength)
-    return BASE_RADIUS * 0.8 * (1 - 0.86 * Math.pow(t, 1.7))
+    return BASE_RADIUS * p.neck * (1 - 0.86 * Math.pow(t, 1.7))
   }
   const t = clamp01(y / p.crownHeight)
-  let radius = BASE_RADIUS * (0.8 + 0.2 * Math.sin((Math.min(t / 0.6, 1) * Math.PI) / 2))
+  // Primary crowns bulge out faster above a narrower neck (pronounced cervical constriction).
+  const bulgeAt = p.primary ? 0.4 : 0.6
+  let radius = BASE_RADIUS * (p.neck + (1 - p.neck) * Math.sin((Math.min(t / bulgeAt, 1) * Math.PI) / 2))
   if (t > 1 - p.tip) {
     const s = (t - (1 - p.tip)) / p.tip
     radius *= p.kind === 'canine' ? Math.pow(Math.max(0, 1 - s), 0.8) : Math.sqrt(Math.max(0, 1 - s * s))
@@ -30,7 +32,7 @@ export function dentinRadius(y: number, p: ToothParams): number {
   const t = y / dentinHeight
   if (t >= 1) return 0
   const crown = outerRadius((y * p.crownHeight) / dentinHeight, p) * 0.8
-  const root = BASE_RADIUS * 0.8 * 0.95
+  const root = BASE_RADIUS * p.neck * 0.95
   return root + (crown - root) * smoothstep(0, 0.22, t)
 }
 

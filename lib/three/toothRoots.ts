@@ -58,7 +58,14 @@ const UPPER_MOLAR_BRANCHES = [
   branch(0, -1, 0.5, 0.7, 0.8, 0.14),
 ]
 
-const angleOf = (direction: THREE.Vector2) => Math.atan2(direction.x, direction.y)
+// Primary molar roots are thin and flare wide to make room for the developing premolar underneath.
+const PRIMARY_ROOT_FLARE = 2.2
+const flared = (branches: RootBranch[]) =>
+  branches.map((root) => ({ ...root, splay: root.splay * PRIMARY_ROOT_FLARE, along: root.along * 0.85, across: root.across * 0.85 }))
+const PRIMARY_LOWER_MOLAR_BRANCHES = flared(LOWER_MOLAR_BRANCHES)
+const PRIMARY_UPPER_MOLAR_BRANCHES = flared(UPPER_MOLAR_BRANCHES)
+
+const angleOf =(direction: THREE.Vector2) => Math.atan2(direction.x, direction.y)
 
 const furcationGrooves = (branches: RootBranch[]) =>
   branches.length === 2
@@ -68,8 +75,14 @@ const furcationGrooves = (branches: RootBranch[]) =>
 export function rootPlanFor(info: ToothInfo): RootPlan {
   const p = info.params
   if (p.kind === 'molar') {
-    const branches = info.jaw === 'upper' ? UPPER_MOLAR_BRANCHES : LOWER_MOLAR_BRANCHES
-    return { branches, furcation: -p.rootLength * 0.3, grooveAngles: furcationGrooves(branches), grooveDepth: 0.18 }
+    const branches = p.primary
+      ? info.jaw === 'upper'
+        ? PRIMARY_UPPER_MOLAR_BRANCHES
+        : PRIMARY_LOWER_MOLAR_BRANCHES
+      : info.jaw === 'upper'
+        ? UPPER_MOLAR_BRANCHES
+        : LOWER_MOLAR_BRANCHES
+    return { branches, furcation: -p.rootLength * (p.primary ? 0.2 : 0.3), grooveAngles: furcationGrooves(branches), grooveDepth: 0.18 }
   }
   if (p.kind === 'premolar') {
     return { branches: [], furcation: -p.rootLength, grooveAngles: [Math.PI / 2, -Math.PI / 2], grooveDepth: 0.1 }

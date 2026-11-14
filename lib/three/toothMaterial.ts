@@ -89,6 +89,8 @@ const LAYER_LOOK: Record<ToothLayerKind, LayerLook> = {
   pulp: { color: '#d4505f', roughness: 0.5, define: 'TOOTH_PULP', clearcoat: 0, clearcoatRoughness: 0, ior: 1.4, specularIntensity: 0.6 },
 }
 
+const PRIMARY_ENAMEL_COLOR = '#fbfbf8'
+
 function createLayerUniforms(): LayerUniforms {
   return {
     uHighlightBand: { value: new THREE.Vector2(0, 0) },
@@ -160,6 +162,8 @@ export function createToothMaterials(params: ToothParams): ToothMaterials {
   const effects = createEffectUniforms()
   const anatomy = createAnatomyUniforms(params)
   const outer = createLayerMaterial('outer', uniforms.outer, effects, anatomy)
+  // Primary enamel is thinner and more opaque: a cooler, milky white instead of the warm ivory of permanent teeth.
+  if (params.primary) outer.color.set(PRIMARY_ENAMEL_COLOR)
   const dentin = createLayerMaterial('dentin', uniforms.dentin, effects, anatomy)
   const pulp = createLayerMaterial('pulp', uniforms.pulp, effects, anatomy)
   const vessels = ['#e5383b', '#3d6fd9', '#f4c84a'].map(
