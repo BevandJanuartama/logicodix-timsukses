@@ -157,7 +157,7 @@ sequenceDiagram
 
 ### Demo Daring
 
-Aplikasi sudah di-deploy dan dapat dicoba langsung tanpa instalasi: **https://dental-scope-theta.vercel.app/**
+Aplikasi sudah di-deploy dan dapat dicoba langsung tanpa instalasi: **https://denta-scope.vercel.app/**
 
 ### Instalasi (untuk menjalankan lokal)
 
