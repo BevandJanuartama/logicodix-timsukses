@@ -42,9 +42,13 @@ Thumbs.db
 # Platform hosting
 .vercel/
 
-# Claude Code local
-.claude/skills
-.claude/settings.local.json
+# AI coding assistant tooling (local only, not part of the app)
+.agents/
+.claude/
+AGENTS.md
+CLAUDE.md
+setup-token-stack.ps1
+skills-lock.json
 
 next-env.d.ts
 *.tsbuildinfo

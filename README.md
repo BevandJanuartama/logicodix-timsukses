@@ -71,12 +71,12 @@ Beban penyakit gigi dan mulut, terutama karies dan penyakit periodontal, masih t
 | No | Fitur | Deskripsi | Status |
 |:--:|---|---|:--:|
 | 1 | **3D Dental Explorer** | 32 gigi bernomor FDI, 10 lapisan anatomi yang bisa dihidupkan/dimatikan, potongan melintang, pemilihan struktur lewat klik, dan hotspot interaktif yang memutar kamera ke bagian terkait | Selesai |
-| 2 | **Katalog 21 Kondisi Gigi** | Penyakit, kelainan gigitan, gangguan tumbuh, kelainan struktur, dan kebiasaan. Setiap kondisi punya penjelasan awam, tanda-tanda, cara mencegah, sumber, serta deformasi pose 3D (gigi bergeser, miring, rahang menutup atau maju). Data tambahan dapat dimuat dari CSV jarak jauh dengan cache | Selesai |
+| 2 | **Katalog Kondisi Gigi** | 21 kondisi bawaan: penyakit, kelainan gigitan, gangguan tumbuh, kelainan struktur, dan kebiasaan. Setiap kondisi punya penjelasan awam, tanda-tanda, cara mencegah, sumber, serta deformasi pose 3D (gigi bergeser, miring, rahang menutup atau maju). Kondisi tambahan beserta visual 3D-nya dimuat dari spreadsheet CSV (`CONDITIONS_CSV_URL`) dengan cache 24 jam, dilengkapi pencarian | Selesai |
 | 3 | **Damage Simulator & Kurva Stephan** | Penggeser waktu untuk tahap karies dan periodontitis, skenario kebiasaan harian, dan kurva pH Stephan dengan ambang kritis 5,5 | Selesai |
 | 4 | **3D Cleaning Lab** | Latihan menyikat gigi, benang gigi, dan pembersih lidah dengan skor kebersihan, timer 2 menit, dan tips teknik. Dioptimasi menargetkan 60 FPS | Selesai |
 | 5 | **Kuis Interaktif** | Soal dengan umpan balik instan, pembahasan bersumber, navigasi keyboard, dan kamera yang diarahkan otomatis ke gigi terkait | Selesai |
 | 6 | **Asisten Chat AI Gemini** | Tanya-jawab edukasi kesehatan gigi. Jawaban dapat disertai tombol "Lihat di model 3D" yang membuka kondisi dan pose terkait | Selesai |
-| 7 | **Tata Kelola Konten & Dialog Sumber** | Dialog daftar rujukan ilmiah, dialog "Tentang konten ini" dengan status tinjauan materi, dan disclaimer medis | Selesai |
+| 7 | **Sumber per Materi & Disclaimer** | Setiap kondisi dan tahap simulasi mencantumkan sumber rujukan; panel simulasi menegaskan bahwa materi bersifat edukatif, bukan pengganti pemeriksaan dokter gigi | Selesai |
 
 ---
 
@@ -155,7 +155,11 @@ sequenceDiagram
 - Node.js v18.18.0 atau lebih baru (disarankan v20 atau v22 LTS)
 - npm
 
-### Instalasi
+### Demo Daring
+
+Aplikasi sudah di-deploy dan dapat dicoba langsung tanpa instalasi: **https://dental-scope-theta.vercel.app/**
+
+### Instalasi (untuk menjalankan lokal)
 
 ```bash
 git clone https://github.com/BevandJanuartama/logicodix-timsukses.git
@@ -169,11 +173,14 @@ npm install
 cp .env.example .env
 ```
 
+Daftar lengkap variabel ada di [`.env.example`](.env.example). Berkas `.env` sudah masuk `.gitignore`.
+
 | Variabel | Wajib | Fungsi |
 |---|:---:|---|
-| `GEMINI_API_KEY` | Hanya untuk chat AI | Kunci Gemini API. Hanya dibaca di server, tidak pernah dikirim ke peramban. Tanpa kunci ini, seluruh fitur lain tetap berjalan dan asisten chat menampilkan pesan ramah |
-| `CONDITIONS_CSV_URL` | Opsional | URL CSV untuk menambah atau menimpa data kondisi gigi. Bila kosong atau gagal diakses, aplikasi memakai data bawaan. Templat: `docs/conditions-template.csv` |
-| `NEXT_PUBLIC_APP_NAME` | Opsional | Nama aplikasi yang ditampilkan, mis. `DentaScope` |
+| `GEMINI_API_KEY` | Hanya untuk chat AI | Kunci Gemini API dari [Google AI Studio](https://aistudio.google.com/apikey). Hanya dibaca di server, tidak pernah dikirim ke peramban. Tanpa kunci ini, seluruh fitur lain tetap berjalan dan asisten chat menampilkan pesan bahwa asisten belum aktif |
+| `GEMINI_MODEL` | Opsional | Model yang dicoba lebih dulu. Bila kosong: `gemini-3.5-flash-lite`, lalu `gemini-3.8-flash` sebagai cadangan |
+| `GEMINI_VERTEX_EXPRESS` | Opsional | `true` hanya bila kunci yang dipakai adalah kunci Vertex AI express mode. Bawaan `false` |
+| `CONDITIONS_CSV_URL` | Opsional | URL CSV publik (mis. Google Sheets yang dipublikasikan sebagai CSV) untuk menambah data kondisi gigi. Bila kosong atau gagal diakses, aplikasi memakai 21 kondisi bawaan. Format kolom: `docs/conditions-template.csv` |
 
 ### Menjalankan Aplikasi
 
@@ -195,9 +202,7 @@ Pemeriksaan tipe TypeScript: `npm run typecheck`.
 
 ## 7. Akun Demonstrasi (Demo Credentials)
 
-Aplikasi berstatus **Public Open Access**. Tidak ada gerbang login, registrasi, maupun paywall, sehingga dewan juri dapat langsung menguji semua fitur tanpa kredensial.
-
-Untuk keperluan penilaian, tombol **Sumber** di header membuka dialog rujukan ilmiah. Dialog **Tentang konten ini** menampilkan disclaimer medis, status tinjauan materi, dan bagian "Rincian untuk peninjau" berisi filter status, matriks aset 3D, serta celah riset yang masih terbuka.
+Tidak diperlukan. Aplikasi tidak memakai autentikasi: tidak ada login, registrasi, maupun paywall, sehingga dewan juri dapat langsung menguji semua fitur.
 
 ---
 
@@ -205,8 +210,10 @@ Untuk keperluan penilaian, tombol **Sumber** di header membuka dialog rujukan il
 
 | | |
 |---|---|
-| **Model** | Google Gemini API, `gemini-3.8-flash` (dapat diubah lewat `GEMINI_MODEL`) |
+| **Layanan** | Google Gemini API |
+| **Model** | `gemini-3.5-flash-lite`, dengan cadangan `gemini-3.8-flash` bila model pertama gagal (dapat diganti lewat `GEMINI_MODEL`) |
 | **Pustaka** | `@google/genai` |
+| **Bagian produk** | Asisten chat (`components/ui/chat/*`) dan route server `app/api/chat/route.ts` |
 
 ### Fungsi
 
@@ -220,6 +227,10 @@ Konteks yang diberikan ke model adalah data kondisi aplikasi (data bawaan ditamb
 - **Disclaimer medis.** Seluruh modul menegaskan bahwa visualisasi bersifat edukatif, bukan alat diagnosis mandiri maupun penilaian risiko pribadi.
 - **Rate limiting di server.** Maksimal 20 permintaan per 10 menit per klien, 12 pesan per percakapan, dan 1000 karakter per pesan.
 - **Kunci API terlindungi.** `GEMINI_API_KEY` hanya dipakai di route server.
+
+### AI dalam Proses Pengembangan
+
+Tim memakai AI coding assistant selama Hacking Week, yaitu Claude Code (Anthropic) dan Google Antigravity (Gemini), untuk membantu menulis kode, menelusuri bug, menyusun rencana kerja, dan merapikan dokumentasi. Seluruh hasilnya ditinjau, diuji, dan di-commit oleh anggota tim, dan tim bertanggung jawab penuh atas kode tersebut. Konfigurasi dan skill asisten tersebut disimpan lokal dan tidak dimasukkan ke repositori.
 
 ---
 
@@ -239,9 +250,16 @@ Konteks yang diberikan ke model adalah data kondisi aplikasi (data bawaan ditamb
 | Newsreader (tipografi tampilan) | SIL OFL, via Google Fonts / `next/font` |
 | Atkinson Hyperlegible Next (tipografi teks) | SIL OFL, via Google Fonts / `next/font` |
 
-Mesin geometri prosedural dan sebagian konten skenario diadaptasi dari proyek referensi internal tim, `dentascope`.
+Seluruh kode, termasuk mesin geometri prosedural, ditulis selama Hacking Week. Riset dan konsep awal tim sebelum kick-off (diperbolehkan Guidebook) hanya dipakai sebagai acuan ide dan konten, bukan sebagai kode.
 
-### B. Referensi Ilmiah & Medis Resmi (16 Sumber)
+### B. Dataset
+
+| Dataset | Keterangan |
+|---|---|
+| Data kondisi bawaan (`lib/data/*`) | Disusun tim dari referensi ilmiah di bagian C |
+| Spreadsheet "Database Masalah Gigi & Mulut" | Dimuat lewat `CONDITIONS_CSV_URL`; contoh struktur di `docs/conditions-template.csv` |
+
+### C. Referensi Ilmiah & Medis Resmi (16 Sumber)
 
 1. World Health Organization. *Oral health.* https://www.who.int/news-room/fact-sheets/detail/oral-health
 2. World Health Organization. *Sugars and dental caries.* https://www.who.int/news-room/fact-sheets/detail/sugars-and-dental-caries
@@ -264,7 +282,6 @@ Mesin geometri prosedural dan sebagian konten skenario diadaptasi dari proyek re
 
 ## Catatan Keterbukaan
 
-- Sebagian materi editorial **belum ditinjau dokter gigi**: tingkat perhatian per kondisi, peta fokus kuis, dan empat skenario Kurva Stephan. Antarmuka menyatakan hal ini secara terbuka lewat dialog "Tentang konten ini".
+- Sebagian materi editorial **belum ditinjau dokter gigi**: tingkat perhatian per kondisi, peta fokus kuis, dan empat skenario Kurva Stephan.
 - Pose 3D pada kelainan gigitan dan susunan gigi adalah **ilustrasi**, bukan ukuran klinis.
 - Angka 60 FPS merupakan target optimasi. Pengukuran otomatis belum dilakukan, dan pengujian di perangkat seluler nyata masih perlu dilengkapi.
-- Asisten chat sudah diuji sampai ke penyedia API, tetapi belum dengan kunci produksi sungguhan.
